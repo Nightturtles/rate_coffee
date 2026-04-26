@@ -1,0 +1,20 @@
+{
+  "name": "rate-coffee",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "e2e"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @rate-coffee/web",
+    "build": "npm run build -w @rate-coffee/web",
+    "lint": "npm run lint -w @rate-coffee/web",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "vitest": "^3.1.0"
+  }
+}

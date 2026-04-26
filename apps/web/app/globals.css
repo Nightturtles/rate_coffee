@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #120d08;
+    --foreground: #fef3c7;
+  }
+
+  /* Remap warm light-theme utility colors for readable dark mode contrast. */
+  [class*="text-amber-950"] {
+    color: #fffbeb !important;
+  }
+
+  [class*="text-amber-900"] {
+    color: #fde68a !important;
+  }
+
+  [class*="text-amber-800"] {
+    color: #fcd34d !important;
+  }
+
+  [class*="bg-white"] {
+    background-color: rgb(41 37 36 / 0.72) !important;
+  }
+
+  [class*="bg-amber-50"],
+  [class*="bg-amber-100"] {
+    background-color: rgb(41 37 36 / 0.82) !important;
+  }
+
+  [class*="bg-amber-900"],
+  [class*="bg-amber-800"] {
+    background-color: rgb(217 119 6 / 0.85) !important;
+  }
+
+  [class*="border-amber-900"] {
+    border-color: rgb(251 191 36 / 0.35) !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  color-scheme: light dark;
+  font-family: Arial, Helvetica, sans-serif;
+}
