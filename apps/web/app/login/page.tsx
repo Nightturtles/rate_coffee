@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const enableGoogle = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === "true";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const router = useRouter();
@@ -59,12 +61,46 @@ export default function LoginPage() {
     }
   }
 
+  async function passwordSignIn() {
+    const supabase = getSupabaseBrowserClient();
+    setStatus(null);
+    setBusy(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email.trim(),
+      password,
+    });
+    setBusy(false);
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+    setStatus("Signed in.");
+    router.push("/log/");
+  }
+
+  async function passwordSignUp() {
+    const supabase = getSupabaseBrowserClient();
+    setStatus(null);
+    setBusy(true);
+    const { error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: { emailRedirectTo: redirect },
+    });
+    setBusy(false);
+    if (error) {
+      setStatus(error.message);
+      return;
+    }
+    setStatus("Account created. If confirmation is on, check your email.");
+  }
+
   return (
     <div className="mx-auto max-w-md px-4 py-20">
       <h1 className="mb-6 font-serif text-2xl text-amber-950">Log in</h1>
       <p className="mb-4 text-sm text-amber-900/70">
-        We use email magic links and Google. Configure the redirect URL in the Supabase
-        dashboard: <code className="text-xs break-all">{redirect}</code>
+        Use password auth for reliable local dev; magic links stay available. Configure the
+        redirect URL in Supabase: <code className="text-xs break-all">{redirect}</code>
       </p>
       <div className="flex flex-col gap-3">
         <input
@@ -75,6 +111,33 @@ export default function LoginPage() {
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"
         />
+        <input
+          type="password"
+          className="rounded border border-amber-900/20 bg-white px-3 py-2 text-amber-950"
+          placeholder="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
+        />
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            className="rounded bg-amber-900 px-4 py-2 text-sm font-medium text-amber-50 disabled:opacity-50"
+            disabled={busy || !email.trim() || password.length < 8}
+            onClick={() => void passwordSignIn()}
+          >
+            Sign in
+          </button>
+          <button
+            type="button"
+            className="rounded border border-amber-900/30 bg-white px-4 py-2 text-sm font-medium text-amber-950 disabled:opacity-50"
+            disabled={busy || !email.trim() || password.length < 8}
+            onClick={() => void passwordSignUp()}
+          >
+            Sign up
+          </button>
+        </div>
+        <div className="text-center text-xs text-amber-800/50">or</div>
         <button
           type="button"
           className="rounded bg-amber-900 px-4 py-2 text-sm font-medium text-amber-50 disabled:opacity-50"
@@ -83,15 +146,16 @@ export default function LoginPage() {
         >
           Email me a link
         </button>
-        <div className="text-center text-xs text-amber-800/50">or</div>
-        <button
-          type="button"
-          className="rounded border border-amber-900/30 bg-white px-4 py-2 text-sm font-medium text-amber-950 disabled:opacity-50"
-          disabled={busy}
-          onClick={() => void google()}
-        >
-          Continue with Google
-        </button>
+        {enableGoogle && (
+          <button
+            type="button"
+            className="rounded border border-amber-900/30 bg-white px-4 py-2 text-sm font-medium text-amber-950 disabled:opacity-50"
+            disabled={busy}
+            onClick={() => void google()}
+          >
+            Continue with Google
+          </button>
+        )}
         {status && <p className="text-sm text-amber-800/90">{status}</p>}
         <button
           type="button"

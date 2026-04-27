@@ -20,6 +20,7 @@ Web-first “Untappd for coffee”: log check-ins, add roasters/cafes/coffees, a
 3. Copy [apps/web/.env.local.example](apps/web/.env.local.example) to `apps/web/.env.local` and set:
   - `NEXT_PUBLIC_SUPABASE_URL`
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `NEXT_PUBLIC_ENABLE_GOOGLE_AUTH` (`false` by default; set `true` only after Google provider setup)
 4. Apply database migrations in the Supabase SQL editor or with the CLI:
   ```bash
    supabase link
@@ -52,6 +53,35 @@ Output is in `apps/web/out` (GitHub Actions deploy this folder in the included w
 
 - Unit: `npm test` (Vitest)
 - E2E: `npx playwright install` once, then `npm run test:e2e` (see [e2e/](e2e/))
+
+## Operational runbook
+
+### Rotate the publishable key
+
+If a publishable key is accidentally shared:
+
+1. Supabase dashboard → **Project settings → API**.
+2. Rotate the publishable key.
+3. Update:
+   - local `apps/web/.env.local`
+   - GitHub Actions secret `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Re-run the Pages workflow.
+
+### Deploy gate behavior
+
+The Pages workflow now runs:
+
+1. `npm run lint`
+2. `npm test`
+3. `npm run test:e2e`
+4. `npm run build`
+5. Pages artifact upload + deploy
+
+This prevents shipping changes that compile but break runtime behavior.
+
+### Observability
+
+Client runtime errors are captured into `public.client_errors` (MVP telemetry table) via browser-side handlers. Check this table when debugging production issues.
 
 ## Docs
 

@@ -5,7 +5,7 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/c
 import { slugify } from "@rate-coffee/shared";
 import { useAuth } from "./AuthProvider";
 
-type RoasterRow = { id: string; name: string };
+type RoasterRow = { id: string; name: string; is_verified: boolean };
 
 function uniqueSlug(name: string) {
   return `${slugify(name)}-${crypto.randomUUID().replace(/-/g, "").slice(0, 6)}`;
@@ -23,7 +23,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
     []
   );
   const [roasters, setRoasters] = useState<RoasterRow[]>([]);
-  const [cafes, setCafes] = useState<{ id: string; name: string }[]>([]);
+  const [cafes, setCafes] = useState<{ id: string; name: string; is_verified: boolean }[]>([]);
   const [rName, setRName] = useState("");
   const [cName, setCName] = useState("");
   const [cLat, setCLat] = useState("40.7128");
@@ -37,8 +37,8 @@ export function EntityCreatePanel({ onChanged }: Props) {
   const loadCatalog = useCallback(async () => {
     if (!supabase) return;
     const [r, c] = await Promise.all([
-      supabase.from("roasters").select("id, name").order("name"),
-      supabase.from("cafes").select("id, name").order("name"),
+      supabase.from("roasters").select("id, name, is_verified").order("name"),
+      supabase.from("cafes").select("id, name, is_verified").order("name"),
     ]);
     if (r.data) {
       setRoasters(r.data);
@@ -123,6 +123,17 @@ export function EntityCreatePanel({ onChanged }: Props) {
       setMsg("Pick a roaster and name the coffee");
       return;
     }
+    const normalized = coName.trim().toLowerCase().replace(/\s+/g, " ");
+    const { data: dup } = await supabase
+      .from("coffees")
+      .select("id")
+      .eq("roaster_id", coRoaster)
+      .eq("normalized_name", normalized)
+      .limit(1);
+    if (dup && dup.length > 0) {
+      setMsg("A similar coffee already exists for this roaster.");
+      return;
+    }
     const uid = user.id;
     const s = uniqueSlug(coName);
     const { error } = await supabase.from("coffees").insert({
@@ -130,6 +141,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
       slug: s,
       roaster_id: coRoaster,
       created_by: uid,
+      is_verified: false,
     });
     if (error) {
       setMsg(error.message);
@@ -229,7 +241,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
           >
             {roasters.map((r) => (
               <option key={r.id} value={r.id}>
-                {r.name}
+                {r.name} {r.is_verified ? "✓" : "(unverified)"}
               </option>
             ))}
           </select>
@@ -262,7 +274,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
               {cafes.length === 0 && <option value="">Add a cafe first</option>}
               {cafes.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.name}
+                  {c.name} {c.is_verified ? "✓" : "(unverified)"}
                 </option>
               ))}
             </select>
@@ -276,7 +288,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
             >
               {roasters.map((r) => (
                 <option key={r.id} value={r.id}>
-                  {r.name}
+                  {r.name} {r.is_verified ? "✓" : "(unverified)"}
                 </option>
               ))}
             </select>
