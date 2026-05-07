@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[#fbf6ef] antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-[var(--gray-50)] antialiased`}
       >
         <AuthProvider>
           <ErrorTelemetryBootstrap />

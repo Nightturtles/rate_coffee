@@ -17,10 +17,10 @@ export default function LoginPage() {
   if (!isSupabaseConfigured()) {
     return (
       <div className="mx-auto max-w-md px-4 py-20">
-        <h1 className="mb-2 font-serif text-2xl text-amber-950">Log in</h1>
-        <p className="text-amber-900/80">
-          Copy <code className="rounded bg-amber-200/30 px-1">apps/web/.env.local.example</code>{" "}
-          to <code className="rounded bg-amber-200/30 px-1">.env.local</code> and set your
+        <h1 className="mb-2 font-serif text-2xl text-slate-800 dark:text-slate-50">Log in</h1>
+        <p className="text-slate-600 dark:text-slate-200">
+          Copy <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">apps/web/.env.local.example</code>{" "}
+          to <code className="rounded bg-slate-100 px-1 dark:bg-slate-800">.env.local</code> and set your
           Supabase project URL and anon key.
         </p>
       </div>
@@ -97,15 +97,15 @@ export default function LoginPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-20">
-      <h1 className="mb-6 font-serif text-2xl text-amber-950">Log in</h1>
-      <p className="mb-4 text-sm text-amber-900/70">
+      <h1 className="mb-6 font-serif text-2xl text-slate-800 dark:text-slate-50">Log in</h1>
+      <p className="mb-4 text-sm text-slate-600 dark:text-slate-300">
         Use password auth for reliable local dev; magic links stay available. Configure the
         redirect URL in Supabase: <code className="text-xs break-all">{redirect}</code>
       </p>
       <div className="flex flex-col gap-3">
         <input
           type="email"
-          className="rounded border border-amber-900/20 bg-white px-3 py-2 text-amber-950"
+          className="rounded border border-slate-200 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
           placeholder="email@you.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -113,7 +113,7 @@ export default function LoginPage() {
         />
         <input
           type="password"
-          className="rounded border border-amber-900/20 bg-white px-3 py-2 text-amber-950"
+          className="rounded border border-slate-200 bg-white px-3 py-2 text-slate-900 dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100"
           placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -122,7 +122,7 @@ export default function LoginPage() {
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
-            className="rounded bg-amber-900 px-4 py-2 text-sm font-medium text-amber-50 disabled:opacity-50"
+            className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
             disabled={busy || !email.trim() || password.length < 8}
             onClick={() => void passwordSignIn()}
           >
@@ -130,17 +130,17 @@ export default function LoginPage() {
           </button>
           <button
             type="button"
-            className="rounded border border-amber-900/30 bg-white px-4 py-2 text-sm font-medium text-amber-950 disabled:opacity-50"
+            className="rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
             disabled={busy || !email.trim() || password.length < 8}
             onClick={() => void passwordSignUp()}
           >
             Sign up
           </button>
         </div>
-        <div className="text-center text-xs text-amber-800/50">or</div>
+        <div className="text-center text-xs text-slate-500 dark:text-slate-400">or</div>
         <button
           type="button"
-          className="rounded bg-amber-900 px-4 py-2 text-sm font-medium text-amber-50 disabled:opacity-50"
+          className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
           disabled={busy || !email.trim()}
           onClick={() => void sendMagic()}
         >
@@ -149,18 +149,18 @@ export default function LoginPage() {
         {enableGoogle && (
           <button
             type="button"
-            className="rounded border border-amber-900/30 bg-white px-4 py-2 text-sm font-medium text-amber-950 disabled:opacity-50"
+            className="rounded border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-900 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
             disabled={busy}
             onClick={() => void google()}
           >
             Continue with Google
           </button>
         )}
-        {status && <p className="text-sm text-amber-800/90">{status}</p>}
+        {status && <p className="text-sm text-slate-600 dark:text-slate-200">{status}</p>}
         <button
           type="button"
           onClick={() => router.push("/")}
-          className="text-sm text-amber-800/60 underline"
+          className="text-sm text-slate-600 underline dark:text-slate-300"
         >
           Home
         </button>

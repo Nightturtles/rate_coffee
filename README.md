@@ -63,8 +63,8 @@ If a publishable key is accidentally shared:
 1. Supabase dashboard → **Project settings → API**.
 2. Rotate the publishable key.
 3. Update:
-   - local `apps/web/.env.local`
-   - GitHub Actions secret `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - local `apps/web/.env.local`
+  - GitHub Actions secret `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 4. Re-run the Pages workflow.
 
 ### Deploy gate behavior

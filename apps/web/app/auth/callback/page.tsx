@@ -47,7 +47,7 @@ function CallbackBody() {
     })();
   }, [search, router]);
 
-  return <p className="text-amber-950/80">{message}</p>;
+  return <p className="text-slate-600 dark:text-slate-200">{message}</p>;
 }
 
 export default function AuthCallbackPage() {

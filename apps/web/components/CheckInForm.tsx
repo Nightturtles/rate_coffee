@@ -83,7 +83,7 @@ export function CheckInForm({ onCheckIn }: Props) {
 
   if (!user) {
     return (
-      <p className="text-sm text-amber-800/80">
+      <p className="text-sm text-slate-600 dark:text-slate-300">
         <a className="underline" href="/login/">
           Log in
         </a>{" "}
@@ -146,13 +146,13 @@ export function CheckInForm({ onCheckIn }: Props) {
   }
 
   return (
-    <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-3 rounded-lg border border-amber-900/15 bg-white/60 p-4">
-      <h2 className="font-serif text-lg text-amber-950">New check-in</h2>
-      <label className="text-xs font-medium text-amber-800/80">
+    <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white/90 dark:border-slate-700 dark:bg-slate-900/50 p-4">
+      <h2 className="font-serif text-lg text-slate-800 dark:text-slate-50">New check-in</h2>
+      <label className="text-xs font-medium text-slate-600 dark:text-slate-300">
         Coffee
         <select
           required
-          className="mt-1 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+          className="mt-1 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
           value={f.coffeeId ?? ""}
           onChange={(e) => setF((o) => ({ ...o, coffeeId: e.target.value }))}
         >
@@ -164,7 +164,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </select>
       </label>
-      <div className="text-xs font-medium text-amber-800/80">
+      <div className="text-xs font-medium text-slate-600 dark:text-slate-300">
         Where
         <div className="mt-1 flex flex-wrap gap-2">
           <label className="inline-flex items-center gap-1">
@@ -188,7 +188,7 @@ export function CheckInForm({ onCheckIn }: Props) {
         </div>
         {f.context === "cafe" && (
           <select
-            className="mt-2 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+            className="mt-2 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
             required
             value={f.cafeId ?? ""}
             onChange={(e) => setF((o) => ({ ...o, cafeId: e.target.value }))}
@@ -202,11 +202,11 @@ export function CheckInForm({ onCheckIn }: Props) {
           </select>
         )}
       </div>
-      <label className="text-xs font-medium text-amber-800/80">
+      <label className="text-xs font-medium text-slate-600 dark:text-slate-300">
         Brew
         <select
           required
-          className="mt-1 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+          className="mt-1 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
           value={f.brewMethodId ?? ""}
           onChange={(e) => setF((o) => ({ ...o, brewMethodId: e.target.value }))}
         >
@@ -218,11 +218,11 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </select>
       </label>
-      <label className="text-xs font-medium text-amber-800/80">
+      <label className="text-xs font-medium text-slate-600 dark:text-slate-300">
         Rating
         <select
           required
-          className="mt-1 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+          className="mt-1 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
           value={f.rating ?? 3}
           onChange={(e) => setF((o) => ({ ...o, rating: Number(e.target.value) }))}
         >
@@ -233,16 +233,16 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </select>
       </label>
-      <label className="text-xs font-medium text-amber-800/80">
+      <label className="text-xs font-medium text-slate-600 dark:text-slate-300">
         Notes
         <textarea
-          className="mt-1 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+          className="mt-1 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
           rows={2}
           value={f.notes ?? ""}
           onChange={(e) => setF((o) => ({ ...o, notes: e.target.value }))}
         />
       </label>
-      <div className="text-xs text-amber-800/80">
+      <div className="text-xs text-slate-600 dark:text-slate-300">
         Tags
         <div className="mt-1 flex flex-wrap gap-2">
           {tags.map((t) => (
@@ -265,7 +265,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </div>
       </div>
-      <div className="text-xs text-amber-800/80">
+      <div className="text-xs text-slate-600 dark:text-slate-300">
         Visibility:{" "}
         <label className="ml-1">
           <input
@@ -286,10 +286,10 @@ export function CheckInForm({ onCheckIn }: Props) {
           private
         </label>
       </div>
-      {status && <p className="text-sm text-amber-900/90">{status}</p>}
+      {status && <p className="text-sm text-slate-700 dark:text-slate-100">{status}</p>}
       <button
         type="submit"
-        className="rounded bg-amber-900 px-4 py-2 text-sm font-medium text-amber-50 disabled:opacity-50"
+        className="rounded bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:hover:bg-blue-600 disabled:opacity-50"
         disabled={busy}
       >
         {busy ? "Saving…" : "Log check-in"}
