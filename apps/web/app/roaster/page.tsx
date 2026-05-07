@@ -65,8 +65,8 @@ function RoasterBody() {
 
   return (
     <div>
-      <h1 className="font-serif text-2xl text-slate-800 dark:text-slate-50">{name ?? "…"}</h1>
-      <p className="mt-2 text-slate-600 dark:text-slate-200">
+      <h1 className="font-serif text-2xl text-sage-50">{name ?? "…"}</h1>
+      <p className="mt-2 text-sage-100">
         {count != null && (
           <>
             {count} public check-in{count === 1 ? "" : "s"}
@@ -76,7 +76,7 @@ function RoasterBody() {
           </>
         )}
       </p>
-      <Link className="mt-4 inline-block text-blue-700 underline dark:text-blue-400" href="/map/">
+      <Link className="mt-4 inline-block text-sage-200 underline" href="/map/">
         Back to map
       </Link>
     </div>

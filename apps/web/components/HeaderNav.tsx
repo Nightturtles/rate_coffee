@@ -23,11 +23,11 @@ export function HeaderNav() {
   }
 
   return (
-    <header className="border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
+    <header className="border-b border-sage-200 bg-sage-50/95 shadow-sm backdrop-blur">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
         <Link
           href="/"
-          className="font-serif text-lg font-semibold text-slate-800 dark:text-slate-50"
+          className="font-serif text-lg font-semibold text-sage-900"
         >
           rate coffee
         </Link>
@@ -36,30 +36,30 @@ export function HeaderNav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-slate-600 transition hover:text-slate-800 dark:text-slate-200 dark:hover:text-white"
+              className="text-sage-700 transition hover:text-sage-900"
             >
               {l.label}
             </Link>
           ))}
-          {loading && <span className="text-slate-500/50">…</span>}
+          {loading && <span className="text-sage-400/70">…</span>}
           {!loading && !user && (
             <Link
               href="/login"
-              className="rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700"
+              className="rounded-md bg-sage-600 px-3 py-1.5 text-sage-50 hover:bg-sage-700"
             >
               Log in
             </Link>
           )}
           {!loading && user && (
             <div className="flex items-center gap-2">
-              <span className="max-w-[8rem] truncate text-slate-600 dark:text-slate-300">
+              <span className="max-w-[8rem] truncate text-sage-700">
                 {user.email}
               </span>
               {configured && (
                 <button
                   type="button"
                   onClick={() => void signOut()}
-                  className="text-slate-600 underline dark:text-slate-300"
+                  className="text-sage-700 underline"
                 >
                   Out
                 </button>
