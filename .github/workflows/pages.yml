@@ -36,6 +36,10 @@ jobs:
         run: npm test
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
+      - name: Start web app for E2E
+        run: npm run dev -w @rate-coffee/web > /tmp/web-dev.log 2>&1 &
+      - name: Wait for web app
+        run: npx wait-on http://127.0.0.1:3000 --timeout 120000
       - name: E2E smoke
         run: npm run test:e2e
       - name: Build static site
