@@ -48,15 +48,6 @@ function queryRadiusMetersFromViewport(map: Map): number {
   return Math.round(clamp(raw, MIN_QUERY_RADIUS_METERS, MAX_QUERY_RADIUS_METERS));
 }
 
-/** Pull coords from MapLibre's `geolocate` event (Event merged with GeolocationPosition). */
-function coordsFromGeolocateEvent(e: unknown): GeolocationCoordinates | null {
-  if (!e || typeof e !== "object") {
-    return null;
-  }
-  const c = (e as { coords?: GeolocationCoordinates }).coords;
-  return c ?? null;
-}
-
 function geolocationErrorMessage(err: unknown): string {
   const code = (err as GeolocationPositionError | undefined)?.code;
   if (code === 1) {
@@ -66,9 +57,30 @@ function geolocationErrorMessage(err: unknown): string {
     return "Location unavailable (device may not have a fix yet). Try again in a few seconds.";
   }
   if (code === 3) {
-    return "Location took too long — using your current map area for now. Try Locate again in a moment.";
+    return "Couldn’t get precise location within 10 seconds — switching to approximate location.";
   }
   return (err as GeolocationPositionError | undefined)?.message ?? "Could not read your location.";
+}
+
+function getBrowserLatLng(
+  options: PositionOptions
+): Promise<{ lat: number; lng: number; accuracy: number }> {
+  return new Promise((resolve, reject) => {
+    if (typeof navigator === "undefined" || !navigator.geolocation) {
+      reject(new Error("Geolocation unavailable in this browser."));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) =>
+        resolve({
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          accuracy: pos.coords.accuracy,
+        }),
+      reject,
+      options
+    );
+  });
 }
 
 async function getIpApproxLatLng(): Promise<{ lat: number; lng: number; source: string } | null> {
@@ -143,6 +155,7 @@ export function MapView() {
   const markerAbortRef = useRef<AbortController | null>(null);
   const geolocateStartRef = useRef<number | null>(null);
   const locatingRef = useRef(false);
+  const locateReqSeqRef = useRef(0);
 
   const pushDiag = useCallback((entry: Omit<DiagEntry, "at">) => {
     setDiag((prev) => [{ at: Date.now(), ...entry }, ...prev].slice(0, 40));
@@ -339,7 +352,7 @@ export function MapView() {
         enableHighAccuracy: false,
         // Prefer a recent cached fix on desktop; it feels much faster and avoids frequent timeouts.
         maximumAge: 900_000,
-        timeout: 30_000,
+        timeout: 10_000,
       },
       trackUserLocation: false,
       showUserLocation: true,
@@ -357,17 +370,124 @@ export function MapView() {
       locatingRef.current = false;
       setLocating(false);
     };
+    const moveAndRefresh = async (
+      lat: number,
+      lng: number,
+      radiusMiles: number,
+      maxZoom: number
+    ) => {
+      map.fitBounds(boundsForRadiusMeters(lat, lng, radiusMiles * MILES_TO_METERS), {
+        padding: 48,
+        duration: 450,
+        maxZoom,
+      });
+      await loadMarkers(lat, lng);
+    };
     const onGeolocateClick = (evt: MouseEvent) => {
+      evt.preventDefault();
+      evt.stopImmediatePropagation();
       if (locatingRef.current) {
-        evt.preventDefault();
-        evt.stopImmediatePropagation();
         pushDiag({ category: "geolocate", message: "ignored extra click (locate already in progress)" });
         return;
       }
       locatingRef.current = true;
       setLocating(true);
+      const runId = ++locateReqSeqRef.current;
       geolocateStartRef.current = performance.now();
       pushDiag({ category: "geolocate", message: "locate click" });
+      setErr(null);
+
+      void (async () => {
+        let coarseLocated = false;
+        // Stage 1: Fast/coarse position for immediate UX.
+        try {
+          const cached = await getBrowserLatLng({
+            enableHighAccuracy: false,
+            maximumAge: Infinity,
+            timeout: 1_200,
+          });
+          if (runId !== locateReqSeqRef.current) return;
+          coarseLocated = true;
+          setLocationStatus({
+            kind: "approximate",
+            detail: `cached browser position, accuracy ${Math.round(cached.accuracy)}m`,
+          });
+          pushDiag({
+            category: "geolocate",
+            message: `coarse browser fix in ${Math.round(performance.now() - (geolocateStartRef.current ?? performance.now()))}ms, acc=${Math.round(cached.accuracy)}m`,
+          });
+          await moveAndRefresh(cached.lat, cached.lng, 35, 11);
+        } catch {
+          if (runId !== locateReqSeqRef.current) return;
+          pushDiag({
+            category: "geolocate",
+            message: "no quick browser cache; trying IP fallback",
+          });
+          const approx = await getIpApproxLatLng();
+          if (runId !== locateReqSeqRef.current) return;
+          if (approx) {
+            coarseLocated = true;
+            setLocationStatus({
+              kind: "approximate",
+              detail: `from ${approx.source}`,
+            });
+            pushDiag({
+              category: "geolocate",
+              message: `IP fallback ok (${approx.source}) lat=${approx.lat.toFixed(4)} lng=${approx.lng.toFixed(4)}`,
+            });
+            await moveAndRefresh(approx.lat, approx.lng, 50, 10);
+          } else {
+            pushDiag({
+              category: "geolocate",
+              message: "IP fallback unavailable",
+            });
+          }
+        }
+
+        // Stage 2: Refine with precise browser location in background.
+        try {
+          const precise = await getBrowserLatLng({
+            enableHighAccuracy: false,
+            maximumAge: 0,
+            timeout: 10_000,
+          });
+          if (runId !== locateReqSeqRef.current) return;
+          const elapsed =
+            geolocateStartRef.current == null
+              ? "n/a"
+              : `${Math.round(performance.now() - geolocateStartRef.current)}ms`;
+          pushDiag({
+            category: "geolocate",
+            message: `precise fix in ${elapsed}, acc=${Math.round(precise.accuracy)}m`,
+          });
+          setLocationStatus({
+            kind: "precise",
+            detail: `accuracy ${Math.round(precise.accuracy)}m`,
+          });
+          setErr(null);
+          await moveAndRefresh(precise.lat, precise.lng, INITIAL_VIEW_RADIUS_MILES, 12);
+        } catch (err) {
+          if (runId !== locateReqSeqRef.current) return;
+          const code = (err as GeolocationPositionError | undefined)?.code ?? "n/a";
+          const elapsed =
+            geolocateStartRef.current == null
+              ? "n/a"
+              : `${Math.round(performance.now() - geolocateStartRef.current)}ms`;
+          pushDiag({
+            category: "geolocate",
+            message: `precise failed code=${code} after ${elapsed}`,
+          });
+          if (!coarseLocated) {
+            setErr(geolocationErrorMessage(err));
+          } else {
+            setErr("Using approximate location; precise locate is currently unavailable.");
+          }
+        } finally {
+          if (runId === locateReqSeqRef.current) {
+            finishLocateAttempt();
+          }
+        }
+      })();
     };
     geolocateButton?.addEventListener("click", onGeolocateClick, { capture: true });
 
@@ -391,81 +511,6 @@ export function MapView() {
         });
     }
 
-    geolocate.on("geolocate", (e) => {
-      const coords = coordsFromGeolocateEvent(e);
-      if (!coords) {
-        return;
-      }
-      setErr(null);
-      const elapsed =
-        geolocateStartRef.current == null
-          ? "n/a"
-          : `${Math.round(performance.now() - geolocateStartRef.current)}ms`;
-      pushDiag({
-        category: "geolocate",
-        message: `success in ${elapsed}, acc=${Math.round(coords.accuracy)}m`,
-      });
-      setLocationStatus({
-        kind: "precise",
-        detail: `accuracy ${Math.round(coords.accuracy)}m`,
-      });
-      finishLocateAttempt();
-      const radiusM = INITIAL_VIEW_RADIUS_MILES * MILES_TO_METERS;
-      // Control jump is non-animated; do a single smooth transition with our custom bounds.
-      map.fitBounds(boundsForRadiusMeters(coords.latitude, coords.longitude, radiusM), {
-        padding: 48,
-        duration: 450,
-        maxZoom: 12,
-      });
-      void loadMarkers(coords.latitude, coords.longitude);
-    });
-    geolocate.on("error", (err) => {
-      setErr(geolocationErrorMessage(err));
-      const code = (err as GeolocationPositionError | undefined)?.code ?? "n/a";
-      const elapsed =
-        geolocateStartRef.current == null
-          ? "n/a"
-          : `${Math.round(performance.now() - geolocateStartRef.current)}ms`;
-      pushDiag({
-        category: "geolocate",
-        message: `error code=${code} after ${elapsed}`,
-      });
-      if (code === 3 || code === 2) {
-        void (async () => {
-          pushDiag({
-            category: "geolocate",
-            message: "trying IP-based coarse fallback…",
-          });
-          const approx = await getIpApproxLatLng();
-          if (!approx) {
-            pushDiag({
-              category: "geolocate",
-              message: "IP fallback unavailable",
-            });
-            return;
-          }
-          const radiusM = 50 * MILES_TO_METERS;
-          map.fitBounds(boundsForRadiusMeters(approx.lat, approx.lng, radiusM), {
-            padding: 48,
-            duration: 450,
-            maxZoom: 10,
-          });
-          void loadMarkers(approx.lat, approx.lng);
-          setErr(
-            `Precise location unavailable; using approximate location from ${approx.source}.`
-          );
-          setLocationStatus({
-            kind: "approximate",
-            detail: `from ${approx.source}`,
-          });
-          pushDiag({
-            category: "geolocate",
-            message: `IP fallback ok (${approx.source}) lat=${approx.lat.toFixed(4)} lng=${approx.lng.toFixed(4)}`,
-          });
-        })();
-      }
-      finishLocateAttempt();
-    });
     mapRef.current = map;
     map.on("load", () => {
       setReady(true);
