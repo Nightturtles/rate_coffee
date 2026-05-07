@@ -1,73 +1,81 @@
 @import "tailwindcss";
 
-/* Cafelytic palette (water_project / cafelytic.com) */
+/* Sage / olive palette (rate_coffee brand) */
 :root {
-  --blue-50: #eff6ff;
-  --blue-100: #dbeafe;
-  --blue-500: #3b82f6;
-  --blue-600: #2563eb;
-  --blue-700: #1d4ed8;
+  --sage-50: #f9f9f7;
+  --sage-100: #d5dac3;
+  --sage-200: #b4bb96;
+  --sage-400: #878e6f;
+  --sage-600: #606e33;
+  --sage-700: #5c6341;
+  --sage-900: #283517;
+
+  --blue-50: var(--sage-50);
+  --blue-100: var(--sage-100);
+  --blue-500: var(--sage-400);
+  --blue-600: var(--sage-600);
+  --blue-700: var(--sage-700);
   --green-600: #16a34a;
   --red-600: #dc2626;
   --orange-600: #ea580c;
   --yellow-600: #ca8a04;
   --orange-bg: rgba(251, 146, 60, 0.12);
   --yellow-bg: rgba(250, 204, 21, 0.12);
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-500: #64748b;
-  --gray-700: #334155;
-  --gray-900: #0f172a;
+  --gray-50: var(--sage-50);
+  --gray-100: #eef0e6;
+  --gray-200: var(--sage-100);
+  --gray-300: var(--sage-200);
+  --gray-500: var(--sage-400);
+  --gray-700: var(--sage-700);
+  --gray-900: var(--sage-900);
   --red-bg: rgba(248, 113, 113, 0.1);
-  --focus-ring: rgba(59, 130, 246, 0.3);
-  --surface: #ffffff;
+  --focus-ring: rgba(96, 110, 51, 0.35);
+  --surface: var(--sage-50);
 
-  --brand-cafe: #4b8fe0;
-  --brand-lytic: #0d1421;
-  --brand-tile-fill: #ffffff;
-  --brand-tile-stroke: #4b8fe0;
-  --brand-tile-num: #9aaac4;
-  --brand-tile-ca: #4b8fe0;
+  --brand-cafe: var(--sage-600);
+  --brand-lytic: var(--sage-900);
+  --brand-tile-fill: var(--sage-50);
+  --brand-tile-stroke: var(--sage-600);
+  --brand-tile-num: var(--sage-400);
+  --brand-tile-ca: var(--sage-600);
 
-  --background: var(--gray-50);
-  /* Softer than pure slate-900 for long-form reading */
-  --foreground: #334155;
+  --background: var(--sage-900);
+  --foreground: var(--sage-50);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --blue-50: #1e293b;
-    --blue-100: #1e3a5f;
-    --blue-500: #3b82f6;
-    --blue-600: #60a5fa;
-    --blue-700: #93bbfd;
+    --blue-50: var(--sage-900);
+    --blue-100: var(--sage-700);
+    --blue-500: var(--sage-400);
+    --blue-600: var(--sage-200);
+    --blue-700: var(--sage-100);
     --green-600: #4ade80;
     --red-600: #f87171;
     --orange-600: #fb923c;
     --yellow-600: #facc15;
     --orange-bg: rgba(251, 146, 60, 0.18);
     --yellow-bg: rgba(250, 204, 21, 0.18);
-    --gray-50: #0f172a;
-    --gray-100: #1e293b;
-    --gray-200: #334155;
-    --gray-300: #475569;
-    --gray-500: #94a3b8;
-    --gray-700: #cbd5e1;
-    --gray-900: #f1f5f9;
+    --gray-50: var(--sage-900);
+    --gray-100: #1f2a12;
+    --gray-200: var(--sage-700);
+    --gray-300: var(--sage-400);
+    --gray-500: var(--sage-200);
+    --gray-700: var(--sage-100);
+    --gray-900: var(--sage-50);
     --red-bg: rgba(248, 113, 113, 0.15);
-    --focus-ring: rgba(96, 165, 250, 0.35);
-    --surface: #1e293b;
+    --focus-ring: rgba(180, 187, 150, 0.45);
+    --surface: var(--sage-50);
 
-    --brand-cafe: #4b8fe0;
-    --brand-lytic: #e8eef8;
-    --brand-tile-fill: #111c2e;
-    --brand-tile-stroke: #4b8fe0;
-    --brand-tile-num: #3a5272;
-    --brand-tile-ca: #4b8fe0;
+    --brand-cafe: var(--sage-200);
+    --brand-lytic: var(--sage-50);
+    --brand-tile-fill: var(--sage-50);
+    --brand-tile-stroke: var(--sage-200);
+    --brand-tile-num: var(--sage-400);
+    --brand-tile-ca: var(--sage-200);
 
-    --foreground: #f8fafc;
+    --background: var(--sage-900);
+    --foreground: var(--sage-50);
   }
 }
 
@@ -76,6 +84,13 @@
   --color-foreground: var(--foreground);
   --color-brand-cafe: var(--brand-cafe);
   --color-brand-lytic: var(--brand-lytic);
+  --color-sage-50: var(--sage-50);
+  --color-sage-100: var(--sage-100);
+  --color-sage-200: var(--sage-200);
+  --color-sage-400: var(--sage-400);
+  --color-sage-600: var(--sage-600);
+  --color-sage-700: var(--sage-700);
+  --color-sage-900: var(--sage-900);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -83,6 +98,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  color-scheme: light dark;
+  color-scheme: dark;
   font-family: Arial, Helvetica, sans-serif;
 }

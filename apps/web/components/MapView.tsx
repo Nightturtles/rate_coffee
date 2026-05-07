@@ -254,11 +254,11 @@ export function MapView() {
                 "match",
                 ["get", "kind"],
                 "cafe",
-                "#4b8fe0",
-                "#1d4ed8",
+                "#606e33",
+                "#5c6341",
               ],
               "circle-stroke-width": 1,
-              "circle-stroke-color": "#ffffff",
+              "circle-stroke-color": "#f9f9f7",
             },
           });
           if (!interactionsAttachedRef.current) {
@@ -293,7 +293,7 @@ export function MapView() {
               link.href = kind === "cafe" ? `/cafe/?id=${id}` : `/roaster/?id=${id}`;
               link.textContent = `Open ${kind} profile`;
               link.style.textDecoration = "underline";
-              link.style.color = "#2563eb";
+              link.style.color = "#606e33";
               meta.appendChild(link);
               wrapper.appendChild(title);
               wrapper.appendChild(meta);
@@ -545,7 +545,7 @@ export function MapView() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <p className="p-4 text-slate-600 dark:text-slate-300">
+      <p className="p-4 text-sage-100">
         Configure Supabase in <code className="text-xs">.env.local</code> to load the map.
       </p>
     );
@@ -570,9 +570,9 @@ export function MapView() {
       )}
       <div
         ref={container}
-        className="h-[min(70vh,520px)] w-full overflow-hidden rounded-lg border border-slate-200 dark:border-slate-700"
+        className="h-[min(70vh,520px)] w-full overflow-hidden rounded-lg border border-sage-200 shadow-xl"
       />
-      <p className="text-xs text-slate-500 dark:text-slate-400">
+      <p className="text-xs text-sage-200">
         Tap the locate button (top-right, below zoom) for your position — view fits ~{INITIAL_VIEW_RADIUS_MILES} mi around you. Pan to explore; pins refresh around the current viewport.{" "}
         {locating ? "Locating… " : ""}
         {loadingMarkers ? "Refreshing pins… " : ""}
@@ -583,7 +583,7 @@ export function MapView() {
           {list.map((i) => (
             <li key={`${i.kind}-${i.id}`}>
               <Link
-                className="text-blue-700 underline dark:text-blue-400"
+                className="text-sage-200 underline"
                 href={i.kind === "cafe" ? `/cafe/?id=${i.id}` : `/roaster/?id=${i.id}`}
               >
                 {i.name} ({i.kind})
@@ -592,14 +592,14 @@ export function MapView() {
           ))}
         </ul>
       )}
-      <details className="rounded border border-slate-200 bg-slate-50/70 p-2 text-xs dark:border-slate-700 dark:bg-slate-900/40">
-        <summary className="cursor-pointer font-medium text-slate-700 dark:text-slate-200">
+      <details className="rounded border border-sage-200 bg-sage-50 p-2 text-xs text-sage-900 shadow-lg">
+        <summary className="cursor-pointer font-medium text-sage-700">
           Location diagnostics ({diag.length})
         </summary>
         {diag.length === 0 ? (
-          <p className="mt-2 text-slate-500 dark:text-slate-400">No diagnostics yet. Tap Locate to collect data.</p>
+          <p className="mt-2 text-sage-400">No diagnostics yet. Tap Locate to collect data.</p>
         ) : (
-          <ul className="mt-2 space-y-1 text-slate-600 dark:text-slate-300">
+          <ul className="mt-2 space-y-1 text-sage-700">
             {diag.map((d, i) => (
               <li key={`${d.at}-${i}`}>
                 <span className="font-medium">[{new Date(d.at).toLocaleTimeString()}]</span>{" "}
