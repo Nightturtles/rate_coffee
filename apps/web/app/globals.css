@@ -1,53 +1,83 @@
 @import "tailwindcss";
 
+/* Cafelytic palette (water_project / cafelytic.com) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --blue-50: #eff6ff;
+  --blue-100: #dbeafe;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
+  --blue-700: #1d4ed8;
+  --green-600: #16a34a;
+  --red-600: #dc2626;
+  --orange-600: #ea580c;
+  --yellow-600: #ca8a04;
+  --orange-bg: rgba(251, 146, 60, 0.12);
+  --yellow-bg: rgba(250, 204, 21, 0.12);
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-500: #64748b;
+  --gray-700: #334155;
+  --gray-900: #0f172a;
+  --red-bg: rgba(248, 113, 113, 0.1);
+  --focus-ring: rgba(59, 130, 246, 0.3);
+  --surface: #ffffff;
+
+  --brand-cafe: #4b8fe0;
+  --brand-lytic: #0d1421;
+  --brand-tile-fill: #ffffff;
+  --brand-tile-stroke: #4b8fe0;
+  --brand-tile-num: #9aaac4;
+  --brand-tile-ca: #4b8fe0;
+
+  --background: var(--gray-50);
+  /* Softer than pure slate-900 for long-form reading */
+  --foreground: #334155;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --blue-50: #1e293b;
+    --blue-100: #1e3a5f;
+    --blue-500: #3b82f6;
+    --blue-600: #60a5fa;
+    --blue-700: #93bbfd;
+    --green-600: #4ade80;
+    --red-600: #f87171;
+    --orange-600: #fb923c;
+    --yellow-600: #facc15;
+    --orange-bg: rgba(251, 146, 60, 0.18);
+    --yellow-bg: rgba(250, 204, 21, 0.18);
+    --gray-50: #0f172a;
+    --gray-100: #1e293b;
+    --gray-200: #334155;
+    --gray-300: #475569;
+    --gray-500: #94a3b8;
+    --gray-700: #cbd5e1;
+    --gray-900: #f1f5f9;
+    --red-bg: rgba(248, 113, 113, 0.15);
+    --focus-ring: rgba(96, 165, 250, 0.35);
+    --surface: #1e293b;
+
+    --brand-cafe: #4b8fe0;
+    --brand-lytic: #e8eef8;
+    --brand-tile-fill: #111c2e;
+    --brand-tile-stroke: #4b8fe0;
+    --brand-tile-num: #3a5272;
+    --brand-tile-ca: #4b8fe0;
+
+    --foreground: #f8fafc;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand-cafe: var(--brand-cafe);
+  --color-brand-lytic: var(--brand-lytic);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #120d08;
-    --foreground: #fef3c7;
-  }
-
-  /* Remap warm light-theme utility colors for readable dark mode contrast. */
-  [class*="text-amber-950"] {
-    color: #fffbeb !important;
-  }
-
-  [class*="text-amber-900"] {
-    color: #fde68a !important;
-  }
-
-  [class*="text-amber-800"] {
-    color: #fcd34d !important;
-  }
-
-  [class*="bg-white"] {
-    background-color: rgb(41 37 36 / 0.72) !important;
-  }
-
-  [class*="bg-amber-50"],
-  [class*="bg-amber-100"] {
-    background-color: rgb(41 37 36 / 0.82) !important;
-  }
-
-  [class*="bg-amber-900"],
-  [class*="bg-amber-800"] {
-    background-color: rgb(217 119 6 / 0.85) !important;
-  }
-
-  [class*="border-amber-900"] {
-    border-color: rgb(251 191 36 / 0.35) !important;
-  }
 }
 
 body {

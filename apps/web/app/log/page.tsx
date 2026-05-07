@@ -13,11 +13,11 @@ export default function LogPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-2 font-serif text-3xl text-amber-950">Your log</h1>
-      {loading && <p className="text-sm text-amber-800/60">…</p>}
+      <h1 className="mb-2 font-serif text-3xl text-slate-800 dark:text-slate-50">Your log</h1>
+      {loading && <p className="text-sm text-slate-500">…</p>}
       {!loading && !user && (
-        <p className="text-amber-800/80">
-          <a className="font-medium text-amber-900 underline" href="/login/">
+        <p className="text-slate-600 dark:text-slate-300">
+          <a className="font-medium text-blue-700 underline dark:text-blue-400" href="/login/">
             Log in
           </a>{" "}
           to add coffees and check-ins. Run Supabase migrations (see repository README) first.

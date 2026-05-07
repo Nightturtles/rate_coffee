@@ -71,26 +71,26 @@ export function CheckInHistory({ version }: Props) {
 
   return (
     <div className="mt-8">
-      <h2 className="mb-3 font-serif text-lg text-amber-950">Recent check-ins</h2>
+      <h2 className="mb-3 font-serif text-lg text-slate-800 dark:text-slate-50">Recent check-ins</h2>
       {rows.length === 0 && (
-        <p className="text-sm text-amber-800/80">No check-ins yet. Add a roaster, coffee, then log above.</p>
+        <p className="text-sm text-slate-600 dark:text-slate-300">No check-ins yet. Add a roaster, coffee, then log above.</p>
       )}
       <ul className="space-y-3">
         {rows.map((r) => (
           <li
             key={r.id}
-            className="rounded border border-amber-900/10 bg-white/50 p-3 text-sm"
+            className="rounded border border-slate-200 bg-white/80 p-3 text-sm dark:border-slate-700 dark:bg-slate-900/50"
           >
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <span className="font-medium text-amber-950">
+              <span className="font-medium text-slate-800 dark:text-slate-50">
                 {names[r.coffee_id] ?? r.coffee_id}
               </span>
-              <span className="text-amber-800/80">{r.rating} ★</span>
+              <span className="text-slate-600 dark:text-slate-300">{r.rating} ★</span>
             </div>
-            <div className="mt-1 text-xs text-amber-800/60">
+            <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               {r.context} · {r.visibility} · {new Date(r.created_at).toLocaleString()}
             </div>
-            {r.notes && <p className="mt-1 text-amber-900/90">{r.notes}</p>}
+            {r.notes && <p className="mt-1 text-slate-800 dark:text-slate-200">{r.notes}</p>}
           </li>
         ))}
       </ul>

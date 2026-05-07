@@ -175,22 +175,22 @@ export function EntityCreatePanel({ onChanged }: Props) {
   }
 
   return (
-    <div className="mt-6 space-y-4 rounded-lg border border-amber-900/10 bg-amber-100/20 p-4">
-      <h2 className="font-serif text-lg text-amber-950">Add catalog (US)</h2>
-      {msg && <p className="text-sm text-amber-800/90">{msg}</p>}
+    <div className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-slate-50/90 p-4 dark:border-slate-700 dark:bg-slate-900/40">
+      <h2 className="font-serif text-lg text-slate-800 dark:text-slate-50">Add catalog (US)</h2>
+      {msg && <p className="text-sm text-slate-600 dark:text-slate-200">{msg}</p>}
 
       <section>
-        <h3 className="text-sm font-medium text-amber-900/80">Roaster</h3>
+        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-200">Roaster</h3>
         <div className="mt-1 flex flex-wrap gap-2">
           <input
-            className="min-w-[12rem] flex-1 rounded border border-amber-900/20 bg-white px-2 py-1.5"
+            className="min-w-[12rem] flex-1 rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
             value={rName}
             onChange={(e) => setRName(e.target.value)}
             placeholder="Name"
           />
           <button
             type="button"
-            className="rounded bg-amber-800/90 px-3 py-1.5 text-sm text-amber-50"
+            className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
             onClick={() => void addRoaster()}
           >
             Add
@@ -199,23 +199,23 @@ export function EntityCreatePanel({ onChanged }: Props) {
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-amber-900/80">Cafe (with map pin)</h3>
+        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-200">Cafe (with map pin)</h3>
         <div className="mt-1 grid gap-2 sm:grid-cols-2">
           <input
-            className="rounded border border-amber-900/20 bg-white px-2 py-1.5"
+            className="rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
             value={cName}
             onChange={(e) => setCName(e.target.value)}
             placeholder="Cafe name"
           />
           <div className="flex gap-2">
             <input
-              className="w-1/2 rounded border border-amber-900/20 bg-white px-2 py-1.5"
+              className="w-1/2 rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
               value={cLat}
               onChange={(e) => setCLat(e.target.value)}
               placeholder="lat"
             />
             <input
-              className="w-1/2 rounded border border-amber-900/20 bg-white px-2 py-1.5"
+              className="w-1/2 rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
               value={cLng}
               onChange={(e) => setCLng(e.target.value)}
               placeholder="lng"
@@ -224,7 +224,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
         </div>
         <button
           type="button"
-          className="mt-2 rounded bg-amber-800/90 px-3 py-1.5 text-sm text-amber-50"
+          className="mt-2 rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
           onClick={() => void addCafe()}
         >
           Add cafe
@@ -232,10 +232,10 @@ export function EntityCreatePanel({ onChanged }: Props) {
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-amber-900/80">Coffee (SKU)</h3>
+        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-200">Coffee (SKU)</h3>
         <div className="mt-1 flex flex-col gap-2 sm:flex-row">
           <select
-            className="rounded border border-amber-900/20 bg-white px-2 py-1.5"
+            className="rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
             value={coRoaster}
             onChange={(e) => setCoRoaster(e.target.value)}
           >
@@ -246,14 +246,14 @@ export function EntityCreatePanel({ onChanged }: Props) {
             ))}
           </select>
           <input
-            className="min-w-[8rem] flex-1 rounded border border-amber-900/20 bg-white px-2 py-1.5"
+            className="min-w-[8rem] flex-1 rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
             value={coName}
             onChange={(e) => setCoName(e.target.value)}
             placeholder="e.g. Ethiopia Yirgacheffe"
           />
           <button
             type="button"
-            className="rounded bg-amber-800/90 px-3 py-1.5 text-sm text-amber-50"
+            className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
             onClick={() => void addCoffee()}
           >
             Add
@@ -262,12 +262,12 @@ export function EntityCreatePanel({ onChanged }: Props) {
       </section>
 
       <section>
-        <h3 className="text-sm font-medium text-amber-900/80">Cafe serves roaster</h3>
+        <h3 className="text-sm font-medium text-slate-600 dark:text-slate-200">Cafe serves roaster</h3>
         <div className="mt-1 flex flex-col gap-2 sm:flex-row sm:items-end">
-          <label className="text-xs text-amber-800/80">
+          <label className="text-xs text-slate-600 dark:text-slate-300">
             Cafe
             <select
-              className="mt-0.5 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+              className="mt-0.5 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
               value={linkCafe}
               onChange={(e) => setLinkCafe(e.target.value)}
             >
@@ -279,10 +279,10 @@ export function EntityCreatePanel({ onChanged }: Props) {
               ))}
             </select>
           </label>
-          <label className="text-xs text-amber-800/80">
+          <label className="text-xs text-slate-600 dark:text-slate-300">
             Roaster
             <select
-              className="mt-0.5 w-full rounded border border-amber-900/20 bg-white px-2 py-1.5"
+              className="mt-0.5 w-full rounded border border-slate-200 bg-white dark:border-slate-600 dark:bg-slate-950 dark:text-slate-100 px-2 py-1.5"
               value={linkRoaster}
               onChange={(e) => setLinkRoaster(e.target.value)}
             >
@@ -295,7 +295,7 @@ export function EntityCreatePanel({ onChanged }: Props) {
           </label>
           <button
             type="button"
-            className="rounded bg-amber-800/90 px-3 py-1.5 text-sm text-amber-50"
+            className="rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700"
             onClick={() => void linkCafeRoaster()}
           >
             Link

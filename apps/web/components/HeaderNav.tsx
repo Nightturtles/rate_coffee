@@ -23,11 +23,11 @@ export function HeaderNav() {
   }
 
   return (
-    <header className="border-b border-amber-900/15 bg-amber-50/80 backdrop-blur">
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700 dark:bg-slate-900/95">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
         <Link
           href="/"
-          className="font-serif text-lg font-semibold text-amber-950"
+          className="font-serif text-lg font-semibold text-slate-800 dark:text-slate-50"
         >
           rate coffee
         </Link>
@@ -36,30 +36,30 @@ export function HeaderNav() {
             <Link
               key={l.href}
               href={l.href}
-              className="text-amber-900/80 transition hover:text-amber-900"
+              className="text-slate-600 transition hover:text-slate-800 dark:text-slate-200 dark:hover:text-white"
             >
               {l.label}
             </Link>
           ))}
-          {loading && <span className="text-amber-800/50">…</span>}
+          {loading && <span className="text-slate-500/50">…</span>}
           {!loading && !user && (
             <Link
               href="/login"
-              className="rounded-md bg-amber-900 px-3 py-1.5 text-white"
+              className="rounded-md bg-blue-600 px-3 py-1.5 text-white hover:bg-blue-700"
             >
               Log in
             </Link>
           )}
           {!loading && user && (
             <div className="flex items-center gap-2">
-              <span className="max-w-[8rem] truncate text-amber-800/80">
+              <span className="max-w-[8rem] truncate text-slate-600 dark:text-slate-300">
                 {user.email}
               </span>
               {configured && (
                 <button
                   type="button"
                   onClick={() => void signOut()}
-                  className="text-amber-800/80 underline"
+                  className="text-slate-600 underline dark:text-slate-300"
                 >
                   Out
                 </button>
