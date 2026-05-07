@@ -20,6 +20,7 @@ Web-first “Untappd for coffee”: log check-ins, add roasters/cafes/coffees, a
 3. Copy [apps/web/.env.local.example](apps/web/.env.local.example) to `apps/web/.env.local` and set:
   - `NEXT_PUBLIC_SUPABASE_URL`
   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` — Mapbox **Geocoding** scope token for resolving café/roaster addresses on **[Add](/add)** (restrict allowed URLs in the Mapbox dashboard so only your dev/production origins can use it)
   - `NEXT_PUBLIC_ENABLE_GOOGLE_AUTH` (`false` by default; set `true` only after Google provider setup)
 4. Apply database migrations in the Supabase SQL editor or with the CLI:
   ```bash

@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useCallback } from "react";
 import { CheckInForm } from "@/components/CheckInForm";
 import { CheckInHistory } from "@/components/CheckInHistory";
-import { EntityCreatePanel } from "@/components/EntityCreatePanel";
 import { useAuth } from "@/components/AuthProvider";
 
 export default function LogPage() {
@@ -30,11 +30,13 @@ export default function LogPage() {
               bump();
             }}
           />
-          <EntityCreatePanel
-            onChanged={() => {
-              bump();
-            }}
-          />
+          <p className="mt-4 text-sm text-sage-200">
+            Need a new coffee, café, or roaster?{" "}
+            <Link className="font-medium text-sage-50 underline" href="/add">
+              Add to catalog
+            </Link>
+            .
+          </p>
         </>
       )}
       <CheckInHistory version={v} />

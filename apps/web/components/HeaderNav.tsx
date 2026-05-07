@@ -7,6 +7,7 @@ import { useAuth } from "./AuthProvider";
 
 const links = [
   { href: "/log", label: "Log" },
+  { href: "/add", label: "Add" },
   { href: "/map", label: "Map" },
 ] as const;
 
