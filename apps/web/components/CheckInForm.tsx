@@ -28,6 +28,8 @@ type FilterableSelectProps = {
   required?: boolean;
   disabled?: boolean;
   emptyText?: string;
+  /** When false, keep `value` in the parent until blur/commit (needed for roaster so coffee filter stays valid while typing). */
+  clearSelectionOnInput?: boolean;
 };
 
 function FilterableSelect({
@@ -39,6 +41,7 @@ function FilterableSelect({
   required,
   disabled,
   emptyText = "No matches",
+  clearSelectionOnInput = true,
 }: FilterableSelectProps) {
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -119,7 +122,9 @@ function FilterableSelect({
           setDraft(v);
           setFocused(true);
           setOpen(true);
-          onValueChange(undefined);
+          if (clearSelectionOnInput) {
+            onValueChange(undefined);
+          }
           setHighlight(0);
         }}
         onFocus={() => {
@@ -347,29 +352,24 @@ export function CheckInForm({ onCheckIn }: Props) {
   return (
     <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-3 rounded-lg border border-sage-200 bg-sage-50 p-4 text-sage-900 shadow-xl">
       <h2 className="font-serif text-lg text-sage-900">New check-in</h2>
-      <label className="text-xs font-medium text-sage-700">
+      <label className="text-xs font-medium text-sage-700" htmlFor="checkin-roaster">
         Roaster
-        <select
-          required
-          className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
-          value={f.roasterId ?? ""}
-          onChange={(e) =>
+        <FilterableSelect
+          id="checkin-roaster"
+          options={roasters}
+          value={f.roasterId}
+          onValueChange={(id) =>
             setF((o) => ({
               ...o,
-              roasterId: e.target.value,
-              coffeeId: coffees.find((c) => c.id === o.coffeeId && c.roasterId === e.target.value)
-                ? o.coffeeId
-                : undefined,
+              roasterId: id,
+              coffeeId: coffees.find((c) => c.id === o.coffeeId && c.roasterId === id) ? o.coffeeId : undefined,
             }))
           }
-        >
-          <option value="">Select…</option>
-          {roasters.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.label}
-            </option>
-          ))}
-        </select>
+          placeholder="Type to find a roaster…"
+          required
+          emptyText="No roasters match"
+          clearSelectionOnInput={false}
+        />
       </label>
       <label className="text-xs font-medium text-sage-700" htmlFor="checkin-coffee">
         Coffee
