@@ -50,6 +50,8 @@ Output is in `apps/web/out` (GitHub Actions deploy this folder in the included w
 
 (Replace with your repository name, including leading slash.)
 
+**Mapbox on GitHub Pages:** `NEXT_PUBLIC_*` values are inlined when `npm run build` runs. Add the repository Actions secret `NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN` (same token you use locally, with URL restrictions in Mapbox). Changing or adding that secret does nothing until you **re-run the Pages workflow** so the site rebuilds.
+
 ## Testing
 
 - Unit: `npm test` (Vitest)

@@ -25,6 +25,33 @@ function tabButtonClass(active: boolean) {
     : "rounded-md px-3 py-1.5 text-sm font-medium text-sage-700 hover:bg-sage-200/60";
 }
 
+function MapboxTokenMissingNotice({ variant }: { variant: "café_tab" | "roaster_tab" }) {
+  const intro =
+    variant === "café_tab"
+      ? "Address lookup needs a Mapbox token. Next.js bakes it in at build time, so production needs it in CI—not only on your laptop."
+      : "Without a token you can still add a roaster by name. To geocode an HQ address on the deployed site, configure the token below.";
+
+  return (
+    <div className="mt-2 space-y-1.5 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+      <p>{intro}</p>
+      <ul className="list-inside list-disc space-y-0.5 text-xs leading-relaxed">
+        <li>
+          <strong>Local:</strong> set <code className="rounded bg-amber-100/80 px-1">NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN</code> in{" "}
+          <code className="rounded bg-amber-100/80 px-1">apps/web/.env.local</code>, then restart{" "}
+          <code className="rounded bg-amber-100/80 px-1">npm run dev</code>.
+        </li>
+        <li>
+          <strong>GitHub Pages:</strong> Repository{" "}
+          <strong>Settings → Secrets and variables → Actions</strong> → add secret{" "}
+          <code className="rounded bg-amber-100/80 px-1">NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN</code>, then run the Pages workflow again (static export reads env only during{" "}
+          <code className="rounded bg-amber-100/80 px-1">npm run build</code>
+          ).
+        </li>
+      </ul>
+    </div>
+  );
+}
+
 type Props = { onChanged?: () => void };
 
 export function CatalogAddForm({ onChanged }: Props) {
@@ -93,7 +120,7 @@ export function CatalogAddForm({ onChanged }: Props) {
   async function resolveRoasterAddress() {
     setMsg(null);
     if (!mapboxOk) {
-      setMsg("Add NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to resolve addresses.");
+      setMsg("Mapbox token is not configured — see the setup note on this form.");
       return;
     }
     const q = rAddr.trim();
@@ -117,7 +144,7 @@ export function CatalogAddForm({ onChanged }: Props) {
   async function resolveCafeAddress() {
     setMsg(null);
     if (!mapboxOk) {
-      setMsg("Add NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN to resolve addresses.");
+      setMsg("Mapbox token is not configured — see the setup note on this form.");
       return;
     }
     const q = cAddr.trim();
@@ -455,12 +482,7 @@ export function CatalogAddForm({ onChanged }: Props) {
       {mode === "cafe" && (
         <section>
           <h3 className="text-sm font-medium text-sage-700">Café</h3>
-          {!mapboxOk && (
-            <p className="mt-2 text-sm text-amber-800">
-              Set <code className="rounded bg-sage-200 px-1">NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN</code> in{" "}
-              <code className="rounded bg-sage-200 px-1">.env.local</code> to turn an address into map coordinates.
-            </p>
-          )}
+          {!mapboxOk && <MapboxTokenMissingNotice variant="café_tab" />}
           <div className="mt-2 grid gap-2">
             <input
               className="rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
@@ -536,11 +558,7 @@ export function CatalogAddForm({ onChanged }: Props) {
             />
             <div>
               <p className="text-xs text-sage-600">Optional HQ address (geocoded for map pin)</p>
-              {!mapboxOk && (
-                <p className="mt-1 text-xs text-amber-800">
-                  Without a Mapbox token you can still add a roaster by name only.
-                </p>
-              )}
+              {!mapboxOk && <MapboxTokenMissingNotice variant="roaster_tab" />}
               <textarea
                 className="mt-1 min-h-[4rem] w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
                 value={rAddr}
