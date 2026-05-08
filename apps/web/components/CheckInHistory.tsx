@@ -71,7 +71,7 @@ export function CheckInHistory({ version }: Props) {
 
   return (
     <div className="mt-8">
-      <h2 className="mb-3 font-serif text-lg text-sage-50">Recent check-ins</h2>
+      <h2 className="mb-3 font-serif text-lg text-sage-50">Your recent check-ins</h2>
       {rows.length === 0 && (
         <p className="text-sm text-sage-100">No check-ins yet. Add a roaster, coffee, then log above.</p>
       )}
