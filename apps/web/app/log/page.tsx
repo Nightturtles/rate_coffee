@@ -31,7 +31,7 @@ export default function LogPage() {
             }}
           />
           <p className="mt-4 text-sm text-sage-200">
-            Don't see the coffee, café, or roaster you're looking for?{" "}
+            {"Don't see the coffee, café, or roaster you're looking for? "}
             <Link className="font-medium text-sage-50 underline" href="/add">
               Add to the catalog
             </Link>
