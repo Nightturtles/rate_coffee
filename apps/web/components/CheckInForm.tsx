@@ -17,19 +17,23 @@ type Props = {
   onCheckIn: () => void;
 };
 
+type FormState = Partial<CheckInFormValues> & { roasterId?: string };
+
 export function CheckInForm({ onCheckIn }: Props) {
   const { user } = useAuth();
   const [brewMethods, setBrewMethods] = useState<Option[]>([]);
   const [tags, setTags] = useState<Option[]>([]);
-  const [coffees, setCoffees] = useState<{ id: string; label: string }[]>([]);
+  const [roasters, setRoasters] = useState<Option[]>([]);
+  const [coffees, setCoffees] = useState<{ id: string; label: string; roasterId: string }[]>([]);
   const [cafes, setCafes] = useState<Option[]>([]);
+  const [coffeeFilter, setCoffeeFilter] = useState("");
+  const [cafeFilter, setCafeFilter] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
-  const [f, setF] = useState<Partial<CheckInFormValues>>({
+  const [f, setF] = useState<FormState>({
     context: "home",
     tagIds: [],
     visibility: "public",
-    rating: 3,
   });
 
   const supabase = useMemo(
@@ -42,12 +46,13 @@ export function CheckInForm({ onCheckIn }: Props) {
 
   const load = useCallback(async () => {
     if (!user || !supabase) return;
-    const [bm, tg, co, ca] = await Promise.all([
+    const [bm, tg, ro, co, ca] = await Promise.all([
       supabase.from("brew_methods").select("id, label, sort_order").order("sort_order", { ascending: true }),
       supabase.from("tags").select("id, label, sort_order").order("sort_order", { ascending: true }),
+      supabase.from("roasters").select("id, name").order("name", { ascending: true }),
       supabase
         .from("coffees")
-        .select("id, name, roaster:roasters!roaster_id ( name )")
+        .select("id, name, roaster_id, roaster:roasters!roaster_id ( name )")
         .order("name", { ascending: true }),
       supabase.from("cafes").select("id, name").order("name", { ascending: true }),
     ]);
@@ -61,12 +66,22 @@ export function CheckInForm({ onCheckIn }: Props) {
         tg.data.map((r: { id: string; label: string }) => ({ id: r.id, label: r.label }))
       );
     }
+    if (ro.data) {
+      setRoasters(
+        ro.data.map((r: { id: string; name: string }) => ({ id: r.id, label: r.name }))
+      );
+    }
     if (co.data) {
       setCoffees(
         co.data.map((r) => {
-          const row = r as { id: string; name: string; roaster: { name: string } | { name: string }[] | null };
+          const row = r as {
+            id: string;
+            name: string;
+            roaster_id: string;
+            roaster: { name: string } | { name: string }[] | null;
+          };
           const rn = Array.isArray(row.roaster) ? row.roaster[0]?.name : row.roaster?.name;
-          return { id: row.id, label: `${row.name} — ${rn ?? "roaster"}` };
+          return { id: row.id, label: `${row.name} — ${rn ?? "roaster"}`, roasterId: row.roaster_id };
         })
       );
     }
@@ -80,6 +95,21 @@ export function CheckInForm({ onCheckIn }: Props) {
   useEffect(() => {
     void load();
   }, [load]);
+
+  const filteredCoffees = useMemo(() => {
+    const q = coffeeFilter.trim().toLowerCase();
+    return coffees.filter((c) => {
+      const matchesRoaster = !f.roasterId || c.roasterId === f.roasterId;
+      const matchesText = q.length === 0 || c.label.toLowerCase().includes(q);
+      return matchesRoaster && matchesText;
+    });
+  }, [coffeeFilter, coffees, f.roasterId]);
+
+  const filteredCafes = useMemo(() => {
+    const q = cafeFilter.trim().toLowerCase();
+    if (q.length === 0) return cafes;
+    return cafes.filter((c) => c.label.toLowerCase().includes(q));
+  }, [cafeFilter, cafes]);
 
   if (!user) {
     return (
@@ -140,6 +170,8 @@ export function CheckInForm({ onCheckIn }: Props) {
       tagIds: [],
       visibility: v.visibility,
     });
+    setCoffeeFilter("");
+    setCafeFilter("");
     setStatus("Saved");
     onCheckIn();
     setBusy(false);
@@ -149,7 +181,38 @@ export function CheckInForm({ onCheckIn }: Props) {
     <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-3 rounded-lg border border-sage-200 bg-sage-50 p-4 text-sage-900 shadow-xl">
       <h2 className="font-serif text-lg text-sage-900">New check-in</h2>
       <label className="text-xs font-medium text-sage-700">
+        Roaster
+        <select
+          required
+          className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+          value={f.roasterId ?? ""}
+          onChange={(e) =>
+            setF((o) => ({
+              ...o,
+              roasterId: e.target.value,
+              coffeeId: coffees.find((c) => c.id === o.coffeeId && c.roasterId === e.target.value)
+                ? o.coffeeId
+                : undefined,
+            }))
+          }
+        >
+          <option value="">Select…</option>
+          {roasters.map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="text-xs font-medium text-sage-700">
         Coffee
+        <input
+          type="text"
+          className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+          placeholder="Type to filter coffees…"
+          value={coffeeFilter}
+          onChange={(e) => setCoffeeFilter(e.target.value)}
+        />
         <select
           required
           className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
@@ -157,7 +220,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           onChange={(e) => setF((o) => ({ ...o, coffeeId: e.target.value }))}
         >
           <option value="">Select…</option>
-          {coffees.map((c) => (
+          {filteredCoffees.map((c) => (
             <option key={c.id} value={c.id}>
               {c.label}
             </option>
@@ -187,23 +250,32 @@ export function CheckInForm({ onCheckIn }: Props) {
           </label>
         </div>
         {f.context === "cafe" && (
-          <select
-            className="mt-2 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
-            required
-            value={f.cafeId ?? ""}
-            onChange={(e) => setF((o) => ({ ...o, cafeId: e.target.value }))}
-          >
-            <option value="">Cafe…</option>
-            {cafes.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.label}
-              </option>
-            ))}
-          </select>
+          <>
+            <input
+              type="text"
+              className="mt-2 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+              placeholder="Type to filter cafes…"
+              value={cafeFilter}
+              onChange={(e) => setCafeFilter(e.target.value)}
+            />
+            <select
+              className="mt-2 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+              required
+              value={f.cafeId ?? ""}
+              onChange={(e) => setF((o) => ({ ...o, cafeId: e.target.value }))}
+            >
+              <option value="">Cafe…</option>
+              {filteredCafes.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </>
         )}
       </div>
       <label className="text-xs font-medium text-sage-700">
-        Brew
+        Brew Method
         <select
           required
           className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
@@ -223,9 +295,15 @@ export function CheckInForm({ onCheckIn }: Props) {
         <select
           required
           className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
-          value={f.rating ?? 3}
-          onChange={(e) => setF((o) => ({ ...o, rating: Number(e.target.value) }))}
+          value={f.rating ?? ""}
+          onChange={(e) =>
+            setF((o) => ({
+              ...o,
+              rating: e.target.value ? Number(e.target.value) : undefined,
+            }))
+          }
         >
+          <option value="">Select…</option>
           {ratings.map((n) => (
             <option key={n} value={n}>
               {n} ★
@@ -292,7 +370,7 @@ export function CheckInForm({ onCheckIn }: Props) {
         className="rounded bg-sage-600 px-4 py-2 text-sm font-medium text-sage-50 hover:bg-sage-700 disabled:hover:bg-sage-600 disabled:opacity-50"
         disabled={busy}
       >
-        {busy ? "Saving…" : "Log check-in"}
+        {busy ? "Submitting…" : "Submit"}
       </button>
     </form>
   );
