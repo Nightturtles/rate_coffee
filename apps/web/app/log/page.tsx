@@ -13,11 +13,11 @@ export default function LogPage() {
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8">
-      <h1 className="mb-2 font-serif text-3xl text-sage-50">Your log</h1>
-      {loading && <p className="text-sm text-sage-200">…</p>}
+      <h1 className="mb-2 font-serif text-3xl text-foreground">Your log</h1>
+      {loading && <p className="text-sm text-muted-foreground">…</p>}
       {!loading && !user && (
-        <p className="text-sage-100">
-          <a className="font-medium text-sage-200 underline" href="/login/">
+        <p className="text-muted-foreground">
+          <a className="font-medium text-foreground underline underline-offset-4" href="/login/">
             Log in
           </a>{" "}
           to add coffees and check-ins. Run Supabase migrations (see repository README) first.
@@ -30,9 +30,9 @@ export default function LogPage() {
               bump();
             }}
           />
-          <p className="mt-4 text-sm text-sage-200">
+          <p className="mt-4 text-sm text-muted-foreground">
             {"Don't see the coffee, café, or roaster you're looking for? "}
-            <Link className="font-medium text-sage-50 underline" href="/add">
+            <Link className="font-medium text-foreground underline underline-offset-4" href="/add">
               Add to the catalog
             </Link>
             .

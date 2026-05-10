@@ -47,7 +47,7 @@ function CallbackBody() {
     })();
   }, [search, router]);
 
-  return <p className="text-sage-100">{message}</p>;
+  return <p className="text-muted-foreground">{message}</p>;
 }
 
 export default function AuthCallbackPage() {

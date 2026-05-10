@@ -9,6 +9,14 @@ import {
   type GeocodeResult,
 } from "@/lib/geocode/mapbox";
 import { slugify } from "@rate-coffee/shared";
+import { Button } from "@/components/ui/button";
+import {
+  cardSurfaceClass,
+  inputClass,
+  selectClass,
+  textareaClass,
+  tabButtonClass,
+} from "@/lib/form-classes";
 import { useAuth } from "./AuthProvider";
 
 type RoasterRow = { id: string; name: string; is_verified: boolean };
@@ -19,12 +27,6 @@ function uniqueSlug(name: string) {
   return `${slugify(name)}-${crypto.randomUUID().replace(/-/g, "").slice(0, 6)}`;
 }
 
-function tabButtonClass(active: boolean) {
-  return active
-    ? "rounded-md bg-sage-600 px-3 py-1.5 text-sm font-medium text-sage-50"
-    : "rounded-md px-3 py-1.5 text-sm font-medium text-sage-700 hover:bg-sage-200/60";
-}
-
 function MapboxTokenMissingNotice({ variant }: { variant: "café_tab" | "roaster_tab" }) {
   const intro =
     variant === "café_tab"
@@ -32,19 +34,31 @@ function MapboxTokenMissingNotice({ variant }: { variant: "café_tab" | "roaster
       : "Without a token you can still add a roaster by name. To geocode an HQ address on the deployed site, configure the token below.";
 
   return (
-    <div className="mt-2 space-y-1.5 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+    <div className="mt-2 flex flex-col gap-1.5 rounded-md border border-amber-500/40 bg-amber-950/45 px-3 py-2 text-sm text-amber-50">
       <p>{intro}</p>
-      <ul className="list-inside list-disc space-y-0.5 text-xs leading-relaxed">
+      <ul className="list-inside list-disc space-y-0.5 text-xs leading-relaxed text-amber-100/95">
         <li>
-          <strong>Local:</strong> set <code className="rounded bg-amber-100/80 px-1">NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN</code> in{" "}
-          <code className="rounded bg-amber-100/80 px-1">apps/web/.env.local</code>, then restart{" "}
-          <code className="rounded bg-amber-100/80 px-1">npm run dev</code>.
+          <strong>Local:</strong> set{" "}
+          <code className="rounded bg-amber-950/80 px-1 font-mono text-[0.7rem] text-amber-50">
+            NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+          </code>{" "}
+          in{" "}
+          <code className="rounded bg-amber-950/80 px-1 font-mono text-[0.7rem] text-amber-50">
+            apps/web/.env.local
+          </code>
+          , then restart{" "}
+          <code className="rounded bg-amber-950/80 px-1 font-mono text-[0.7rem] text-amber-50">npm run dev</code>.
         </li>
         <li>
           <strong>GitHub Pages:</strong> Repository{" "}
           <strong>Settings → Secrets and variables → Actions</strong> → add secret{" "}
-          <code className="rounded bg-amber-100/80 px-1">NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN</code>, then run the Pages workflow again (static export reads env only during{" "}
-          <code className="rounded bg-amber-100/80 px-1">npm run build</code>
+          <code className="rounded bg-amber-950/80 px-1 font-mono text-[0.7rem] text-amber-50">
+            NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+          </code>
+          , then run the Pages workflow again (static export reads env only during{" "}
+          <code className="rounded bg-amber-950/80 px-1 font-mono text-[0.7rem] text-amber-50">
+            npm run build
+          </code>
           ).
         </li>
       </ul>
@@ -380,13 +394,13 @@ export function CatalogAddForm({ onChanged }: Props) {
   }
 
   return (
-    <div className="space-y-4 rounded-lg border border-sage-200 bg-sage-50 p-4 text-sage-900 shadow-xl">
+    <div className={`space-y-4 ${cardSurfaceClass}`}>
       <div className="flex flex-wrap items-center gap-2">
-        <span className="font-serif text-lg text-sage-900">Add catalog</span>
-        <span className="text-xs text-sage-600">(US)</span>
+        <span className="font-serif text-lg text-foreground">Add catalog</span>
+        <span className="text-xs text-muted-foreground">(US)</span>
       </div>
 
-      <div className="flex flex-wrap gap-2 border-b border-sage-200 pb-3">
+      <div className="flex flex-wrap gap-2 border-b border-border pb-3">
         <button type="button" className={tabButtonClass(mode === "coffee")} onClick={() => setMode("coffee")}>
           Coffee
         </button>
@@ -398,18 +412,14 @@ export function CatalogAddForm({ onChanged }: Props) {
         </button>
       </div>
 
-      {msg && <p className="text-sm text-sage-700">{msg}</p>}
+      {msg && <p className="text-sm text-muted-foreground">{msg}</p>}
 
       {mode === "coffee" && (
         <>
           <section>
-            <h3 className="text-sm font-medium text-sage-700">Coffee (SKU)</h3>
+            <h3 className="text-sm font-medium text-foreground">Coffee (SKU)</h3>
             <div className="mt-1 flex flex-col gap-2 sm:flex-row">
-              <select
-                className="rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
-                value={coRoaster}
-                onChange={(e) => setCoRoaster(e.target.value)}
-              >
+              <select className={selectClass} value={coRoaster} onChange={(e) => setCoRoaster(e.target.value)}>
                 {roasters.map((r) => (
                   <option key={r.id} value={r.id}>
                     {r.name} {r.is_verified ? "✓" : "(unverified)"}
@@ -417,31 +427,27 @@ export function CatalogAddForm({ onChanged }: Props) {
                 ))}
               </select>
               <input
-                className="min-w-[8rem] flex-1 rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                className={`min-w-[8rem] flex-1 ${inputClass}`}
                 value={coName}
                 onChange={(e) => setCoName(e.target.value)}
                 placeholder="e.g. Ethiopia Yirgacheffe"
               />
-              <button
-                type="button"
-                className="rounded bg-sage-600 px-3 py-1.5 text-sm text-sage-50 hover:bg-sage-700"
-                onClick={() => void addCoffee()}
-              >
+              <Button type="button" size="sm" onClick={() => void addCoffee()}>
                 Add coffee
-              </button>
+              </Button>
             </div>
           </section>
 
-          <section className="border-t border-sage-200 pt-4">
-            <h3 className="text-sm font-medium text-sage-700">Link café ↔ roaster</h3>
-            <p className="mt-0.5 text-xs text-sage-600">
+          <section className="border-t border-border pt-4">
+            <h3 className="text-sm font-medium text-foreground">Link café ↔ roaster</h3>
+            <p className="mt-0.5 text-xs text-muted-foreground">
               Record that a café serves beans from a roaster (separate from check-ins).
             </p>
             <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end">
-              <label className="text-xs text-sage-700">
+              <label className="text-xs font-medium text-foreground">
                 Café
                 <select
-                  className="mt-0.5 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                  className={`mt-0.5 w-full ${selectClass}`}
                   value={linkCafe}
                   onChange={(e) => setLinkCafe(e.target.value)}
                 >
@@ -453,10 +459,10 @@ export function CatalogAddForm({ onChanged }: Props) {
                   ))}
                 </select>
               </label>
-              <label className="text-xs text-sage-700">
+              <label className="text-xs font-medium text-foreground">
                 Roaster
                 <select
-                  className="mt-0.5 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                  className={`mt-0.5 w-full ${selectClass}`}
                   value={linkRoaster}
                   onChange={(e) => setLinkRoaster(e.target.value)}
                 >
@@ -467,13 +473,9 @@ export function CatalogAddForm({ onChanged }: Props) {
                   ))}
                 </select>
               </label>
-              <button
-                type="button"
-                className="rounded bg-sage-600 px-3 py-1.5 text-sm text-sage-50 hover:bg-sage-700"
-                onClick={() => void linkCafeRoaster()}
-              >
+              <Button type="button" size="sm" onClick={() => void linkCafeRoaster()}>
                 Link
-              </button>
+              </Button>
             </div>
           </section>
         </>
@@ -481,17 +483,12 @@ export function CatalogAddForm({ onChanged }: Props) {
 
       {mode === "cafe" && (
         <section>
-          <h3 className="text-sm font-medium text-sage-700">Café</h3>
+          <h3 className="text-sm font-medium text-foreground">Café</h3>
           {!mapboxOk && <MapboxTokenMissingNotice variant="café_tab" />}
           <div className="mt-2 grid gap-2">
-            <input
-              className="rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
-              value={cName}
-              onChange={(e) => setCName(e.target.value)}
-              placeholder="Café name"
-            />
+            <input className={inputClass} value={cName} onChange={(e) => setCName(e.target.value)} placeholder="Café name" />
             <textarea
-              className="min-h-[4rem] rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+              className={textareaClass}
               value={cAddr}
               onChange={(e) => {
                 setCAddr(e.target.value);
@@ -501,20 +498,20 @@ export function CatalogAddForm({ onChanged }: Props) {
               placeholder="Street address, city, state..."
             />
             <div className="flex flex-wrap gap-2">
-              <button
+              <Button
                 type="button"
+                size="sm"
                 disabled={cGeoBusy || !mapboxOk}
-                className="rounded bg-sage-600 px-3 py-1.5 text-sm text-sage-50 hover:bg-sage-700 disabled:opacity-50"
                 onClick={() => void resolveCafeAddress()}
               >
                 {cGeoBusy ? "Looking up…" : "Look up address"}
-              </button>
+              </Button>
             </div>
             {cGeoHits.length > 1 && (
-              <label className="text-xs text-sage-700">
+              <label className="text-xs font-medium text-foreground">
                 Match
                 <select
-                  className="mt-0.5 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                  className={`mt-0.5 w-full ${selectClass}`}
                   value={cGeoPick}
                   onChange={(e) => setCGeoPick(Number(e.target.value))}
                 >
@@ -527,19 +524,20 @@ export function CatalogAddForm({ onChanged }: Props) {
               </label>
             )}
             {pickedCafeGeo && (
-              <p className="text-xs text-sage-600">
-                Using: <span className="font-medium text-sage-800">{pickedCafeGeo.label}</span>
+              <p className="text-xs text-muted-foreground">
+                Using: <span className="font-medium text-foreground">{pickedCafeGeo.label}</span>
               </p>
             )}
-            <button
+            <Button
               type="button"
+              size="sm"
+              className="w-fit"
               disabled={cSubmitBusy || !pickedCafeGeo}
-              className="w-fit rounded bg-sage-600 px-3 py-1.5 text-sm text-sage-50 hover:bg-sage-700 disabled:opacity-50"
               onClick={() => void addCafe()}
             >
               {cSubmitBusy ? "Saving…" : "Add café"}
-            </button>
-            <p className="text-[10px] leading-snug text-sage-500">
+            </Button>
+            <p className="text-[10px] leading-snug text-muted-foreground">
               © Mapbox © OpenStreetMap contributors — Geocoding lookup only (no live autocomplete).
             </p>
           </div>
@@ -548,19 +546,14 @@ export function CatalogAddForm({ onChanged }: Props) {
 
       {mode === "roaster" && (
         <section>
-          <h3 className="text-sm font-medium text-sage-700">Roaster</h3>
+          <h3 className="text-sm font-medium text-foreground">Roaster</h3>
           <div className="mt-2 grid gap-3">
-            <input
-              className="rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
-              value={rName}
-              onChange={(e) => setRName(e.target.value)}
-              placeholder="Roaster name"
-            />
+            <input className={inputClass} value={rName} onChange={(e) => setRName(e.target.value)} placeholder="Roaster name" />
             <div>
-              <p className="text-xs text-sage-600">Optional HQ address (geocoded for map pin)</p>
+              <p className="text-xs text-muted-foreground">Optional HQ address (geocoded for map pin)</p>
               {!mapboxOk && <MapboxTokenMissingNotice variant="roaster_tab" />}
               <textarea
-                className="mt-1 min-h-[4rem] w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                className={`mt-1 w-full ${textareaClass}`}
                 value={rAddr}
                 onChange={(e) => {
                   setRAddr(e.target.value);
@@ -571,20 +564,20 @@ export function CatalogAddForm({ onChanged }: Props) {
                 placeholder="Leave blank if unknown"
               />
               <div className="mt-2 flex flex-wrap gap-2">
-                <button
+                <Button
                   type="button"
+                  size="sm"
                   disabled={rGeoBusy || !mapboxOk || !rAddr.trim()}
-                  className="rounded bg-sage-600 px-3 py-1.5 text-sm text-sage-50 hover:bg-sage-700 disabled:opacity-50"
                   onClick={() => void resolveRoasterAddress()}
                 >
                   {rGeoBusy ? "Looking up…" : "Look up address"}
-                </button>
+                </Button>
               </div>
               {rGeoHits.length > 1 && (
-                <label className="mt-2 block text-xs text-sage-700">
+                <label className="mt-2 block text-xs font-medium text-foreground">
                   Match
                   <select
-                    className="mt-0.5 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                    className={`mt-0.5 w-full ${selectClass}`}
                     value={rGeoPick}
                     onChange={(e) => setRGeoPick(Number(e.target.value))}
                   >
@@ -597,16 +590,16 @@ export function CatalogAddForm({ onChanged }: Props) {
                 </label>
               )}
               {pickedRoasterGeo && (
-                <p className="mt-2 text-xs text-sage-600">
-                  Using: <span className="font-medium text-sage-800">{pickedRoasterGeo.label}</span>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  Using: <span className="font-medium text-foreground">{pickedRoasterGeo.label}</span>
                 </p>
               )}
             </div>
 
-            <label className="flex cursor-pointer items-start gap-2 text-sm text-sage-800">
+            <label className="flex cursor-pointer items-start gap-2 text-sm text-foreground">
               <input
                 type="checkbox"
-                className="mt-1"
+                className="mt-1 accent-primary"
                 checked={rAlsoCafe}
                 disabled={!pickedRoasterGeo}
                 onChange={(e) => {
@@ -621,22 +614,17 @@ export function CatalogAddForm({ onChanged }: Props) {
             </label>
             {rAlsoCafe && (
               <input
-                className="rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+                className={inputClass}
                 value={rCafeName}
                 onChange={(e) => setRCafeName(e.target.value)}
                 placeholder="Café name (defaults to roaster name)"
               />
             )}
 
-            <button
-              type="button"
-              disabled={rSubmitBusy}
-              className="w-fit rounded bg-sage-600 px-3 py-1.5 text-sm text-sage-50 hover:bg-sage-700 disabled:opacity-50"
-              onClick={() => void addRoaster()}
-            >
+            <Button type="button" size="sm" className="w-fit" disabled={rSubmitBusy} onClick={() => void addRoaster()}>
               {rSubmitBusy ? "Saving…" : "Add roaster"}
-            </button>
-            <p className="text-[10px] leading-snug text-sage-500">
+            </Button>
+            <p className="text-[10px] leading-snug text-muted-foreground">
               © Mapbox © OpenStreetMap contributors — Geocoding lookup only (no live autocomplete).
             </p>
           </div>

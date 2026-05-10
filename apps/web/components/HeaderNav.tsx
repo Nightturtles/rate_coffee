@@ -20,12 +20,10 @@ function pathIsActive(pathname: string, href: string) {
 }
 
 const linkBase =
-  "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150 text-sage-600 hover:bg-sage-100/90 hover:text-sage-900";
+  "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60";
 
 function activeLinkClass(pathname: string, href: string) {
-  return pathIsActive(pathname, href)
-    ? "bg-sage-100 font-semibold text-sage-900"
-    : "";
+  return pathIsActive(pathname, href) ? "bg-muted font-semibold text-foreground" : "";
 }
 
 export function HeaderNav() {
@@ -56,7 +54,7 @@ export function HeaderNav() {
 
   const authDesktop = (
     <>
-      {loading && <span className="text-sm text-sage-400/70">…</span>}
+      {loading && <span className="text-sm text-muted-foreground">…</span>}
       {!loading && !user && (
         <Link href="/login" className={loginClasses}>
           Log in
@@ -64,7 +62,7 @@ export function HeaderNav() {
       )}
       {!loading && user && (
         <div className="flex items-center gap-2">
-          <span className="max-w-[140px] truncate text-sm text-sage-700">{user.email}</span>
+          <span className="max-w-[140px] truncate text-sm text-muted-foreground">{user.email}</span>
           {configured && (
             <button
               type="button"
@@ -80,8 +78,8 @@ export function HeaderNav() {
   );
 
   const authMobile = (
-    <div className="mt-2 border-t border-sage-200 pt-3 md:hidden">
-      {loading && <span className="text-sm text-sage-400/70">…</span>}
+    <div className="mt-2 border-t border-border pt-3 md:hidden">
+      {loading && <span className="text-sm text-muted-foreground">…</span>}
       {!loading && !user && (
         <Link
           href="/login"
@@ -93,7 +91,7 @@ export function HeaderNav() {
       )}
       {!loading && user && (
         <div className="flex flex-col gap-2">
-          <span className="max-w-full truncate text-sm text-sage-700">{user.email}</span>
+          <span className="max-w-full truncate text-sm text-muted-foreground">{user.email}</span>
           {configured && (
             <button
               type="button"
@@ -112,30 +110,30 @@ export function HeaderNav() {
   );
 
   return (
-    <header className="sticky top-0 z-[100] border-b border-sage-200 bg-sage-50/95 shadow-sm backdrop-blur">
+    <header className="sticky top-0 z-[100] border-b border-border bg-background/90 shadow-sm shadow-black/20 backdrop-blur-md supports-[backdrop-filter]:bg-background/75">
       <div className="relative flex flex-wrap items-center gap-x-2 gap-y-2 px-4 py-2 md:min-h-[3.25rem] md:flex-nowrap md:justify-center md:py-2">
         <Link
           href="/"
-          className="order-1 font-serif text-lg font-semibold text-sage-900 md:absolute md:left-4 md:top-1/2 md:-translate-y-1/2"
+          className="order-1 font-serif text-lg font-semibold text-foreground md:absolute md:left-4 md:top-1/2 md:-translate-y-1/2"
         >
           rate coffee
         </Link>
 
         <button
           type="button"
-          className="order-2 ml-auto flex h-9 w-9 shrink-0 flex-col items-center justify-center gap-1 rounded-md hover:bg-sage-100/80 md:hidden"
+          className="order-2 ml-auto flex h-9 w-9 shrink-0 flex-col items-center justify-center gap-1 rounded-md text-foreground hover:bg-muted md:hidden"
           aria-label={navOpen ? "Close menu" : "Open menu"}
           aria-expanded={navOpen}
           onClick={() => setNavOpen((o) => !o)}
         >
           <span
-            className={`block h-0.5 w-5 rounded-full bg-sage-600 transition-transform duration-200 ${navOpen ? "translate-y-[6px] rotate-45" : ""}`}
+            className={`block h-0.5 w-5 rounded-full bg-muted-foreground transition-transform duration-200 ${navOpen ? "translate-y-[6px] rotate-45" : ""}`}
           />
           <span
-            className={`block h-0.5 w-5 rounded-full bg-sage-600 transition-opacity duration-200 ${navOpen ? "opacity-0" : ""}`}
+            className={`block h-0.5 w-5 rounded-full bg-muted-foreground transition-opacity duration-200 ${navOpen ? "opacity-0" : ""}`}
           />
           <span
-            className={`block h-0.5 w-5 rounded-full bg-sage-600 transition-transform duration-200 ${navOpen ? "-translate-y-[6px] -rotate-45" : ""}`}
+            className={`block h-0.5 w-5 rounded-full bg-muted-foreground transition-transform duration-200 ${navOpen ? "-translate-y-[6px] -rotate-45" : ""}`}
           />
         </button>
 

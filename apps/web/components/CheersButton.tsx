@@ -25,18 +25,18 @@ export function CheersButton({ checkInId, count, cheered, onChange }: Props) {
   );
 
   const baseClasses =
-    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition";
+    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors";
 
   if (!user) {
     return (
       <Link
         href="/login"
-        className={`${baseClasses} border border-sage-300 bg-white text-sage-700 hover:bg-sage-100`}
+        className={`${baseClasses} border border-border bg-muted text-foreground hover:bg-muted/80`}
         aria-label="Log in to cheers"
       >
         <span aria-hidden>👏</span>
         <span>Cheers</span>
-        <span className="text-sage-500">· {count}</span>
+        <span className="text-muted-foreground">· {count}</span>
       </Link>
     );
   }
@@ -69,8 +69,8 @@ export function CheersButton({ checkInId, count, cheered, onChange }: Props) {
   }
 
   const cheeredClasses = cheered
-    ? "border border-sage-700 bg-sage-700 text-sage-50 hover:bg-sage-800"
-    : "border border-sage-300 bg-white text-sage-700 hover:bg-sage-100";
+    ? "border border-primary bg-primary text-primary-foreground hover:bg-primary/90"
+    : "border border-border bg-card text-foreground hover:bg-muted";
 
   return (
     <button
@@ -82,7 +82,9 @@ export function CheersButton({ checkInId, count, cheered, onChange }: Props) {
     >
       <span aria-hidden>👏</span>
       <span>{cheered ? "Cheered" : "Cheers"}</span>
-      <span className={cheered ? "text-sage-100" : "text-sage-500"}>· {count}</span>
+      <span className={cheered ? "text-primary-foreground/90" : "text-muted-foreground"}>
+        · {count}
+      </span>
     </button>
   );
 }

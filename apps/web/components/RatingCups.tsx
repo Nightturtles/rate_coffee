@@ -27,7 +27,7 @@ export function RatingCups({ rating, className }: Props) {
 
   return (
     <span
-      className={className ?? "inline-flex items-center gap-0.5 text-sage-700"}
+      className={className ?? "inline-flex items-center gap-0.5 text-primary"}
       role="img"
       aria-label={label}
     >
