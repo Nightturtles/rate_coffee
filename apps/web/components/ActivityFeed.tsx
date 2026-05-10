@@ -12,6 +12,7 @@ import {
   type CheersMap,
 } from "./cheersState";
 import { tagsByCheckInFromRows } from "@/lib/checkInTagMap";
+import { feedCardClass, tagPillClass } from "@/lib/form-classes";
 import { RatingCups } from "./RatingCups";
 
 type Row = {
@@ -227,16 +228,16 @@ export function ActivityFeed() {
   }, []);
 
   if (loading) {
-    return <p className="text-sm text-sage-200">Loading…</p>;
+    return <p className="text-sm text-muted-foreground">Loading…</p>;
   }
   if (error) {
-    return <p className="text-sm text-sage-200">{error}</p>;
+    return <p className="text-sm text-destructive">{error}</p>;
   }
   if (rows.length === 0) {
     return (
-      <p className="text-sm text-sage-100">
+      <p className="text-sm text-muted-foreground">
         No public check-ins yet. Be the first — add one from{" "}
-        <a className="font-medium text-sage-50 underline" href="/log/">
+        <a className="font-medium text-foreground underline underline-offset-4" href="/log/">
           your log
         </a>
         .
@@ -250,40 +251,34 @@ export function ActivityFeed() {
         const ch = cheers[r.id] ?? { count: 0, mine: false };
         const poster = posterNames[r.user_id] ?? "Someone";
         return (
-          <li
-            key={r.id}
-            className="rounded border border-sage-200 bg-sage-50 p-3 text-sm text-sage-900 shadow-lg"
-          >
+          <li key={r.id} className={feedCardClass}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-medium text-sage-900">
+              <span className="font-medium text-foreground">
                 {coffeeNames[r.coffee_id] ?? r.coffee_id}
               </span>
               <RatingCups rating={Number(r.rating)} />
             </div>
             {brewLabels[r.brew_method_id] && (
-              <div className="mt-1 text-xs text-sage-600">
+              <div className="mt-1 text-xs text-muted-foreground">
                 Brew: {brewLabels[r.brew_method_id]}
               </div>
             )}
             {r.context === "cafe" && r.cafe_id && cafeNames[r.cafe_id] && (
-              <div className="mt-0.5 text-xs text-sage-600">At {cafeNames[r.cafe_id]}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">At {cafeNames[r.cafe_id]}</div>
             )}
-            <div className="mt-1 text-xs text-sage-400">
+            <div className="mt-1 text-xs text-muted-foreground/90">
               {poster} · {r.context} · {new Date(r.created_at).toLocaleString()}
             </div>
             {(tagsByCheckIn[r.id]?.length ?? 0) > 0 && (
               <div className="mt-1 flex flex-wrap gap-1">
                 {tagsByCheckIn[r.id]!.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-sage-300 bg-sage-100 px-2 py-0.5 text-xs text-sage-800"
-                  >
+                  <span key={t} className={tagPillClass}>
                     {t}
                   </span>
                 ))}
               </div>
             )}
-            {r.notes && <p className="mt-1 text-sage-900">{r.notes}</p>}
+            {r.notes && <p className="mt-1 text-foreground">{r.notes}</p>}
             <div className="mt-2">
               <CheersButton
                 checkInId={r.id}

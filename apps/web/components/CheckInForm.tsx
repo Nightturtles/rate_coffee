@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { checkInFormSchema, RATING_MAX, RATING_MIN, RATING_STEP } from "@rate-coffee/shared";
+import { Button } from "@/components/ui/button";
+import { cardSurfaceClass, comboboxListClass, inputClass, selectClass } from "@/lib/form-classes";
 import { useAuth } from "./AuthProvider";
 import type { CheckInFormValues } from "@rate-coffee/shared";
 
@@ -115,7 +117,7 @@ function FilterableSelect({
         aria-autocomplete="list"
         disabled={disabled}
         placeholder={placeholder}
-        className="w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+        className={inputClass}
         value={displayValue}
         onChange={(e) => {
           const v = e.target.value;
@@ -171,10 +173,10 @@ function FilterableSelect({
         <ul
           id={listId}
           role="listbox"
-          className="absolute z-20 mt-0.5 max-h-48 w-full overflow-auto rounded border border-sage-200 bg-sage-50 py-1 shadow-lg"
+          className={comboboxListClass}
         >
           {filtered.length === 0 ? (
-            <li className="px-2 py-1.5 text-xs text-sage-600">{emptyText}</li>
+            <li className="px-2 py-1.5 text-xs text-muted-foreground">{emptyText}</li>
           ) : (
             filtered.map((opt, i) => (
               <li key={opt.id} role="presentation">
@@ -182,8 +184,8 @@ function FilterableSelect({
                   type="button"
                   role="option"
                   aria-selected={value === opt.id}
-                  className={`w-full px-2 py-1.5 text-left text-sm hover:bg-sage-200/80 ${
-                    i === highlight ? "bg-sage-200/60" : ""
+                  className={`w-full px-2 py-1.5 text-left text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground ${
+                    i === highlight ? "bg-accent text-accent-foreground" : ""
                   }`}
                   onMouseDown={(ev) => {
                     ev.preventDefault();
@@ -287,8 +289,8 @@ export function CheckInForm({ onCheckIn }: Props) {
 
   if (!user) {
     return (
-      <p className="text-sm text-sage-100">
-        <a className="underline" href="/login/">
+      <p className="text-sm text-muted-foreground">
+        <a className="font-medium text-foreground underline underline-offset-4" href="/login/">
           Log in
         </a>{" "}
         to log a coffee.
@@ -350,9 +352,9 @@ export function CheckInForm({ onCheckIn }: Props) {
   }
 
   return (
-    <form onSubmit={(e) => void submit(e)} className="flex flex-col gap-3 rounded-lg border border-sage-200 bg-sage-50 p-4 text-sage-900 shadow-xl">
-      <h2 className="font-serif text-lg text-sage-900">New check-in</h2>
-      <label className="text-xs font-medium text-sage-700" htmlFor="checkin-roaster">
+    <form onSubmit={(e) => void submit(e)} className={`flex flex-col gap-3 ${cardSurfaceClass}`}>
+      <h2 className="font-serif text-lg text-foreground">New check-in</h2>
+      <label className="text-xs font-medium text-foreground" htmlFor="checkin-roaster">
         Roaster
         <FilterableSelect
           id="checkin-roaster"
@@ -371,7 +373,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           clearSelectionOnInput={false}
         />
       </label>
-      <label className="text-xs font-medium text-sage-700" htmlFor="checkin-coffee">
+      <label className="text-xs font-medium text-foreground" htmlFor="checkin-coffee">
         Coffee
         <FilterableSelect
           id="checkin-coffee"
@@ -384,7 +386,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           emptyText={f.roasterId ? "No coffees match" : "Select a roaster first"}
         />
       </label>
-      <div className="text-xs font-medium text-sage-700">
+      <div className="text-xs font-medium text-foreground">
         Where
         <div className="mt-1 flex flex-wrap gap-2">
           <label className="inline-flex items-center gap-1">
@@ -407,7 +409,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           </label>
         </div>
         {f.context === "cafe" && (
-          <label className="mt-2 block font-medium text-sage-700" htmlFor="checkin-cafe">
+          <label className="mt-2 block font-medium text-foreground" htmlFor="checkin-cafe">
             Cafe
             <FilterableSelect
               id="checkin-cafe"
@@ -421,11 +423,9 @@ export function CheckInForm({ onCheckIn }: Props) {
           </label>
         )}
       </div>
-      <label className="text-xs font-medium text-sage-700">
+      <label className="text-xs font-medium text-foreground">
         Brew Method
-        <select
-          required
-          className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+        <select required className={`mt-1 w-full ${selectClass}`}
           value={f.brewMethodId ?? ""}
           onChange={(e) => setF((o) => ({ ...o, brewMethodId: e.target.value }))}
         >
@@ -437,11 +437,9 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </select>
       </label>
-      <label className="text-xs font-medium text-sage-700">
+      <label className="text-xs font-medium text-foreground">
         Rating
-        <select
-          required
-          className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+        <select required className={`mt-1 w-full ${selectClass}`}
           value={f.rating ?? ""}
           onChange={(e) =>
             setF((o) => ({
@@ -458,16 +456,16 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </select>
       </label>
-      <label className="text-xs font-medium text-sage-700">
+      <label className="text-xs font-medium text-foreground">
         Notes
         <textarea
-          className="mt-1 w-full rounded border border-sage-200 bg-sage-100 px-2 py-1.5 text-sage-900"
+          className={`mt-1 w-full ${inputClass}`}
           rows={2}
           value={f.notes ?? ""}
           onChange={(e) => setF((o) => ({ ...o, notes: e.target.value }))}
         />
       </label>
-      <div className="text-xs text-sage-700">
+      <div className="text-xs text-foreground">
         Tags
         <div className="mt-1 flex flex-wrap gap-2">
           {tags.map((t) => (
@@ -490,7 +488,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           ))}
         </div>
       </div>
-      <div className="text-xs text-sage-700">
+      <div className="text-xs text-foreground">
         Visibility:{" "}
         <label className="ml-1">
           <input
@@ -511,14 +509,10 @@ export function CheckInForm({ onCheckIn }: Props) {
           private
         </label>
       </div>
-      {status && <p className="text-sm text-sage-700">{status}</p>}
-      <button
-        type="submit"
-        className="rounded bg-sage-600 px-4 py-2 text-sm font-medium text-sage-50 hover:bg-sage-700 disabled:hover:bg-sage-600 disabled:opacity-50"
-        disabled={busy}
-      >
+      {status && <p className="text-sm text-muted-foreground">{status}</p>}
+      <Button type="submit" disabled={busy}>
         {busy ? "Submitting…" : "Submit"}
-      </button>
+      </Button>
     </form>
   );
 }

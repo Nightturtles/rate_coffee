@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { tagsByCheckInFromRows } from "@/lib/checkInTagMap";
+import { feedCardClass, tagPillClass } from "@/lib/form-classes";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { useAuth } from "./AuthProvider";
 import { RatingCups } from "./RatingCups";
@@ -126,46 +127,42 @@ export function CheckInHistory({ version }: Props) {
 
   return (
     <div className="mt-8">
-      <h2 className="mb-3 font-serif text-lg text-sage-50">Your recent check-ins</h2>
+      <h2 className="mb-3 font-serif text-lg text-foreground">Your recent check-ins</h2>
       {rows.length === 0 && (
-        <p className="text-sm text-sage-100">No check-ins yet. Add a roaster, coffee, then log above.</p>
+        <p className="text-sm text-muted-foreground">
+          No check-ins yet. Add a roaster, coffee, then log above.
+        </p>
       )}
       <ul className="space-y-3">
         {rows.map((r) => (
-          <li
-            key={r.id}
-            className="rounded border border-sage-200 bg-sage-50 p-3 text-sm text-sage-900 shadow-lg"
-          >
+          <li key={r.id} className={feedCardClass}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-medium text-sage-900">
+              <span className="font-medium text-foreground">
                 {names[r.coffee_id] ?? r.coffee_id}
               </span>
               <RatingCups rating={Number(r.rating)} />
             </div>
             {brewLabels[r.brew_method_id] && (
-              <div className="mt-1 text-xs text-sage-600">
+              <div className="mt-1 text-xs text-muted-foreground">
                 Brew: {brewLabels[r.brew_method_id]}
               </div>
             )}
             {r.context === "cafe" && r.cafe_id && cafeNames[r.cafe_id] && (
-              <div className="mt-0.5 text-xs text-sage-600">At {cafeNames[r.cafe_id]}</div>
+              <div className="mt-0.5 text-xs text-muted-foreground">At {cafeNames[r.cafe_id]}</div>
             )}
-            <div className="mt-1 text-xs text-sage-400">
+            <div className="mt-1 text-xs text-muted-foreground/90">
               {r.context} · {r.visibility} · {new Date(r.created_at).toLocaleString()}
             </div>
             {(tagsByCheckIn[r.id]?.length ?? 0) > 0 && (
               <div className="mt-1 flex flex-wrap gap-1">
                 {tagsByCheckIn[r.id]!.map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-sage-300 bg-sage-100 px-2 py-0.5 text-xs text-sage-800"
-                  >
+                  <span key={t} className={tagPillClass}>
                     {t}
                   </span>
                 ))}
               </div>
             )}
-            {r.notes && <p className="mt-1 text-sage-900">{r.notes}</p>}
+            {r.notes && <p className="mt-1 text-foreground">{r.notes}</p>}
           </li>
         ))}
       </ul>

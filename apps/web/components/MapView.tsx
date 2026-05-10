@@ -545,15 +545,15 @@ export function MapView() {
 
   if (!isSupabaseConfigured()) {
     return (
-      <p className="p-4 text-sage-100">
-        Configure Supabase in <code className="text-xs">.env.local</code> to load the map.
+      <p className="p-4 text-muted-foreground">
+        Configure Supabase in <code className="rounded bg-muted px-1 text-xs text-foreground">.env.local</code> to load the map.
       </p>
     );
   }
 
   return (
     <div className="space-y-2">
-      {err && <p className="text-sm text-red-700">{err}</p>}
+      {err && <p className="text-sm text-destructive">{err}</p>}
       {locationStatus.kind !== "none" && (
         <p className="text-xs">
           <span
@@ -570,9 +570,9 @@ export function MapView() {
       )}
       <div
         ref={container}
-        className="h-[min(70vh,520px)] w-full overflow-hidden rounded-lg border border-sage-200 shadow-xl"
+        className="h-[min(70vh,520px)] w-full overflow-hidden rounded-xl border border-border shadow-lg ring-1 ring-foreground/10"
       />
-      <p className="text-xs text-sage-200">
+      <p className="text-xs text-muted-foreground">
         Tap the locate button (top-right, below zoom) for your position — view fits ~{INITIAL_VIEW_RADIUS_MILES} mi around you. Pan to explore; pins refresh around the current viewport.{" "}
         {locating ? "Locating… " : ""}
         {loadingMarkers ? "Refreshing pins… " : ""}
@@ -583,7 +583,7 @@ export function MapView() {
           {list.map((i) => (
             <li key={`${i.kind}-${i.id}`}>
               <Link
-                className="text-sage-200 underline"
+                className="font-medium text-foreground underline underline-offset-4"
                 href={i.kind === "cafe" ? `/cafe/?id=${i.id}` : `/roaster/?id=${i.id}`}
               >
                 {i.name} ({i.kind})
@@ -592,14 +592,14 @@ export function MapView() {
           ))}
         </ul>
       )}
-      <details className="rounded border border-sage-200 bg-sage-50 p-2 text-xs text-sage-900 shadow-lg">
-        <summary className="cursor-pointer font-medium text-sage-700">
+      <details className="rounded-xl border border-border bg-card p-2 text-xs text-card-foreground shadow-sm ring-1 ring-foreground/10">
+        <summary className="cursor-pointer font-medium text-foreground">
           Location diagnostics ({diag.length})
         </summary>
         {diag.length === 0 ? (
-          <p className="mt-2 text-sage-400">No diagnostics yet. Tap Locate to collect data.</p>
+          <p className="mt-2 text-muted-foreground">No diagnostics yet. Tap Locate to collect data.</p>
         ) : (
-          <ul className="mt-2 space-y-1 text-sage-700">
+          <ul className="mt-2 flex flex-col gap-1 text-muted-foreground">
             {diag.map((d, i) => (
               <li key={`${d.at}-${i}`}>
                 <span className="font-medium">[{new Date(d.at).toLocaleTimeString()}]</span>{" "}

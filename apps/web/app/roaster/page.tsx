@@ -60,13 +60,13 @@ function RoasterBody() {
     return <p>Missing <code>id</code> query param.</p>;
   }
   if (err) {
-    return <p className="text-red-700">{err}</p>;
+    return <p className="text-destructive">{err}</p>;
   }
 
   return (
     <div>
-      <h1 className="font-serif text-2xl text-sage-50">{name ?? "…"}</h1>
-      <p className="mt-2 text-sage-100">
+      <h1 className="font-serif text-2xl text-foreground">{name ?? "…"}</h1>
+      <p className="mt-2 text-muted-foreground">
         {count != null && (
           <>
             {count} public check-in{count === 1 ? "" : "s"}
@@ -76,7 +76,7 @@ function RoasterBody() {
           </>
         )}
       </p>
-      <Link className="mt-4 inline-block text-sage-200 underline" href="/map/">
+      <Link className="mt-4 inline-block font-medium text-foreground underline underline-offset-4" href="/map/">
         Back to map
       </Link>
     </div>
@@ -86,7 +86,7 @@ function RoasterBody() {
 export default function RoasterPage() {
   return (
     <div className="mx-auto max-w-lg px-4 py-10">
-      <Suspense fallback={<p>…</p>}>
+      <Suspense fallback={<p className="text-muted-foreground">…</p>}>
         <RoasterBody />
       </Suspense>
     </div>
