@@ -1,13 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 export default function Home() {
   return (
@@ -15,7 +9,7 @@ export default function Home() {
       <Card>
         <CardHeader>
           <p className="text-sm font-medium tracking-wide text-muted-foreground">MVP</p>
-          <CardTitle className="font-serif text-4xl">Track & rate coffee</CardTitle>
+          <h1 className="font-heading font-serif text-4xl leading-snug font-medium">Track & rate coffee</h1>
           <CardDescription className="text-lg leading-relaxed">
             Log what you drink (home or cafe), add roasters and coffees, and explore a map of
             roasters and cafes — without selling beans.
