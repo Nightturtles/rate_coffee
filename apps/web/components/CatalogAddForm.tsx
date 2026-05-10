@@ -599,7 +599,7 @@ export function CatalogAddForm({ onChanged }: Props) {
             <label className="flex cursor-pointer items-start gap-2 text-sm text-foreground">
               <input
                 type="checkbox"
-                className="mt-1 accent-primary"
+                className="mt-1 size-4 shrink-0"
                 checked={rAlsoCafe}
                 disabled={!pickedRoasterGeo}
                 onChange={(e) => {

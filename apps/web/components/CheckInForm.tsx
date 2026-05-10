@@ -4,7 +4,15 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react"
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { checkInFormSchema, RATING_MAX, RATING_MIN, RATING_STEP } from "@rate-coffee/shared";
 import { Button } from "@/components/ui/button";
-import { cardSurfaceClass, comboboxListClass, inputClass, selectClass } from "@/lib/form-classes";
+import {
+  cardSurfaceClass,
+  comboboxListClass,
+  comboboxOptionActiveClass,
+  comboboxOptionClass,
+  inputClass,
+  selectClass,
+} from "@/lib/form-classes";
+import { cn } from "@/lib/utils";
 import { useAuth } from "./AuthProvider";
 import type { CheckInFormValues } from "@rate-coffee/shared";
 
@@ -184,9 +192,7 @@ function FilterableSelect({
                   type="button"
                   role="option"
                   aria-selected={value === opt.id}
-                  className={`w-full px-2 py-1.5 text-left text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground ${
-                    i === highlight ? "bg-accent text-accent-foreground" : ""
-                  }`}
+                  className={cn(comboboxOptionClass, i === highlight && comboboxOptionActiveClass)}
                   onMouseDown={(ev) => {
                     ev.preventDefault();
                     commit(opt.id, opt.label);
@@ -393,6 +399,7 @@ export function CheckInForm({ onCheckIn }: Props) {
             <input
               type="radio"
               name="context"
+              className="size-4 shrink-0"
               checked={f.context === "home"}
               onChange={() => setF((o) => ({ ...o, context: "home", cafeId: null }))}
             />
@@ -402,6 +409,7 @@ export function CheckInForm({ onCheckIn }: Props) {
             <input
               type="radio"
               name="context"
+              className="size-4 shrink-0"
               checked={f.context === "cafe"}
               onChange={() => setF((o) => ({ ...o, context: "cafe" }))}
             />
@@ -472,6 +480,7 @@ export function CheckInForm({ onCheckIn }: Props) {
             <label key={t.id} className="inline-flex items-center gap-1 text-xs">
               <input
                 type="checkbox"
+                className="size-4 shrink-0"
                 checked={f.tagIds?.includes(t.id) ?? false}
                 onChange={(e) => {
                   const on = e.target.checked;
@@ -494,6 +503,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           <input
             type="radio"
             name="v"
+            className="size-4 shrink-0"
             checked={f.visibility === "public"}
             onChange={() => setF((o) => ({ ...o, visibility: "public" }))}
           />{" "}
@@ -503,6 +513,7 @@ export function CheckInForm({ onCheckIn }: Props) {
           <input
             type="radio"
             name="v"
+            className="size-4 shrink-0"
             checked={f.visibility === "private"}
             onChange={() => setF((o) => ({ ...o, visibility: "private" }))}
           />{" "}
