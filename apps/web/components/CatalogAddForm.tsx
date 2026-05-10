@@ -8,8 +8,9 @@ import {
   mapboxAddressJson,
   type GeocodeResult,
 } from "@/lib/geocode/mapbox";
-import { slugify } from "@rate-coffee/shared";
+import { normalizeEntityName, slugify } from "@rate-coffee/shared";
 import { Button } from "@/components/ui/button";
+import { FilterableSelect } from "@/components/FilterableSelect";
 import {
   cardSurfaceClass,
   inputClass,
@@ -25,6 +26,15 @@ type Mode = "coffee" | "cafe" | "roaster";
 
 function uniqueSlug(name: string) {
   return `${slugify(name)}-${crypto.randomUUID().replace(/-/g, "").slice(0, 6)}`;
+}
+
+function buildCoffeeCatalogDisplayName(parts: {
+  originLabel: string;
+  varietyLabel: string;
+  producerName: string;
+  processLabel: string;
+}) {
+  return `${parts.originLabel} · ${parts.varietyLabel} · ${parts.producerName} · ${parts.processLabel}`;
 }
 
 function MapboxTokenMissingNotice({ variant }: { variant: "café_tab" | "roaster_tab" }) {
@@ -100,8 +110,16 @@ export function CatalogAddForm({ onChanged }: Props) {
   const [cGeoPick, setCGeoPick] = useState(0);
   const [cSubmitBusy, setCSubmitBusy] = useState(false);
 
-  const [coName, setCoName] = useState("");
   const [coRoaster, setCoRoaster] = useState("");
+  const [coffeeOrigins, setCoffeeOrigins] = useState<{ id: string; label: string }[]>([]);
+  const [coffeeVarieties, setCoffeeVarieties] = useState<{ id: string; label: string }[]>([]);
+  const [coffeeProcesses, setCoffeeProcesses] = useState<{ id: string; label: string }[]>([]);
+  const [coOrigin, setCoOrigin] = useState("");
+  const [coVariety, setCoVariety] = useState("");
+  const [coProcess, setCoProcess] = useState("");
+  const [producerRows, setProducerRows] = useState<{ id: string; name: string }[]>([]);
+  const [coProducerId, setCoProducerId] = useState<string | undefined>(undefined);
+  const [coProducerDraft, setCoProducerDraft] = useState("");
   const [linkCafe, setLinkCafe] = useState("");
   const [linkRoaster, setLinkRoaster] = useState("");
 
@@ -109,9 +127,12 @@ export function CatalogAddForm({ onChanged }: Props) {
 
   const loadCatalog = useCallback(async () => {
     if (!supabase) return;
-    const [r, c] = await Promise.all([
+    const [r, c, o, v, p] = await Promise.all([
       supabase.from("roasters").select("id, name, is_verified").order("name"),
       supabase.from("cafes").select("id, name, is_verified").order("name"),
+      supabase.from("coffee_origins").select("id, label").order("sort_order", { ascending: true }),
+      supabase.from("coffee_varieties").select("id, label").order("sort_order", { ascending: true }),
+      supabase.from("coffee_processes").select("id, label").order("sort_order", { ascending: true }),
     ]);
     if (r.data) {
       setRoasters(r.data);
@@ -122,11 +143,54 @@ export function CatalogAddForm({ onChanged }: Props) {
       setCafes(c.data);
       setLinkCafe((prev) => prev || (c.data![0]?.id ?? ""));
     }
+    if (o.data) {
+      setCoffeeOrigins(o.data);
+      setCoOrigin((prev) => prev || (o.data![0]?.id ?? ""));
+    }
+    if (v.data) {
+      setCoffeeVarieties(v.data);
+      setCoVariety((prev) => prev || (v.data![0]?.id ?? ""));
+    }
+    if (p.data) {
+      setCoffeeProcesses(p.data);
+      setCoProcess((prev) => prev || (p.data![0]?.id ?? ""));
+    }
   }, [supabase]);
+
+  const loadProducersForOrigin = useCallback(
+    async (originId: string) => {
+      if (!supabase || !originId) {
+        setProducerRows([]);
+        return;
+      }
+      const { data } = await supabase
+        .from("coffee_producers")
+        .select("id, name")
+        .eq("origin_id", originId)
+        .order("name", { ascending: true });
+      setProducerRows(data ?? []);
+    },
+    [supabase]
+  );
 
   useEffect(() => {
     void loadCatalog();
   }, [loadCatalog]);
+
+  useEffect(() => {
+    setCoProducerId(undefined);
+    setCoProducerDraft("");
+    void loadProducersForOrigin(coOrigin);
+  }, [coOrigin, loadProducersForOrigin]);
+
+  const onProducerDraftChange = useCallback((d: string) => {
+    setCoProducerDraft(d);
+  }, []);
+
+  const producerOptions = useMemo(
+    () => producerRows.map((p) => ({ id: p.id, label: p.name })),
+    [producerRows]
+  );
 
   const pickedRoasterGeo = rGeoHits[rGeoPick] ?? null;
   const pickedCafeGeo = cGeoHits[cGeoPick] ?? null;
@@ -333,14 +397,84 @@ export function CatalogAddForm({ onChanged }: Props) {
     }
   }
 
+  async function ensureProducerRow(originId: string, nameTrim: string): Promise<{ id: string } | { error: string }> {
+    if (!supabase || !user) return { error: "Not signed in." };
+    const norm = normalizeEntityName(nameTrim);
+    if (!norm) return { error: "Producer name required." };
+
+    const { data: existing } = await supabase
+      .from("coffee_producers")
+      .select("id")
+      .eq("origin_id", originId)
+      .eq("normalized_name", norm)
+      .maybeSingle();
+    if (existing?.id) return { id: existing.id };
+
+    const { data: inserted, error } = await supabase
+      .from("coffee_producers")
+      .insert({ origin_id: originId, name: nameTrim.trim(), created_by: user.id })
+      .select("id")
+      .single();
+
+    if (!error && inserted?.id) return { id: inserted.id };
+
+    if (error?.code === "23505") {
+      const { data: again } = await supabase
+        .from("coffee_producers")
+        .select("id")
+        .eq("origin_id", originId)
+        .eq("normalized_name", norm)
+        .maybeSingle();
+      if (again?.id) return { id: again.id };
+    }
+
+    return { error: error?.message ?? "Could not save producer." };
+  }
+
   async function addCoffee() {
     if (!supabase || !user) return;
     setMsg(null);
-    if (!coName.trim() || !coRoaster) {
-      setMsg("Pick a roaster and name the coffee.");
+    if (!coRoaster || !coOrigin || !coVariety || !coProcess) {
+      setMsg("Pick origin, variety, process, and roaster.");
       return;
     }
-    const normalized = coName.trim().toLowerCase().replace(/\s+/g, " ");
+
+    const originLabel = coffeeOrigins.find((o) => o.id === coOrigin)?.label ?? "";
+    const varietyLabel = coffeeVarieties.find((v) => v.id === coVariety)?.label ?? "";
+    const processLabel = coffeeProcesses.find((p) => p.id === coProcess)?.label ?? "";
+
+    let producerResolvedId: string;
+    let producerDisplayName: string;
+    if (coProducerId) {
+      producerResolvedId = coProducerId;
+      producerDisplayName = producerRows.find((r) => r.id === coProducerId)?.name ?? "";
+      if (!producerDisplayName) {
+        setMsg("Could not resolve producer name.");
+        return;
+      }
+    } else {
+      const raw = coProducerDraft.trim();
+      if (!raw) {
+        setMsg("Enter or choose a producer.");
+        return;
+      }
+      const ensured = await ensureProducerRow(coOrigin, raw);
+      if ("error" in ensured) {
+        setMsg(ensured.error);
+        return;
+      }
+      producerResolvedId = ensured.id;
+      producerDisplayName = raw.trim();
+    }
+
+    const displayName = buildCoffeeCatalogDisplayName({
+      originLabel,
+      varietyLabel,
+      producerName: producerDisplayName,
+      processLabel,
+    });
+
+    const normalized = normalizeEntityName(displayName);
     const { data: dup } = await supabase
       .from("coffees")
       .select("id")
@@ -352,11 +486,15 @@ export function CatalogAddForm({ onChanged }: Props) {
       return;
     }
     const uid = user.id;
-    const s = uniqueSlug(coName);
+    const s = uniqueSlug(displayName);
     const { error } = await supabase.from("coffees").insert({
-      name: coName.trim(),
+      name: displayName,
       slug: s,
       roaster_id: coRoaster,
+      origin_id: coOrigin,
+      variety_id: coVariety,
+      producer_id: producerResolvedId,
+      process_id: coProcess,
       created_by: uid,
       is_verified: false,
     });
@@ -364,9 +502,11 @@ export function CatalogAddForm({ onChanged }: Props) {
       setMsg(error.message);
       return;
     }
-    setCoName("");
+    setCoProducerId(undefined);
+    setCoProducerDraft("");
     setMsg("Coffee added.");
     onChanged?.();
+    void loadProducersForOrigin(coOrigin);
   }
 
   async function linkCafeRoaster() {
@@ -418,20 +558,92 @@ export function CatalogAddForm({ onChanged }: Props) {
         <>
           <section>
             <h3 className="text-sm font-medium text-foreground">Coffee (SKU)</h3>
-            <div className="mt-1 flex flex-col gap-2 sm:flex-row">
-              <select className={selectClass} value={coRoaster} onChange={(e) => setCoRoaster(e.target.value)}>
-                {roasters.map((r) => (
-                  <option key={r.id} value={r.id}>
-                    {r.name} {r.is_verified ? "✓" : "(unverified)"}
-                  </option>
-                ))}
-              </select>
-              <input
-                className={`min-w-[8rem] flex-1 ${inputClass}`}
-                value={coName}
-                onChange={(e) => setCoName(e.target.value)}
-                placeholder="e.g. Ethiopia Yirgacheffe"
-              />
+            <div className="mt-2 grid gap-3 sm:grid-cols-2">
+              <label className="text-xs font-medium text-foreground">
+                Roaster
+                <select
+                  className={`mt-0.5 w-full ${selectClass}`}
+                  value={coRoaster}
+                  onChange={(e) => setCoRoaster(e.target.value)}
+                >
+                  {roasters.length === 0 && <option value="">Add a roaster first</option>}
+                  {roasters.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name} {r.is_verified ? "✓" : "(unverified)"}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-xs font-medium text-foreground">
+                Origin
+                <select
+                  className={`mt-0.5 w-full ${selectClass}`}
+                  value={coOrigin}
+                  onChange={(e) => setCoOrigin(e.target.value)}
+                >
+                  {coffeeOrigins.length === 0 && (
+                    <option value="">Run DB migrations (coffee_origins)</option>
+                  )}
+                  {coffeeOrigins.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-xs font-medium text-foreground">
+                Variety
+                <select
+                  className={`mt-0.5 w-full ${selectClass}`}
+                  value={coVariety}
+                  onChange={(e) => setCoVariety(e.target.value)}
+                >
+                  {coffeeVarieties.length === 0 && (
+                    <option value="">Run DB migrations (coffee_varieties)</option>
+                  )}
+                  {coffeeVarieties.map((v) => (
+                    <option key={v.id} value={v.id}>
+                      {v.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-xs font-medium text-foreground">
+                Process
+                <select
+                  className={`mt-0.5 w-full ${selectClass}`}
+                  value={coProcess}
+                  onChange={(e) => setCoProcess(e.target.value)}
+                >
+                  {coffeeProcesses.length === 0 && (
+                    <option value="">Run DB migrations (coffee_processes)</option>
+                  )}
+                  {coffeeProcesses.map((proc) => (
+                    <option key={proc.id} value={proc.id}>
+                      {proc.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="text-xs font-medium text-foreground sm:col-span-2">
+                Producer
+                <span className="mt-0.5 block font-normal text-muted-foreground">
+                  Filtered by origin. Type a new name to add a producer for this origin.
+                </span>
+                <FilterableSelect
+                  key={`producer-${coOrigin}`}
+                  id="catalog-coffee-producer"
+                  options={producerOptions}
+                  value={coProducerId}
+                  onValueChange={setCoProducerId}
+                  onDraftChange={onProducerDraftChange}
+                  placeholder={coOrigin ? "Type or pick a producer…" : "Select an origin first"}
+                  disabled={!coOrigin}
+                  emptyText={coOrigin ? "No producers yet — type a name to add one" : "Select an origin first"}
+                />
+              </label>
+            </div>
+            <div className="mt-3">
               <Button type="button" size="sm" onClick={() => void addCoffee()}>
                 Add coffee
               </Button>

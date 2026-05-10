@@ -1,9 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { checkInFormSchema, slugify } from "./schemas";
+import { checkInFormSchema, normalizeEntityName, slugify } from "./schemas";
 
 describe("slugify", () => {
   it("normalizes names", () => {
     expect(slugify("  Blue Bottle! ")).toBe("blue-bottle");
+  });
+});
+
+describe("normalizeEntityName", () => {
+  it("trims, lowercases, collapses spaces", () => {
+    expect(normalizeEntityName("  Foo   Bar  ")).toBe("foo bar");
   });
 });
 

@@ -44,3 +44,7 @@ export const slugify = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 80) || "item";
+
+/** Matches `public.normalize_entity_name` in Postgres (trim, lower, collapse whitespace). */
+export const normalizeEntityName = (v: string) =>
+  v.trim().toLowerCase().replace(/\s+/g, " ");
