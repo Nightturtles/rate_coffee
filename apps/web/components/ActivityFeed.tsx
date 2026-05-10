@@ -11,6 +11,8 @@ import {
   type CheerRow,
   type CheersMap,
 } from "./cheersState";
+import { tagsByCheckInFromRows } from "@/lib/checkInTagMap";
+import { RatingCups } from "./RatingCups";
 
 type Row = {
   id: string;
@@ -19,6 +21,7 @@ type Row = {
   notes: string | null;
   context: string;
   coffee_id: string;
+  brew_method_id: string;
   cafe_id: string | null;
   user_id: string;
 };
@@ -30,6 +33,9 @@ export function ActivityFeed() {
   const [rows, setRows] = useState<Row[]>([]);
   const [coffeeNames, setCoffeeNames] = useState<Record<string, string>>({});
   const [posterNames, setPosterNames] = useState<Record<string, string>>({});
+  const [cafeNames, setCafeNames] = useState<Record<string, string>>({});
+  const [brewLabels, setBrewLabels] = useState<Record<string, string>>({});
+  const [tagsByCheckIn, setTagsByCheckIn] = useState<Record<string, string[]>>({});
   const [cheers, setCheers] = useState<CheersMap>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -57,7 +63,9 @@ export function ActivityFeed() {
 
     const { data, error: feedErr } = await supabase
       .from("check_ins")
-      .select("id, created_at, rating, notes, context, coffee_id, cafe_id, user_id")
+      .select(
+        "id, created_at, rating, notes, context, coffee_id, brew_method_id, cafe_id, user_id"
+      )
       .eq("visibility", "public")
       .order("created_at", { ascending: false })
       .limit(PAGE_SIZE);
@@ -76,6 +84,9 @@ export function ActivityFeed() {
     if (list.length === 0) {
       setCoffeeNames({});
       setPosterNames({});
+      setCafeNames({});
+      setBrewLabels({});
+      setTagsByCheckIn({});
       setCheers({});
       setLoading(false);
       return;
@@ -84,8 +95,19 @@ export function ActivityFeed() {
     const coffeeIds = [...new Set(list.map((r) => r.coffee_id))];
     const userIds = [...new Set(list.map((r) => r.user_id))];
     const checkInIds = list.map((r) => r.id);
+    const cafeIds = [
+      ...new Set(list.map((r) => r.cafe_id).filter(Boolean)),
+    ] as string[];
+    const brewIds = [...new Set(list.map((r) => r.brew_method_id))];
 
-    const [{ data: coffees }, { data: profiles }, { data: cheerRows }] = await Promise.all([
+    const [
+      { data: coffees },
+      { data: profiles },
+      { data: cheerRows },
+      { data: cafes },
+      { data: brewMethods },
+      { data: tagJoinRows },
+    ] = await Promise.all([
       supabase
         .from("coffees")
         .select("id, name, roaster:roasters!roaster_id (name)")
@@ -98,6 +120,20 @@ export function ActivityFeed() {
         .from("check_in_cheers")
         .select("check_in_id, user_id")
         .in("check_in_id", checkInIds),
+      cafeIds.length
+        ? supabase.from("cafes").select("id, name").in("id", cafeIds)
+        : Promise.resolve({ data: [] as { id: string; name: string }[] }),
+      brewIds.length
+        ? supabase.from("brew_methods").select("id, label").in("id", brewIds)
+        : Promise.resolve({ data: [] as { id: string; label: string }[] }),
+      checkInIds.length
+        ? supabase.from("check_in_tags").select("check_in_id, tags(label)").in("check_in_id", checkInIds)
+        : Promise.resolve({
+            data: [] as {
+              check_in_id: string;
+              tags: { label: string } | { label: string }[] | null;
+            }[],
+          }),
     ]);
 
     const cMap: Record<string, string> = {};
@@ -111,6 +147,20 @@ export function ActivityFeed() {
       cMap[r.id] = `${r.name} — ${rn ?? "?"}`;
     }
     setCoffeeNames(cMap);
+
+    const cafeMap: Record<string, string> = {};
+    for (const c of cafes ?? []) {
+      cafeMap[c.id] = c.name;
+    }
+    setCafeNames(cafeMap);
+
+    const brewMap: Record<string, string> = {};
+    for (const b of brewMethods ?? []) {
+      brewMap[b.id] = b.label;
+    }
+    setBrewLabels(brewMap);
+
+    setTagsByCheckIn(tagsByCheckInFromRows(tagJoinRows ?? []));
 
     const pMap: Record<string, string> = {};
     for (const p of profiles ?? []) {
@@ -204,15 +254,35 @@ export function ActivityFeed() {
             key={r.id}
             className="rounded border border-sage-200 bg-sage-50 p-3 text-sm text-sage-900 shadow-lg"
           >
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="font-medium text-sage-900">
                 {coffeeNames[r.coffee_id] ?? r.coffee_id}
               </span>
-              <span className="text-sage-700">{r.rating} ★</span>
+              <RatingCups rating={Number(r.rating)} />
             </div>
+            {brewLabels[r.brew_method_id] && (
+              <div className="mt-1 text-xs text-sage-600">
+                Brew: {brewLabels[r.brew_method_id]}
+              </div>
+            )}
+            {r.context === "cafe" && r.cafe_id && cafeNames[r.cafe_id] && (
+              <div className="mt-0.5 text-xs text-sage-600">At {cafeNames[r.cafe_id]}</div>
+            )}
             <div className="mt-1 text-xs text-sage-400">
               {poster} · {r.context} · {new Date(r.created_at).toLocaleString()}
             </div>
+            {(tagsByCheckIn[r.id]?.length ?? 0) > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {tagsByCheckIn[r.id]!.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-full border border-sage-300 bg-sage-100 px-2 py-0.5 text-xs text-sage-800"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             {r.notes && <p className="mt-1 text-sage-900">{r.notes}</p>}
             <div className="mt-2">
               <CheersButton
