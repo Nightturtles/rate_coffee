@@ -231,7 +231,7 @@ export function ActivityFeed() {
     return <p className="text-sm text-muted-foreground">Loading…</p>;
   }
   if (error) {
-    return <p className="text-sm text-muted-foreground">{error}</p>;
+    return <p className="text-sm text-destructive">{error}</p>;
   }
   if (rows.length === 0) {
     return (
