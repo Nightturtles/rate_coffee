@@ -57,6 +57,9 @@ export function FilterableSelect({
     return options.filter((o) => o.label.toLowerCase().includes(q));
   }, [options, draft]);
 
+  const activeDescendantId =
+    open && filtered.length > 0 ? `${listId}-opt-${highlight}` : undefined;
+
   useEffect(() => {
     if (highlight >= filtered.length) {
       setHighlight(Math.max(0, filtered.length - 1));
@@ -112,6 +115,7 @@ export function FilterableSelect({
         role="combobox"
         aria-expanded={open}
         aria-controls={listId}
+        aria-activedescendant={activeDescendantId}
         aria-autocomplete="list"
         disabled={disabled}
         placeholder={placeholder}
@@ -176,6 +180,7 @@ export function FilterableSelect({
               <li key={opt.id} role="presentation">
                 <button
                   type="button"
+                  id={`${listId}-opt-${i}`}
                   role="option"
                   aria-selected={value === opt.id}
                   className={cn(comboboxOptionClass, i === highlight && comboboxOptionActiveClass)}

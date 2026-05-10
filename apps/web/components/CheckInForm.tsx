@@ -194,6 +194,7 @@ export function CheckInForm({ onCheckIn }: Props) {
       <label className="text-xs font-medium text-foreground" htmlFor="checkin-coffee">
         Coffee
         <FilterableSelect
+          key={f.roasterId ?? ""}
           id="checkin-coffee"
           options={coffeeOptions}
           value={f.coffeeId}
