@@ -11,12 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { inputClass } from "@/lib/form-classes";
+import { cn } from "@/lib/utils";
 
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const enableGoogle = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_AUTH === "true";
 
-const inputClassName =
-  "w-full rounded-md border border-input bg-muted/40 px-3 py-2 text-sm text-foreground shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50";
+const loginInputClass = cn(inputClass, "w-full px-3 py-2");
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -123,7 +124,7 @@ export default function LoginPage() {
         <CardContent className="flex flex-col gap-3">
           <input
             type="email"
-            className={inputClassName}
+            className={loginInputClass}
             placeholder="email@you.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -131,7 +132,7 @@ export default function LoginPage() {
           />
           <input
             type="password"
-            className={inputClassName}
+            className={loginInputClass}
             placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

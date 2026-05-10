@@ -1,7 +1,8 @@
 /** Shared control + surface styles (semantic tokens / dark chrome). */
 
+/** Inset fields: darker fill than `bg-card` so borders read; placeholder uses mid sage from theme */
 export const inputClass =
-  "rounded-md border border-input bg-muted/40 px-2 py-1.5 text-sm text-foreground placeholder:text-muted-foreground shadow-sm transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50";
+  "rounded-md border border-input bg-background px-2 py-1.5 text-sm text-foreground shadow-[inset_0_1px_3px_rgba(0,0,0,0.35)] ring-1 ring-inset ring-foreground/15 placeholder:text-sage-400 transition-colors focus-visible:border-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/55 focus-visible:ring-offset-0";
 
 export const selectClass = inputClass;
 
@@ -23,5 +24,12 @@ export function tabButtonClass(active: boolean) {
     : "rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground";
 }
 
+/** Same shell as `inputClass` / native `<select>` so combobox lists match Brew Method–style fields */
 export const comboboxListClass =
-  "absolute z-20 mt-0.5 max-h-48 w-full overflow-auto rounded-md border border-border bg-popover py-1 text-popover-foreground shadow-lg ring-1 ring-foreground/10";
+  "absolute z-20 mt-0.5 max-h-48 w-full overflow-auto rounded-md border border-input bg-background py-1 text-foreground shadow-[0_8px_28px_rgba(0,0,0,0.45)]";
+
+/** Neutral rows (foreground tint), aligned with OS-like gray hover on dark menus — not primary/sage */
+export const comboboxOptionClass =
+  "w-full rounded-sm px-2 py-1.5 text-left text-sm text-foreground transition-colors hover:bg-foreground/12 hover:text-foreground";
+
+export const comboboxOptionActiveClass = "bg-foreground/18 text-foreground";

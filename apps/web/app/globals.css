@@ -59,8 +59,10 @@
   --accent: var(--sage-700);
   --accent-foreground: var(--sage-50);
   --destructive: oklch(0.577 0.245 27.325);
+  /* Border for chrome + separators — slightly softer than field edges */
   --border: var(--sage-600);
-  --input: var(--sage-700);
+  /* Input outline: must read against --card and --background (both used as field fills) */
+  --input: var(--sage-400);
   --ring: var(--focus-ring);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
@@ -211,5 +213,10 @@ body {
   }
   html {
     @apply font-sans;
+  }
+  /* Native controls on dark surfaces: checked state uses brand primary */
+  input[type="checkbox"],
+  input[type="radio"] {
+    accent-color: var(--primary);
   }
 }
