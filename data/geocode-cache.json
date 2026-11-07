@@ -1,0 +1,702 @@
+{
+  "santa cruz, ca, us": {
+    "lat": 37.050096,
+    "lng": -121.99059,
+    "display": "Santa Cruz County, California, United States"
+  },
+  "fremont, ca, us": {
+    "lat": 37.5482697,
+    "lng": -121.988571,
+    "display": "Fremont, Alameda County, California, United States"
+  },
+  "san jose, ca, us": {
+    "lat": 37.3361663,
+    "lng": -121.890591,
+    "display": "San Jose, Santa Clara County, California, United States"
+  },
+  "santa clara, ca, us": {
+    "lat": 37.2333253,
+    "lng": -121.6846349,
+    "display": "Santa Clara County, California, United States"
+  },
+  "campbell, ca, us": {
+    "lat": 37.2870626,
+    "lng": -121.944881,
+    "display": "Campbell, Santa Clara County, California, United States"
+  },
+  "south san francisco, ca, us": {
+    "lat": 37.6535403,
+    "lng": -122.4168664,
+    "display": "South San Francisco, San Mateo County, California, United States"
+  },
+  "san carlos, ca, us": {
+    "lat": 37.504936,
+    "lng": -122.261823,
+    "display": "San Carlos, San Mateo County, California, 94070, United States"
+  },
+  "oakland, ca, us": {
+    "lat": 37.8044557,
+    "lng": -122.271356,
+    "display": "Oakland, Alameda County, California, United States"
+  },
+  "berkeley, ca, us": {
+    "lat": 37.8708393,
+    "lng": -122.272863,
+    "display": "Berkeley, Alameda County, California, United States"
+  },
+  "alameda, ca, us": {
+    "lat": 37.6090291,
+    "lng": -121.899142,
+    "display": "Alameda County, California, United States"
+  },
+  "livermore, ca, us": {
+    "lat": 37.6820583,
+    "lng": -121.768053,
+    "display": "Livermore, Alameda County, California, United States"
+  },
+  "san francisco, ca, us": {
+    "lat": 37.7879363,
+    "lng": -122.4075201,
+    "display": "San Francisco, California, United States"
+  },
+  "addr:402 ingalls st ste 19, santa cruz, ca": null,
+  "addr:1001 center st ste 1, santa cruz, ca": null,
+  "addr:3655 lawton st, san francisco, ca": {
+    "lat": 37.7567163,
+    "lng": -122.502318,
+    "display": "Andytown Coffee Roasters, 3655, Lawton Street, Outer Sunset, Sunset District, San Francisco, California, 94122, United States"
+  },
+  "addr:3629 taraval st, san francisco, ca": {
+    "lat": 37.7415652,
+    "lng": -122.5051617,
+    "display": "3627;3629;3649, Taraval Street, Sunset District, San Francisco, California, 94166, United States"
+  },
+  "addr:3016 taraval st, san francisco, ca": {
+    "lat": 37.7422438,
+    "lng": -122.4986991,
+    "display": "3016;3020;3024;3028;3032, Taraval Street, Parkside, San Francisco, California, 94166, United States"
+  },
+  "addr:181 fremont st, fl 7, san francisco, ca": null,
+  "addr:800 great hwy, san francisco, ca": {
+    "lat": 37.7729135,
+    "lng": -122.5106103,
+    "display": "800, Great Highway, San Francisco, California, 94121, United States"
+  },
+  "addr:1302 el camino real, menlo park, ca": {
+    "lat": 37.4553757,
+    "lng": -122.185719,
+    "display": "Che Fico Parco Menlo, 1302, El Camino Real, Menlo Park, San Mateo County, California, 94025, United States"
+  },
+  "addr:2111 harrison st, san francisco, ca": {
+    "lat": 37.763978,
+    "lng": -122.4128227,
+    "display": "Gus's Community Market, 2111, Harrison Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:747 front st, san francisco, ca": {
+    "lat": 37.7982342,
+    "lng": -122.3998778,
+    "display": "747, Front Street, Telegraph Hill, Financial District, San Francisco, California, 94111, United States"
+  },
+  "addr:2815 diamond st, san francisco, ca": {
+    "lat": 37.7340644,
+    "lng": -122.4338239,
+    "display": "Canyon Market, 2815, Diamond Street, Glen Park, San Francisco, California, 94131, United States"
+  },
+  "addr:66 kearny st, san francisco, ca": {
+    "lat": 37.7887087,
+    "lng": -122.403524,
+    "display": "66, Kearny Street, Union Square, Financial District, San Francisco, California, 94108, United States"
+  },
+  "addr:439 s. cedros ave. #204, solana beach, ca": {
+    "lat": 32.9875211,
+    "lng": -117.2696584,
+    "display": "439, South Cedros Avenue, Cedros Ave Design District, Solana Beach Bluffs, Solana Beach, San Diego County, California, 92075, United States"
+  },
+  "addr:1819 s bascom ave, campbell, ca": {
+    "lat": 37.2908627,
+    "lng": -121.9320367,
+    "display": "Barefoot Coffee, 1819, South Bascom Avenue, Campbell, Santa Clara County, California, 95008, United States"
+  },
+  "addr:377 2nd st. #110, oakland, ca": {
+    "lat": 37.795185,
+    "lng": -122.2745585,
+    "display": "Bicycle Coffee & Roastery, 377, 2nd Street, Jack London Square, Downtown Oakland, Oakland, Alameda County, California, 94607, United States"
+  },
+  "addr:lake park ave @ grand, oakland, ca": {
+    "lat": 37.8110567,
+    "lng": -122.2474853,
+    "display": "Lake Park Avenue, Grand Lake, Oakland, Alameda County, California, 94610, United States"
+  },
+  "addr:719 swift st. suite 56, santa cruz, ca": null,
+  "addr:3600 portola drive, santa cruz, ca": {
+    "lat": 36.9632618,
+    "lng": -121.9693259,
+    "display": "Cat & Cloud Coffee Co., 3600, Portola Drive, Trailer Haven, Shangri La Estates, Pleasure Point, Santa Cruz County, California, 95010, United States"
+  },
+  "addr:10 parade st. ste a, aptos, ca": null,
+  "addr:725 front st., santa cruz, ca": {
+    "lat": 36.9748019,
+    "lng": -122.025604,
+    "display": "India Gourmet, 725, Front Street, Downtown District (Commercial), Downtown, Santa Cruz, Santa Cruz County, California, 95060, United States"
+  },
+  "addr:1234 park street, alameda, ca": {
+    "lat": 37.7616203,
+    "lng": -122.2448091,
+    "display": "1234;1236, Park Street, Alameda, Alameda County, California, 94501, United States"
+  },
+  "addr:1111 broadway, oakland, ca": {
+    "lat": 37.8028465,
+    "lng": -122.2729093,
+    "display": "1111 Broadway Building, 1111, Broadway, Downtown, Downtown Oakland, Oakland, Alameda County, California, 94612, United States"
+  },
+  "addr:1330 solano avenue, albany, ca": {
+    "lat": 37.8904286,
+    "lng": -122.2913515,
+    "display": "Flowerland, 1330, Solano Avenue, Albany, Alameda County, California, 94706, United States"
+  },
+  "addr:2059 mountain blvd, oakland, ca": {
+    "lat": 37.826326,
+    "lng": -122.209477,
+    "display": "2059, Mountain Boulevard, Montclair, Oakland, Alameda County, California, 94611, United States"
+  },
+  "addr:1620e 18th street, oakland, ca": {
+    "lat": 37.8153641,
+    "lng": -122.2943607,
+    "display": "18th Street, West Oakland, Oakland, Alameda County, California, 94607, United States"
+  },
+  "addr:5615 college ave, oakland, ca": {
+    "lat": 37.843557,
+    "lng": -122.2518442,
+    "display": "Highwire Coffee Roasters, 5615, College Avenue, Rockridge, North Oakland, Oakland, Alameda County, California, 94168, United States"
+  },
+  "addr:1518 clement avenue suite 3140 a, alameda, ca": null,
+  "addr:320 24th street suite 102 b, oakland, ca": null,
+  "addr:200 station way, walnut creek, ca": null,
+  "addr:emeryville, ca": {
+    "lat": 37.8314089,
+    "lng": -122.2865266,
+    "display": "Emeryville, Alameda County, California, 94608, United States"
+  },
+  "addr:3417 18th st., san francisco, ca": {
+    "lat": 37.7616909,
+    "lng": -122.420375,
+    "display": "3417, 18th Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:1125 mariposa street, san francisco, ca": {
+    "lat": 37.7636615,
+    "lng": -122.3951406,
+    "display": "Linea Coffee Roasting, 1125, Mariposa Street, Dogpatch, Potrero Hill, San Francisco, California, 94107, United States"
+  },
+  "addr:3690 18th street, san francisco, ca": {
+    "lat": 37.7615602,
+    "lng": -122.4255919,
+    "display": "Linea, 3690, 18th Street, Castro District, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:1416 20th st, oakland, ca": {
+    "lat": 37.8152172,
+    "lng": -122.2895328,
+    "display": "1416, 20th Street, West Oakland, Oakland, Alameda County, California, 94607, United States"
+  },
+  "addr:2201 broadway, oakland, ca": {
+    "lat": 37.8112082,
+    "lng": -122.267501,
+    "display": "2201 Breuner Building, 2201, Broadway, Financial District, Downtown Oakland, Oakland, Alameda County, California, 94612, United States"
+  },
+  "addr:1522 fillmore st, san francisco, ca": {
+    "lat": 37.783672,
+    "lng": -122.4324926,
+    "display": "1520;1522;1526, Fillmore Street, Fillmore District, Western Addition, San Francisco, California, 95115, United States"
+  },
+  "addr:836 divisadero st, san francisco, ca": {
+    "lat": 37.777444,
+    "lng": -122.4379797,
+    "display": "834;836;838, Divisadero Street, Western Addition, San Francisco, California, 95115, United States"
+  },
+  "addr:1002 16th st, san francisco, ca": {
+    "lat": 37.766574,
+    "lng": -122.3971658,
+    "display": "Boba Guys Potrero, 1002, 16th Street, Potrero Hill, Mission, San Francisco, California, 94107, United States"
+  },
+  "addr:429 stockton st, san francisco, ca": {
+    "lat": 37.7900012,
+    "lng": -122.4072208,
+    "display": "Boba Guys, 429, Stockton Street, Union Square, Financial District, San Francisco, California, 94108, United States"
+  },
+  "addr:58 leland ave, san francisco, ca": {
+    "lat": 37.7117975,
+    "lng": -122.4048088,
+    "display": "58, Leland Avenue, Little Hollywood, Visitacion Valley, San Francisco, California, 94134, United States"
+  },
+  "addr:2760 24th st, san francisco, ca": {
+    "lat": 37.7530394,
+    "lng": -122.4076465,
+    "display": "2758;2760, 24th Street, Potrero Hill, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:3350 18th st, san francisco, ca": {
+    "lat": 37.7620563,
+    "lng": -122.4184869,
+    "display": "3350;3352;3354;3356;3358, 18th Street, Mission, San Francisco, California, 94143, United States"
+  },
+  "addr:3249 24th st, san francisco, ca": {
+    "lat": 37.7522184,
+    "lng": -122.4172439,
+    "display": "La Victoria Panadería, 3249, 24th Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:195 5th ave, san francisco, ca": {
+    "lat": 37.7849863,
+    "lng": -122.4636522,
+    "display": "The Richfield, 195, 5th Avenue, Presidio Terrace, Inner Richmond, Richmond District, San Francisco, California, 94118, United States"
+  },
+  "addr:3458 mission st, san francisco, ca": {
+    "lat": 37.7414088,
+    "lng": -122.4228625,
+    "display": "3458;3460, Mission Street, Bernal Heights, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:979 broadway unit 106, millbrae, ca": null,
+  "addr:1212 donnelly ave, burlingame, ca": {
+    "lat": 37.579627,
+    "lng": -122.3474839,
+    "display": "Truffle Poke, 1212, Donnelly Avenue, Burlingame, San Mateo County, California, 94010, United States"
+  },
+  "addr:872 laurel st, san carlos, ca": {
+    "lat": 37.502787,
+    "lng": -122.2571148,
+    "display": "872, Laurel Street, San Carlos, San Mateo County, California, 94070, United States"
+  },
+  "addr:855 el camino real #120, palo alto, ca": {
+    "lat": 37.4384554,
+    "lng": -122.1576876,
+    "display": "Trader Joe's, 855, El Camino Real, Palo Alto, Santa Clara County, California, 94301, United States"
+  },
+  "addr:378 santana row suite 1115, san jose, ca": null,
+  "addr:308 alida way, south san francisco, ca": {
+    "lat": 37.643062,
+    "lng": -122.426414,
+    "display": "308, Alida Way, Baden, South San Francisco, San Mateo County, California, 94080, United States"
+  },
+  "addr:6185 mission st, daly city, ca": {
+    "lat": 37.7067123,
+    "lng": -122.4585159,
+    "display": "6185, Mission Street, Top of the Hill, Daly City, San Mateo County, California, 94014, United States"
+  },
+  "addr:3790 s el camino real, suite 101, san mateo, ca": null,
+  "addr:450 dondee st #6, pacifica, ca": null,
+  "addr:152 reina del mar ave, pacifica, ca": {
+    "lat": 37.6136722,
+    "lng": -122.4866317,
+    "display": "152, Reina del Mar Avenue, Vallemar, Pacifica, San Mateo County, California, 94044, United States"
+  },
+  "addr:851 main st, redwood city, ca": {
+    "lat": 37.4856333,
+    "lng": -122.226089,
+    "display": "The Baker Next Door, 851, Main Street, Redwood Junction, Redwood City, San Mateo County, California, 94063, United States"
+  },
+  "addr:109 visitacion ave, brisbane, ca": {
+    "lat": 37.6834406,
+    "lng": -122.4029297,
+    "display": "The Burrow, 109, Visitacion Avenue, Brisbane, San Mateo County, California, 94005, United States"
+  },
+  "addr:2803 geneva ave, daly city, ca": {
+    "lat": 37.7068991,
+    "lng": -122.4147356,
+    "display": "2803, Geneva Avenue, Bayshore, Daly City, San Mateo County, California, 94014, United States"
+  },
+  "addr:5925 college ave, oakland, ca": {
+    "lat": 37.8474681,
+    "lng": -122.2523718,
+    "display": "Jewish Community Center of the East Bay, 5925, College Avenue, Rockridge, North Oakland, Oakland, Alameda County, California, 94618, United States"
+  },
+  "addr:6000 bollinger canyon road #1217, san ramon, ca": {
+    "lat": 37.7626941,
+    "lng": -121.9589892,
+    "display": "Joe & The Juice, 6000, Bollinger Canyon Road, Bishop Ranch Business Park, San Ramon, Contra Costa County, California, 94583, United States"
+  },
+  "addr:528 8th st, oakland, ca": {
+    "lat": 37.8011162,
+    "lng": -122.2755383,
+    "display": "Café con Cariño, 528, 8th Street, Old Oakland Historic District, Downtown Oakland, Oakland, Alameda County, California, 94607, United States"
+  },
+  "addr:611 2nd ave, crockett, ca": {
+    "lat": 38.0536322,
+    "lng": -122.2235713,
+    "display": "611, 2nd Avenue, Valona, Crolona Heights, Crockett, Contra Costa County, California, 94525, United States"
+  },
+  "addr:926 b st, hayward, ca": {
+    "lat": 37.6725912,
+    "lng": -122.0837533,
+    "display": "926, B Street, Hayward, Alameda County, California, 25426, United States"
+  },
+  "addr:53 wright brothers ave, livermore, ca": {
+    "lat": 37.6900146,
+    "lng": -121.8052179,
+    "display": "50;51;53, Wright Brothers Avenue, Livermore, Alameda County, California, 94551, United States"
+  },
+  "addr:terminal 1, 1 airport dr, oakland, ca": null,
+  "addr:2999 shattuck avenue, berkeley, ca": {
+    "lat": 37.8554366,
+    "lng": -122.2663893,
+    "display": "Cafe Buenos Aires, 2999, Shattuck Avenue, Berkeley, Alameda County, California, 94705, United States"
+  },
+  "addr:3295 castro valley blvd, castro valley, ca": {
+    "lat": 37.69521,
+    "lng": -122.0787079,
+    "display": "Castro Valley Marketplace, 3295, Castro Valley Boulevard, Castro Valley, Alameda County, California, 94546, United States"
+  },
+  "addr:2100 san pablo ave, berkeley, ca": {
+    "lat": 37.8674513,
+    "lng": -122.292013,
+    "display": "Elegance Berkeley, 2100, San Pablo Avenue, West Berkeley, Berkeley, Alameda County, California, 94702, United States"
+  },
+  "addr:5427 college ave, oakland, ca": {
+    "lat": 37.840804,
+    "lng": -122.2516582,
+    "display": "5427, College Avenue, Rockridge, North Oakland, Oakland, Alameda County, California, 94168, United States"
+  },
+  "addr:5166 sobrante ave, el sobrante, ca": {
+    "lat": 37.9774383,
+    "lng": -122.2939095,
+    "display": "5166, Sobrante Avenue, El Sobrante, Contra Costa County, California, 94803, United States"
+  },
+  "addr:1946 23rd st, san pablo, ca": {
+    "lat": 37.9592936,
+    "lng": -122.3465869,
+    "display": "1946, 23rd Street, San Pablo, Contra Costa County, California, 94806, United States"
+  },
+  "addr:959 sebastopol rd, santa rosa, ca": {
+    "lat": 38.4301869,
+    "lng": -122.7308811,
+    "display": "959, Sebastopol Road, Roseland, Santa Rosa, Sonoma County, California, 95407, United States"
+  },
+  "addr:1740 yajome st, napa, ca": {
+    "lat": 38.3052071,
+    "lng": -122.2879924,
+    "display": "1740, Yajome Street, Napa, Napa County, California, 94559, United States"
+  },
+  "addr:376 soscol ave, napa, ca": {
+    "lat": 38.288035,
+    "lng": -122.2750197,
+    "display": "376, Soscol Avenue, Napa Abajo, Napa, Napa County, California, 94559, United States"
+  },
+  "addr:201 1st st, los altos, ca": {
+    "lat": 37.3786226,
+    "lng": -122.1182336,
+    "display": "Boba Guys, 201, 1st Street, Los Altos, Santa Clara County, California, 94022, United States"
+  },
+  "addr:7300 monterey rd, gilroy, ca": {
+    "lat": 37.0054579,
+    "lng": -121.5677485,
+    "display": "Camino Coffee, 7300, Monterey Road, Gilroy, Santa Clara County, California, 95020, United States"
+  },
+  "addr:1715 airline hwy, hollister, ca": {
+    "lat": 36.8371178,
+    "lng": -121.3882886,
+    "display": "Water Store, 1715, Airline Highway, Hollister, San Benito County, California, 95023, United States"
+  },
+  "addr:inside basecamp hotel lobby, 4143 cedar ave, south lake tahoe, ca": null,
+  "addr:316 n irwin st, hanford, ca": {
+    "lat": 36.3281976,
+    "lng": -119.6477851,
+    "display": "316, North Irwin Street, Hanford, Kings County, California, 93230, United States"
+  },
+  "addr:2609 e cesar e chavez ave, los angeles, ca": {
+    "lat": 34.0456726,
+    "lng": -118.2048029,
+    "display": "Acurrúcame Café, 2609, East Cesar E Chavez Avenue, Boyle Heights, Los Angeles, Los Angeles County, California, 90033, United States"
+  },
+  "addr:2937 bristol st d102, costa mesa, ca": {
+    "lat": 33.6785498,
+    "lng": -117.8864529,
+    "display": "2nd STREET, 2937, Bristol Street, Costa Mesa, Orange County, California, 92626, United States"
+  },
+  "addr:8820 washington blvd #107, culver city, ca": {
+    "lat": 34.0273801,
+    "lng": -118.386957,
+    "display": "8820, Washington Boulevard, Culver City, Los Angeles County, California, 90034, United States"
+  },
+  "addr:6460 e. pacific coast hwy suite 120, long beach, ca": null,
+  "addr:6220 topanga canyon blvd suite 9060, woodland hills, ca": null,
+  "addr:5120 e la palma ave #101, anaheim, ca": {
+    "lat": 33.8597109,
+    "lng": -117.7967998,
+    "display": "5120, East La Palma Avenue, Yorba, Anaheim, Orange County, California, 92807, United States"
+  },
+  "addr:3115 22nd st, san francisco, ca": {
+    "lat": 37.755415,
+    "lng": -122.417102,
+    "display": "3115, 22nd Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:101 montgomery st suite 100, san francisco, ca": null,
+  "addr:3161 24th st, san francisco, ca": {
+    "lat": 37.752233,
+    "lng": -122.4154898,
+    "display": "3157;3159;3161;3163, 24th Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:983 valencia st, san francisco, ca": {
+    "lat": 37.7572196,
+    "lng": -122.4209054,
+    "display": "981;983;985;987, Valencia Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:2316 polk st, san francisco, ca": {
+    "lat": 37.7981608,
+    "lng": -122.4220036,
+    "display": "2316, Polk Street, Russian Hill, Nob Hill, San Francisco, California, 94109, United States"
+  },
+  "addr:682 haight st, san francisco, ca": {
+    "lat": 37.7719672,
+    "lng": -122.4333854,
+    "display": "674;676;678;682, Haight Street, Lower Haight, Western Addition, San Francisco, California, 94143, United States"
+  },
+  "addr:500 presidio ave, san francisco, ca": {
+    "lat": 37.7870418,
+    "lng": -122.4465829,
+    "display": "500, Presidio Avenue, Western Addition, San Francisco, California, 94115, United States"
+  },
+  "addr:1265 battery st suite 100, san francisco, ca": null,
+  "addr:2020 shattuck ave, berkeley, ca": {
+    "lat": 37.8715585,
+    "lng": -122.2685222,
+    "display": "2020, Shattuck Avenue, Downtown Berkeley, Berkeley, Alameda County, California, 94704, United States"
+  },
+  "addr:550 grand ave, oakland, ca": {
+    "lat": 37.8090437,
+    "lng": -122.2504428,
+    "display": "Comal Next Door, 550, Grand Avenue, Adams Point, Downtown Oakland, Oakland, Alameda County, California, 94610, United States"
+  },
+  "addr:3770 piedmont ave, oakland, ca": {
+    "lat": 37.8234754,
+    "lng": -122.25596,
+    "display": "3770, Piedmont Avenue, North Oakland, Oakland, Alameda County, California, 94609, United States"
+  },
+  "addr:907 washington st, oakland, ca": {
+    "lat": 37.8015506,
+    "lng": -122.2746082,
+    "display": "907, Washington Street, Old Oakland Historic District, Downtown Oakland, Oakland, Alameda County, California, 94607, United States"
+  },
+  "addr:3762 piedmont ave, oakland, ca": {
+    "lat": 37.8233458,
+    "lng": -122.256232,
+    "display": "Mägo, 3762, Piedmont Avenue, Broadway Auto Row, North Oakland, Oakland, Alameda County, California, 94611, United States"
+  },
+  "addr:12056 san pablo ave, richmond, ca": {
+    "lat": 37.9320405,
+    "lng": -122.3229539,
+    "display": "12056, San Pablo Avenue, Richmond, Contra Costa County, California, 94805, United States"
+  },
+  "addr:104 oak st, oakland, ca": {
+    "lat": 37.7924567,
+    "lng": -122.2683292,
+    "display": "104, Oak Street, Downtown Oakland, Oakland, Alameda County, California, 94607, United States"
+  },
+  "addr:6419 telegraph ave, oakland, ca": {
+    "lat": 37.8506887,
+    "lng": -122.2606583,
+    "display": "Taqueria La Venganza, 6419, Telegraph Avenue, North Oakland, Oakland, Alameda County, California, 94609, United States"
+  },
+  "addr:3310 lake tahoe blvd, south lake tahoe, ca": {
+    "lat": 38.9457199,
+    "lng": -119.9706257,
+    "display": "3310, Lake Tahoe Boulevard, Ski Run Center, Bijou Park, Bijou, South Lake Tahoe, El Dorado County, California, 96150, United States"
+  },
+  "addr:1712 n vermont ave, los angeles, ca": {
+    "lat": 34.1021958,
+    "lng": -118.2916414,
+    "display": "Mirate, 1712, North Vermont Avenue, Los Feliz Neighborhood Council District, Los Feliz, Los Angeles, Los Angeles County, California, 90027, United States"
+  },
+  "addr:14633 venture blvd, sherman oaks, ca": null,
+  "addr:1 ferry building, shop 46, san francisco, ca": null,
+  "addr:3206 grand ave., oakland, ca": {
+    "lat": 37.8116763,
+    "lng": -122.2477941,
+    "display": "3206, Grand Avenue, Grand Lake, Oakland, Alameda County, California, 94610, United States"
+  },
+  "addr:220 montgomery st., san francisco, ca": {
+    "lat": 37.7912924,
+    "lng": -122.4021849,
+    "display": "Delfino Green & Green, 220, Montgomery Street, Union Square, Financial District, San Francisco, California, 94104, United States"
+  },
+  "addr:1741 alcatraz ave, berkeley, ca": {
+    "lat": 37.8488061,
+    "lng": -122.2724473,
+    "display": "1741;1743, Alcatraz Avenue, Lorin, Berkeley, Alameda County, California, 94703, United States"
+  },
+  "addr:650 california st., san francisco, ca": {
+    "lat": 37.792867,
+    "lng": -122.4052192,
+    "display": "650 California Street, 650, California Street, Chinatown, San Francisco, California, 94108, United States"
+  },
+  "addr:3098 east 10th st., oakland, ca": {
+    "lat": 37.7760898,
+    "lng": -122.2279307,
+    "display": "Red Bay Coffee, 3098, East 10th Street, Fruitvale, East Oakland, Oakland, Alameda County, California, 94601, United States"
+  },
+  "addr:259 california street, san francisco, ca": {
+    "lat": 37.7931923,
+    "lng": -122.3994339,
+    "display": "259, California Street, Financial District, San Francisco, California, 94111, United States"
+  },
+  "addr:1026 valencia street, san francisco, ca": {
+    "lat": 37.7564283,
+    "lng": -122.4213758,
+    "display": "1026, Valencia Street, Mission, San Francisco, California, 94110, United States"
+  },
+  "addr:@proxy, 432b octavia street, san francisco, ca": null,
+  "addr:oxbow public market, 610 1st street, napa, ca": {
+    "lat": 38.3017024,
+    "lng": -122.2817389,
+    "display": "Oxbow Public Market, 610, 1st Street, Napa Abajo, Napa, Napa County, California, 94558, United States"
+  },
+  "addr:san francisco international airport, harvey milk terminal (terminal 1b), san francisco, ca": null,
+  "addr:1050 howard street, san francisco, ca": {
+    "lat": 37.7789605,
+    "lng": -122.4085809,
+    "display": "1050, Howard Street, South of Market, Tenderloin, San Francisco, California, 94103, United States"
+  },
+  "addr:2340 polk street, san francisco, ca": {
+    "lat": 37.7984855,
+    "lng": -122.4220547,
+    "display": "Saint Frank, 2340, Polk Street, Russian Hill, Nob Hill, San Francisco, California, 94109, United States"
+  },
+  "addr:120 folsom st., san francisco, ca": {
+    "lat": 37.79011,
+    "lng": -122.3915446,
+    "display": "120, Folsom Street, Rincon Hill, Financial District, San Francisco, California, 94105, United States"
+  },
+  "addr:1018 alma st., menlo park, ca": {
+    "lat": 37.4547409,
+    "lng": -122.1815166,
+    "display": "Saint Frank Coffee, 1018, Alma Street, Menlo Park, San Mateo County, California, 94025, United States"
+  },
+  "addr:744 irving street, san francisco, ca": {
+    "lat": 37.7643079,
+    "lng": -122.4660279,
+    "display": "Saint Frank Coffee, 744, Irving Street, Inner Sunset, Richmond District, San Francisco, California, 94122, United States"
+  },
+  "addr:2701 leavenworth street, san francisco, ca": {
+    "lat": 37.8061305,
+    "lng": -122.4189174,
+    "display": "SIGNAL Coffee Roasters, 2701, Leavenworth Street, Fisherman's Wharf, North Beach, San Francisco, California, 90214, United States"
+  },
+  "addr:2130 center street, berkeley, ca": {
+    "lat": 37.8701496,
+    "lng": -122.267053,
+    "display": "2128;2130, Center Street, Downtown Berkeley, Berkeley, Alameda County, California, 94704, United States"
+  },
+  "addr:1707 solano avenue, berkeley, ca": {
+    "lat": 37.8913619,
+    "lng": -122.2823919,
+    "display": "1705;1707;1709, Solano Avenue, Thousand Oaks, Berkeley, Alameda County, California, 94707, United States"
+  },
+  "addr:1536 webster street, alameda, ca": {
+    "lat": 37.7746171,
+    "lng": -122.2765475,
+    "display": "1536, Webster Street, West End, Alameda, Alameda County, California, 94501, United States"
+  },
+  "addr:2318a central avenue, alameda, ca": {
+    "lat": 37.7565992,
+    "lng": -122.2296411,
+    "display": "Central Avenue, East End, Alameda, Alameda County, California, 94502, United States"
+  },
+  "addr:danville, ca": {
+    "lat": 37.8225892,
+    "lng": -122.0008254,
+    "display": "Danville, Contra Costa County, California, 94526, United States"
+  },
+  "addr:san francisco, ca": {
+    "lat": 37.7879363,
+    "lng": -122.4075201,
+    "display": "San Francisco, California, United States"
+  },
+  "addr:alameda, ca": {
+    "lat": 37.6090291,
+    "lng": -121.899142,
+    "display": "Alameda County, California, United States"
+  },
+  "addr:albany, ca": {
+    "lat": 37.8871621,
+    "lng": -122.298351,
+    "display": "Albany, Alameda County, California, United States"
+  },
+  "addr:4252 piedmont ave., oakland, ca": {
+    "lat": 37.8282342,
+    "lng": -122.2498048,
+    "display": "Timeless Coffee, 4252, Piedmont Avenue, North Oakland, Oakland, Alameda County, California, 94610, United States"
+  },
+  "addr:1700 webster st., oakland, ca": {
+    "lat": 37.8057485,
+    "lng": -122.2671106,
+    "display": "Timeless Coffee, 1700, Webster Street, Financial District, Downtown Oakland, Oakland, Alameda County, California, 94612, United States"
+  },
+  "addr:500 mateo street, los angeles, ca": {
+    "lat": 34.0414422,
+    "lng": -118.2327188,
+    "display": "Bavel, 500, Mateo Street, Arts District, Downtown, Los Angeles, Los Angeles County, California, 90013, United States"
+  },
+  "addr:8925 melrose ave, los angeles, ca": {
+    "lat": 34.0808796,
+    "lng": -118.3869396,
+    "display": "8925, Melrose Avenue, West Hollywood, Los Angeles County, California, 90069, United States"
+  },
+  "addr:8051 w. 3rd st, los angeles, ca": {
+    "lat": 34.0720763,
+    "lng": -118.3649026,
+    "display": "8051, West 3rd Street, Beverly Grove, Fairfax, Los Angeles, Los Angeles County, California, 90048, United States"
+  },
+  "addr:451 manhattan beach blvd, suite 451b, manhattan beach, ca": null,
+  "addr:1540 pacific ave, santa cruz, ca": {
+    "lat": 36.9762224,
+    "lng": -122.0266876,
+    "display": "1540, Pacific Avenue, Downtown District (Commercial), Downtown, Santa Cruz, Santa Cruz County, California, 95060, United States"
+  },
+  "addr:816 41st ave, santa cruz, ca": {
+    "lat": 36.9641117,
+    "lng": -121.9647546,
+    "display": "Verve Coffee Roasters, 816, 41st Avenue, Pleasure Point, Santa Cruz County, California, 95062, United States"
+  },
+  "addr:104 bronson st suite 19, santa cruz, ca": null,
+  "addr:1010 fair ave., santa cruz, ca": {
+    "lat": 36.9595103,
+    "lng": -122.0455849,
+    "display": "Verve Coffee Roasters, 1010, Fair Avenue, Westside Industrial District, Westside, Santa Cruz, Santa Cruz County, California, 95060, United States"
+  },
+  "addr:2101 market street, san francisco, ca": {
+    "lat": 37.7670978,
+    "lng": -122.4291409,
+    "display": "Verve Coffee Roasters, 2101, Market Street, Duboce Triangle, Castro District, Mission, San Francisco, California, 94114, United States"
+  },
+  "addr:162 university ave, palo alto, ca": {
+    "lat": 37.4442026,
+    "lng": -122.1631244,
+    "display": "Verve Coffe Roasters, 162, University Avenue, Palo Alto, Santa Clara County, California, 94301, United States"
+  },
+  "addr:3985 stevens creek blvd., santa clara, ca": {
+    "lat": 37.3235973,
+    "lng": -121.9725131,
+    "display": "Voyager Craft Coffee, 3985, Stevens Creek Boulevard, Santa Clara, Santa Clara County, California, 95051, United States"
+  },
+  "addr:111 w st john st suite 100, san jose, ca": null,
+  "addr:1070 park ave, san jose, ca": {
+    "lat": 37.3258535,
+    "lng": -121.91034,
+    "display": "1070, Park Avenue, Buena Vista, San Jose, Santa Clara County, California, 95126, United States"
+  },
+  "addr:389 jane stanford way, stanford, ca": {
+    "lat": 37.4299579,
+    "lng": -122.1718247,
+    "display": "Computing & Data Science, 389, Jane Stanford Way, Stanford, Santa Clara County, California, 94305, United States"
+  },
+  "addr:2221 the alameda, santa clara, ca": {
+    "lat": 37.3444048,
+    "lng": -121.932656,
+    "display": "Voyager Craft Coffee, 2221, The Alameda, Santa Clara, Santa Clara County, California, 95050, United States"
+  },
+  "addr:20807 stevens creek blvd # 200, cupertino, ca": {
+    "lat": 37.3231658,
+    "lng": -122.0381046,
+    "display": "20807, Stevens Creek Boulevard, Cupertino, Santa Clara County, California, 95014, United States"
+  },
+  "addr:2271 union street, san francisco, ca": {
+    "lat": 37.7967386,
+    "lng": -122.4366251,
+    "display": "2271, Union Street, Cow Hollow, Pacific Heights, San Francisco, California, 94123, United States"
+  }
+}
