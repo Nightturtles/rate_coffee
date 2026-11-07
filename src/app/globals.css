@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+/* ---- design tokens ---------------------------------------------------- */
+:root {
+  --bg: #f6f1e9;
+  --surface: #fffdf9;
+  --surface-2: #ede6da;
+  --text: #1b1612;
+  --muted: #6f655b;
+  --border: #e1d8ca;
+  --accent: #b5461e;
+  --accent-fg: #ffffff;
+  --score-hi: #2f6b3a;
+  --score-mid: #a66a12;
+  --score-lo: #8a7f74;
+  --ring: rgba(181, 70, 30, 0.35);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121010;
+    --surface: #1b1715;
+    --surface-2: #26201c;
+    --text: #f3ede5;
+    --muted: #a79d92;
+    --border: #342c26;
+    --accent: #e0704a;
+    --accent-fg: #1b1612;
+    --score-hi: #6fbf7a;
+    --score-mid: #e2a93b;
+    --score-lo: #9a8f84;
+    --ring: rgba(224, 112, 74, 0.4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121010;
+  --surface: #1b1715;
+  --surface-2: #26201c;
+  --text: #f3ede5;
+  --muted: #a79d92;
+  --border: #342c26;
+  --accent: #e0704a;
+  --accent-fg: #1b1612;
+  --score-hi: #6fbf7a;
+  --score-mid: #e2a93b;
+  --score-lo: #9a8f84;
+  --ring: rgba(224, 112, 74, 0.4);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-score-hi: var(--score-hi);
+  --color-score-mid: var(--score-mid);
+  --color-score-lo: var(--score-lo);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-card: 14px;
+}
+
+html {
+  background: var(--bg);
+  color: var(--text);
+}
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  font-variation-settings: "SOFT" 60, "WONK" 0;
+}
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.maplibregl-ctrl-attrib { font-size: 10px; }

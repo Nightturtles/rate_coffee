@@ -1,20 +1,38 @@
 {
   "name": "rate-coffee",
+  "version": "0.1.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "e2e"
-  ],
   "scripts": {
-    "dev": "npm run dev -w @rate-coffee/web",
-    "build": "npm run build -w @rate-coffee/web",
-    "lint": "npm run lint -w @rate-coffee/web",
-    "test": "vitest run",
-    "test:e2e": "playwright test"
+    "predev": "npm run map:worker",
+    "dev": "next dev",
+    "prebuild": "npm run map:worker",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "ingest:roasters": "tsx scripts/ingest/run.ts",
+    "ingest:cafes": "tsx scripts/ingest/cafes.ts",
+    "map:worker": "cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs public/maplibre-worker.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.6.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
+    "lucide-react": "^1.70.0",
+    "maplibre-gl": "^6.16.0",
+    "next": "16.4.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@playwright/test": "^1.52.0",
-    "vitest": "^3.1.0"
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.5",
+    "tailwindcss": "^4",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
   }
 }
