@@ -6,13 +6,13 @@ import { signOut } from "@/app/login/actions";
 export async function UserMenu() {
   const user = await getSessionUser();
   if (!user) {
-    return <Link href="/login" className="whitespace-nowrap rounded-full border border-border px-3 py-1.5 text-sm hover:bg-surface-2">Sign in</Link>;
+    return <Link href="/login" className="label whitespace-nowrap text-text transition hover:text-muted">Sign in</Link>;
   }
   return (
-    <div className="flex items-center gap-1">
-      <Link href="/me" className="max-w-[9rem] truncate rounded-full px-3 py-1.5 text-sm hover:bg-surface-2">{user.displayName}</Link>
+    <div className="flex items-center gap-4">
+      <Link href="/me" className="label max-w-[9rem] truncate text-text transition hover:text-muted">{user.displayName}</Link>
       <form action={signOut}>
-        <button type="submit" className="rounded-full px-2 py-1.5 text-xs text-muted hover:bg-surface-2 hover:text-text">Sign out</button>
+        <button type="submit" className="label transition hover:text-text">Sign out</button>
       </form>
     </div>
   );

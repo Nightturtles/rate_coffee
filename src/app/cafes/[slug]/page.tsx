@@ -2,17 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { AtSign, ExternalLink, Navigation, PenLine } from "lucide-react";
+import { ArrowUpRight, PenLine } from "lucide-react";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { PROCESS_FOCUS_LABEL, ROAST_LABEL } from "@/lib/labels";
+import { btn } from "@/lib/ui";
+import { fetchCheckIns } from "@/lib/checkins";
 import { Chip } from "@/components/ui/Chip";
 import { ScoreBadge } from "@/components/ui/ScoreBadge";
-import { CheckInList } from "@/components/CheckInList";
 import { DataError } from "@/components/ui/DataError";
-import { fetchCheckIns } from "@/lib/checkins";
+import { CheckInList } from "@/components/CheckInList";
 
 type LinkRow = { relationship: string; source: string; source_url: string | null; confidence: number; roasters: { name: string; slug: string; roast_level: string | null; process_focus: string | null } | null };
 const SOURCE_LABEL: Record<string, string> = { roaster_site: "listed on the roaster's site", cafe_site: "mentioned on the cafe's site", user_checkin: "from a check-in", manual: "added by a curator" };
+const ext = "inline-flex items-center gap-1 label text-text transition hover:text-muted";
 
 export async function generateMetadata({ params }: PageProps<"/cafes/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -42,52 +44,51 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
 
   return (
     <>
-      <Link href="/cafes" className="text-sm text-muted underline-offset-4 hover:underline">← Cafes</Link>
-      <div className="mt-3 flex items-start gap-4">
+      <Link href="/cafes" className="label transition hover:text-text">← Cafes</Link>
+      <div className="mt-8 flex items-start gap-6">
         <ScoreBadge score={score?.specialty_score} size="lg" />
-        <div className="min-w-0">
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{c.name}</h1>
-          <p className="text-muted">{[c.address_line1, c.city, c.region].filter(Boolean).join(", ")}</p>
+        <div className="min-w-0 pt-1">
+          <h1 className="text-4xl font-light leading-[1.05] tracking-tight sm:text-5xl">{c.name}</h1>
+          <p className="mt-3 text-muted">{[c.address_line1, c.city, c.region].filter(Boolean).join(", ")}</p>
         </div>
       </div>
-      <div className="mt-4 flex flex-wrap gap-1.5">
+      <div className="mt-6 flex flex-wrap gap-1.5">
         {own && <Chip tone="accent">Roaster-owned</Chip>}
         {c.has_pourover && <Chip>Pour over</Chip>}
         {c.has_batch_brew && <Chip>Batch brew</Chip>}
         {c.has_espresso && <Chip>Espresso</Chip>}
         {c.is_multi_roaster && <Chip>Multi-roaster</Chip>}
       </div>
-      <p className="mt-3 flex flex-wrap gap-4 text-sm">
-        <a className="inline-flex items-center gap-1 text-accent underline-offset-4 hover:underline" href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noreferrer"><Navigation size={14} /> Directions</a>
-        {c.website && <a className="inline-flex items-center gap-1 text-accent underline-offset-4 hover:underline" href={c.website} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Website</a>}
-        {c.instagram && <a className="inline-flex items-center gap-1 text-accent underline-offset-4 hover:underline" href={`https://instagram.com/${c.instagram}`} target="_blank" rel="noreferrer"><AtSign size={14} /> @{c.instagram}</a>}
-      </p>
-      {hours && <p className="mt-2 text-sm text-muted">Hours: {hours}</p>}
-      <Link href={`/log?cafe=${slug}`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-fg">
-        <PenLine size={16} /> Log a coffee here
-      </Link>
+      {hours && <p className="mt-6 text-sm text-muted">Hours · {hours}</p>}
+      <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+        <Link href={`/log?cafe=${slug}`} className={btn}><PenLine size={14} strokeWidth={1.6} /> Log a coffee here</Link>
+        <a className={ext} href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`} target="_blank" rel="noreferrer">Directions <ArrowUpRight size={12} /></a>
+        {c.website && <a className={ext} href={c.website} target="_blank" rel="noreferrer">Website <ArrowUpRight size={12} /></a>}
+        {c.instagram && <a className={ext} href={`https://instagram.com/${c.instagram}`} target="_blank" rel="noreferrer">@{c.instagram} <ArrowUpRight size={12} /></a>}
+      </div>
 
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Coffee served</h2>
+      <section className="mt-16">
+        <p className="label border-b border-border pb-3">Coffee served</p>
         {own && (
-          <Link href={`/roasters/${own.slug}`} className="mt-3 flex items-center justify-between gap-3 rounded-[var(--radius-card)] border border-accent/40 bg-accent/10 p-4 hover:border-accent">
+          <Link href={`/roasters/${own.slug}`} className="mt-4 flex items-center justify-between gap-4 border border-text px-5 py-4 transition hover:bg-surface-2">
             <span>
               <span className="font-medium">{own.name}</span>
-              <span className="block text-sm text-muted">This is the roaster&apos;s own cafe{[own.roast_level ? ROAST_LABEL[own.roast_level] : null, own.process_focus ? PROCESS_FOCUS_LABEL[own.process_focus] : null].filter(Boolean).map((x) => ` · ${x}`).join("")}</span>
+              <span className="mt-0.5 block text-sm text-muted">The roaster&apos;s own cafe{[own.roast_level ? ROAST_LABEL[own.roast_level] : null, own.process_focus ? PROCESS_FOCUS_LABEL[own.process_focus] : null].filter(Boolean).map((x) => ` · ${x}`).join("")}</span>
             </span>
+            <ArrowUpRight size={16} strokeWidth={1.4} className="shrink-0 text-muted" />
           </Link>
         )}
-        {rows.length === 0 && !own && <p className="mt-2 text-muted">No roaster signal yet. If you know whose coffee they pour, a check-in will add it.</p>}
+        {rows.length === 0 && !own && <p className="mt-4 text-sm text-muted">No roaster signal yet. If you know whose coffee they pour, a check-in will add it.</p>}
         {rows.length > 0 && (
-          <ul className="mt-3 divide-y divide-border rounded-[var(--radius-card)] border border-border bg-surface">
+          <ul className={own ? "mt-2" : ""}>
             {rows.map((l, i) =>
               l.roasters ? (
-                <li key={i} className="px-4 py-3">
-                  <Link href={`/roasters/${l.roasters.slug}`} className="font-medium underline-offset-4 hover:underline">{l.roasters.name}</Link>
-                  <p className="text-sm text-muted">
+                <li key={i} className="border-b border-border py-4">
+                  <Link href={`/roasters/${l.roasters.slug}`} className="font-medium underline decoration-transparent underline-offset-4 transition hover:decoration-text">{l.roasters.name}</Link>
+                  <p className="mt-1 text-sm text-muted">
                     {[l.roasters.roast_level ? ROAST_LABEL[l.roasters.roast_level] : null, l.roasters.process_focus ? PROCESS_FOCUS_LABEL[l.roasters.process_focus] : null].filter(Boolean).join(" · ")}
                     {" · "}
-                    {l.source_url ? <a className="underline underline-offset-4" href={l.source_url} target="_blank" rel="noreferrer">{SOURCE_LABEL[l.source] ?? l.source}</a> : (SOURCE_LABEL[l.source] ?? l.source)}
+                    {l.source_url ? <a className="underline decoration-border underline-offset-4 hover:decoration-text" href={l.source_url} target="_blank" rel="noreferrer">{SOURCE_LABEL[l.source] ?? l.source}</a> : (SOURCE_LABEL[l.source] ?? l.source)}
                   </p>
                 </li>
               ) : null,
@@ -95,12 +96,13 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
           </ul>
         )}
       </section>
-      <section className="mt-10">
-        <h2 className="text-xl font-semibold">Recent check-ins</h2>
+
+      <section className="mt-16">
+        <p className="label border-b border-border pb-3">Recent check-ins</p>
         {checkIns instanceof Error ? <DataError error={checkIns} what="check-ins" /> : <CheckInList rows={checkIns} context="cafe" emptyText="No one has logged a coffee here yet. Be the first." />}
       </section>
-      <p className="mt-10 text-xs text-muted">
-        Base listing from {c.source_url ? <a className="underline" href={c.source_url} target="_blank" rel="noreferrer">{c.source === "osm" ? "OpenStreetMap" : c.source === "roaster_site" ? "the roaster's site" : c.source}</a> : c.source}.
+      <p className="label mt-16">
+        Base listing from {c.source_url ? <a className="underline decoration-border underline-offset-4 hover:decoration-text" href={c.source_url} target="_blank" rel="noreferrer">{c.source === "osm" ? "OpenStreetMap" : c.source === "roaster_site" ? "the roaster's site" : c.source}</a> : c.source}
       </p>
     </>
   );
@@ -108,7 +110,7 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
 
 export default function CafePage({ params }: PageProps<"/cafes/[slug]">) {
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 py-8">
+    <main className="mx-auto w-full max-w-3xl px-5 pb-24 pt-10">
       <Suspense fallback={<p className="text-muted">Loading…</p>}>
         <CafeDetail params={params} />
       </Suspense>

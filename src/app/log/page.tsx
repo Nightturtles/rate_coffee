@@ -47,13 +47,14 @@ async function LogInner({ searchParams }: { searchParams: Promise<Record<string,
 
   return (
     <>
-      <h1 className="text-3xl font-semibold tracking-tight">Log a coffee</h1>
+      <p className="label">Check-in</p>
+      <h1 className="mt-3 text-4xl font-light tracking-tight">Log a coffee</h1>
       {subject ? (
-        <p className="mt-1 text-muted">{subject}</p>
+        <p className="mt-3 text-muted">{subject}</p>
       ) : (
-        <p className="mt-1 text-muted">Start from a <Link href="/roasters" className="underline underline-offset-4">roaster</Link> or <Link href="/cafes" className="underline underline-offset-4">cafe</Link> page to log a specific coffee.</p>
+        <p className="mt-3 text-muted">Start from a <Link href="/roasters" className="underline decoration-border underline-offset-4 hover:decoration-text">roaster</Link> or <Link href="/cafes" className="underline decoration-border underline-offset-4 hover:decoration-text">cafe</Link> page to log a specific coffee.</p>
       )}
-      <div className="mt-6">
+      <div className="mt-8 border-t border-border pt-6">
         <CheckInForm
           roaster={roaster ? { id: roaster.id, name: roaster.name } : null}
           cafe={cafe ? { id: cafe.id, name: cafe.name } : null}
@@ -71,7 +72,7 @@ async function LogInner({ searchParams }: { searchParams: Promise<Record<string,
 
 export default function LogPage({ searchParams }: PageProps<"/log">) {
   return (
-    <main className="mx-auto w-full max-w-xl px-4 py-8">
+    <main className="mx-auto w-full max-w-xl px-5 pb-24 pt-14">
       <Suspense fallback={<p className="text-muted">Loading…</p>}>
         <LogInner searchParams={searchParams} />
       </Suspense>

@@ -1,6 +1,6 @@
 "use client";
 
-import { LocateFixed, MapPin } from "lucide-react";
+import { LocateFixed } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { PRESETS, placeQuery, type Place } from "@/lib/discovery";
@@ -40,21 +40,25 @@ export function LocationPicker({ current, fromUrl }: { current: Place; fromUrl: 
     );
   };
 
+  const tab = (active: boolean) => `-mb-px border-b pb-2 font-mono text-[11px] uppercase tracking-[0.12em] transition ${active ? "border-text text-text" : "border-transparent text-muted hover:text-text"}`;
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="inline-flex items-center gap-1 text-sm text-muted"><MapPin size={14} /> Near</span>
-      {PRESETS.map((p) => {
-        const active = p.label === current.label;
-        return (
-          <button key={p.label} type="button" onClick={() => go(p)} className={`rounded-full border px-3 py-1 text-sm ${active ? "border-accent bg-accent text-accent-fg" : "border-border bg-surface text-text hover:bg-surface-2"}`} aria-pressed={active}>
-            {p.label}
-          </button>
-        );
-      })}
-      <button type="button" onClick={locate} disabled={locating} className={`inline-flex items-center gap-1 rounded-full border px-3 py-1 text-sm ${current.label === "your location" ? "border-accent bg-accent text-accent-fg" : "border-border bg-surface hover:bg-surface-2"}`}>
-        <LocateFixed size={14} /> {locating ? "Locating…" : "My location"}
-      </button>
-      {err && <span className="text-xs text-muted">{err}</span>}
+    <div className="border-b border-border">
+      <div className="flex items-end gap-x-6 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <span className="label pb-2">Near</span>
+        {PRESETS.map((p) => {
+          const active = p.label === current.label;
+          return (
+            <button key={p.label} type="button" onClick={() => go(p)} className={tab(active)} aria-pressed={active}>
+              {p.label}
+            </button>
+          );
+        })}
+        <button type="button" onClick={locate} disabled={locating} className={`${tab(current.label === "your location")} inline-flex items-center gap-1.5`}>
+          <LocateFixed size={12} strokeWidth={1.6} /> {locating ? "Locating…" : "My location"}
+        </button>
+        {err && <span className="pb-2 text-xs text-muted">{err}</span>}
+      </div>
     </div>
   );
 }

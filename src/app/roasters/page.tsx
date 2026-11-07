@@ -11,23 +11,29 @@ async function List({ place }: { place: ReturnType<typeof placeFromParams> }) {
   try {
     roasters = await discoverRoasters(place, 60 * MI, 100);
   } catch (e) {
-    return <div className="mt-6"><DataError error={e} what="roasters" /></div>;
+    return <DataError error={e} what="roasters" />;
   }
-  if (roasters.length === 0) return <p className="mt-6 text-muted">No roasters within 60 miles yet.</p>;
-  return <div className="mt-6 grid gap-3 sm:grid-cols-2">{roasters.map((r) => <RoasterCard key={r.id} r={r} />)}</div>;
+  if (roasters.length === 0) return <p className="mt-8 text-muted">No roasters within 60 miles yet.</p>;
+  return (
+    <>
+      <p className="label mt-8">{roasters.length} roasters within 60 mi</p>
+      <div className="mt-3 grid sm:grid-cols-2 sm:gap-x-12">{roasters.map((r, i) => <RoasterCard key={r.id} r={r} index={i + 1} />)}</div>
+    </>
+  );
 }
 
 async function RoastersPageInner({ searchParams }: { searchParams: PageProps<"/roasters">["searchParams"] }) {
   const sp = await searchParams;
   const place = placeFromParams(sp);
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-8">
-      <h1 className="text-3xl font-semibold tracking-tight">Roasters</h1>
-      <p className="mt-1 text-muted">Ranked by specialty score: roast level, sourcing, process, and menu depth, from each roaster&apos;s live menu.</p>
-      <div className="mt-4">
+    <main className="mx-auto w-full max-w-6xl px-5 pb-24 pt-14">
+      <p className="label">Roasters</p>
+      <h1 className="mt-3 text-4xl font-light tracking-tight sm:text-5xl">Ranked by how they roast and source.</h1>
+      <p className="mt-4 max-w-xl text-muted">Roast level, process, single-origin share, and menu depth, read from each roaster&apos;s live menu.</p>
+      <div className="mt-10">
         <LocationPicker current={place} fromUrl={typeof sp.lat === "string"} />
       </div>
-      <Suspense fallback={<p className="mt-6 text-muted">Loading…</p>}>
+      <Suspense fallback={<p className="mt-8 text-muted">Loading…</p>}>
         <List place={place} />
       </Suspense>
     </main>
@@ -36,7 +42,7 @@ async function RoastersPageInner({ searchParams }: { searchParams: PageProps<"/r
 
 export default function RoastersPage({ searchParams }: PageProps<"/roasters">) {
   return (
-    <Suspense fallback={<main className="mx-auto w-full max-w-5xl px-4 py-8 text-muted">Loading…</main>}>
+    <Suspense fallback={<main className="mx-auto w-full max-w-6xl px-5 py-14 text-muted">Loading…</main>}>
       <RoastersPageInner searchParams={searchParams} />
     </Suspense>
   );

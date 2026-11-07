@@ -17,8 +17,8 @@ export function RatingCups({ value, onChange, size = 28, name }: { value: number
         const fill = Math.max(0, Math.min(1, shown - (cup - 1)));
         return (
           <span key={cup} className="relative inline-block" style={{ width: size, height: size }}>
-            <Coffee size={size} strokeWidth={1.6} className="absolute inset-0 text-border" />
-            <Coffee size={size} strokeWidth={1.6} className="absolute inset-0 text-accent" fill="currentColor" fillOpacity={0.25}
+            <Coffee size={size} strokeWidth={1.4} className="absolute inset-0 text-border" />
+            <Coffee size={size} strokeWidth={1.6} className="absolute inset-0 text-text" fill="currentColor" fillOpacity={0.18}
               style={{ clipPath: `inset(0 ${Math.round((1 - fill) * 100)}% 0 0)` }} />
             {interactive && [cup - 0.5, cup].map((v, i) => (
               <button key={v} type="button" role="radio" aria-checked={value === v} aria-label={`${v} cups`}
@@ -28,7 +28,7 @@ export function RatingCups({ value, onChange, size = 28, name }: { value: number
           </span>
         );
       })}
-      <span className="ml-2 min-w-[2.5rem] text-sm tabular-nums text-muted">{shown ? shown.toFixed(1) : interactive ? "—" : ""}</span>
+      <span className="num ml-2 min-w-[2.5rem] text-[12px] text-muted">{shown ? shown.toFixed(1) : interactive ? "—" : ""}</span>
     </div>
   );
 }

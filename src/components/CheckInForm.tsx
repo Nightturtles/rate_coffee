@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { createCheckIn, type CheckInState } from "@/app/log/actions";
 import { RatingCups } from "./RatingCups";
+import { btn, field, fieldLabel } from "@/lib/ui";
 
 export type Option = { id: string; label: string; group?: string };
 
@@ -17,8 +18,7 @@ type Props = {
   next: string;
 };
 
-const field = "mt-1 w-full rounded-lg border border-border bg-bg px-3 py-2 text-sm outline-none focus:border-accent";
-const label = "block text-sm font-medium";
+const label = fieldLabel;
 
 export function CheckInForm({ roaster, cafe, coffees, roasterOptions, brewMethods, tags, initialCoffeeId, next }: Props) {
   const [state, action, pending] = useActionState<CheckInState, FormData>(createCheckIn, {});
@@ -28,7 +28,7 @@ export function CheckInForm({ roaster, cafe, coffees, roasterOptions, brewMethod
   const groups = [...new Set(brewMethods.map((b) => b.group))];
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-7">
       <input type="hidden" name="next" value={next} />
       {cafe && <input type="hidden" name="cafe_id" value={cafe.id} />}
 
@@ -57,7 +57,7 @@ export function CheckInForm({ roaster, cafe, coffees, roasterOptions, brewMethod
 
       <div>
         <span className={label}>Rating</span>
-        <div className="mt-1"><RatingCups value={rating} onChange={setRating} name="rating" size={34} /></div>
+        <div className="mt-2"><RatingCups value={rating} onChange={setRating} name="rating" size={34} /></div>
       </div>
 
       <div>
@@ -74,11 +74,11 @@ export function CheckInForm({ roaster, cafe, coffees, roasterOptions, brewMethod
 
       <div>
         <span className={label}>Tasting notes</span>
-        <div className="mt-1.5 flex flex-wrap gap-1.5">
+        <div className="mt-2 flex flex-wrap gap-1.5">
           {tags.map((t) => {
             const on = picked.has(t.id);
             return (
-              <label key={t.id} className={`cursor-pointer select-none rounded-full border px-2.5 py-0.5 text-xs ${on ? "border-accent bg-accent text-accent-fg" : "border-border bg-surface text-muted hover:bg-surface-2"}`}>
+              <label key={t.id} className={`cursor-pointer select-none rounded-[2px] border px-2 py-1 font-mono text-[10.5px] uppercase tracking-[0.1em] transition ${on ? "border-text bg-text text-bg" : "border-border text-muted hover:border-text hover:text-text"}`}>
                 <input type="checkbox" name="tags" value={t.id} checked={on} aria-label={t.label} className="sr-only"
                   onChange={() => setPicked((s) => { const n = new Set(s); if (n.has(t.id)) n.delete(t.id); else n.add(t.id); return n; })} />
                 {t.label}
@@ -107,8 +107,8 @@ export function CheckInForm({ roaster, cafe, coffees, roasterOptions, brewMethod
         </div>
       </div>
 
-      {state.error && <p role="alert" className="text-sm text-accent">{state.error}</p>}
-      <button type="submit" disabled={pending || rating == null} className="w-full rounded-full bg-accent px-4 py-2.5 font-medium text-accent-fg disabled:opacity-50">
+      {state.error && <p role="alert" className="text-sm text-bronze">{state.error}</p>}
+      <button type="submit" disabled={pending || rating == null} className={`${btn} h-11 w-full`}>
         {pending ? "Saving…" : "Save check-in"}
       </button>
     </form>

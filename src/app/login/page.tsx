@@ -13,7 +13,7 @@ async function LoginInner({ searchParams }: { searchParams: Promise<Record<strin
   const error = typeof sp.error === "string" ? sp.error : null;
   return (
     <>
-      {error && <p role="alert" className="mb-4 rounded-[var(--radius-card)] border border-accent/40 bg-accent/10 p-3 text-sm">{error}. Request a new link below.</p>}
+      {error && <p role="alert" className="mb-5 border border-bronze/50 px-4 py-3 text-sm text-bronze">{error}. Request a new link below.</p>}
       <LoginForm next={next} />
     </>
   );
@@ -21,10 +21,11 @@ async function LoginInner({ searchParams }: { searchParams: Promise<Record<strin
 
 export default function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
-    <main className="mx-auto w-full max-w-md px-4 py-12">
-      <h1 className="text-3xl font-semibold tracking-tight">Sign in</h1>
-      <p className="mt-1 text-muted">Log what you drink. Your ratings feed the roaster and cafe scores.</p>
-      <div className="mt-6">
+    <main className="mx-auto w-full max-w-md px-5 pb-24 pt-14">
+      <p className="label">Account</p>
+      <h1 className="mt-3 text-4xl font-light tracking-tight">Sign in</h1>
+      <p className="mt-3 text-muted">Log what you drink. Your ratings feed the roaster and cafe scores.</p>
+      <div className="mt-8">
         <Suspense fallback={null}>
           <LoginInner searchParams={searchParams} />
         </Suspense>

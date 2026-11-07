@@ -12,19 +12,19 @@ const links = [
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur">
-      <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-4 px-4">
-        <Link href="/" className="whitespace-nowrap font-display text-xl font-semibold tracking-tight">
-          rate coffee
+    <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-8 px-5">
+        <Link href="/" className="whitespace-nowrap font-display text-[13px] font-semibold uppercase tracking-[0.28em]">
+          Rate Coffee
         </Link>
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {links.map((l) => (
-            <Link key={l.href} href={l.href} className="rounded-full px-3 py-1.5 text-sm text-muted hover:bg-surface-2 hover:text-text">
+            <Link key={l.href} href={l.href} className="label text-text transition hover:text-muted">
               {l.label}
             </Link>
           ))}
         </nav>
-        <div className="ml-auto w-full max-w-xs">
+        <div className="ml-auto w-full max-w-[260px]">
           <SearchBox />
         </div>
         <div className="hidden shrink-0 md:block">
