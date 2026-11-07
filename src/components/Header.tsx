@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { SearchBox } from "./SearchBox";
+import { UserMenu } from "./UserMenu";
 
 const links = [
   { href: "/", label: "Discover" },
@@ -24,6 +26,11 @@ export function Header() {
         </nav>
         <div className="ml-auto w-full max-w-xs">
           <SearchBox />
+        </div>
+        <div className="hidden shrink-0 md:block">
+          <Suspense fallback={<span className="inline-block h-8 w-16" />}>
+            <UserMenu />
+          </Suspense>
         </div>
       </div>
     </header>

@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { AtSign, ExternalLink } from "lucide-react";
+import { AtSign, ExternalLink, PenLine } from "lucide-react";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { PROCESS_FOCUS_LABEL, PROCESS_LABEL, ROAST_LABEL, money, pct } from "@/lib/labels";
 import { Chip } from "@/components/ui/Chip";
 import { ScoreBadge } from "@/components/ui/ScoreBadge";
+import { CheckInList } from "@/components/CheckInList";
+import { DataError } from "@/components/ui/DataError";
+import { fetchCheckIns } from "@/lib/checkins";
 
 type CoffeeRow = {
   id: string; name: string; url: string | null; is_blend: boolean; roast_level: string | null; origin_country_code: string | null;
@@ -31,11 +34,12 @@ async function RoasterDetail({ params }: { params: Promise<{ slug: string }> }) 
     .eq("slug", slug)
     .maybeSingle();
   if (!r) notFound();
-  const [{ data: score }, { data: coffees }, { data: served }, { data: ownCafes }] = await Promise.all([
+  const [{ data: score }, { data: coffees }, { data: served }, { data: ownCafes }, checkIns] = await Promise.all([
     db.from("roaster_scores").select("specialty_score, active_coffee_count, check_in_count, rating").eq("roaster_id", r.id).maybeSingle(),
     db.from("coffees").select("id, name, url, is_blend, roast_level, origin_country_code, process, process_family, varieties, tasting_notes, price_cents, size_grams, status").eq("roaster_id", r.id).order("status").order("name"),
     db.from("cafe_roasters").select("relationship, cafes(name, slug, city)").eq("roaster_id", r.id),
     db.from("cafes").select("name, slug, city").eq("roaster_id", r.id).order("name"),
+    fetchCheckIns(db, { roasterId: r.id }, 10).catch((e: unknown) => (e instanceof Error ? e : new Error(String(e)))),
   ]);
   const where: { cafe: CafeRef; owns: boolean }[] = [
     ...((ownCafes ?? []) as CafeRef[]).map((cafe) => ({ cafe, owns: true })),
@@ -69,6 +73,9 @@ async function RoasterDetail({ params }: { params: Promise<{ slug: string }> }) 
         {r.shop_url && r.shop_url !== r.website && <a className="inline-flex items-center gap-1 text-accent underline-offset-4 hover:underline" href={r.shop_url} target="_blank" rel="noreferrer"><ExternalLink size={14} /> Shop</a>}
         {r.instagram && <a className="inline-flex items-center gap-1 text-accent underline-offset-4 hover:underline" href={`https://instagram.com/${r.instagram}`} target="_blank" rel="noreferrer"><AtSign size={14} /> @{r.instagram}</a>}
       </p>
+      <Link href={`/log?roaster=${slug}`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-fg">
+        <PenLine size={16} /> Log a coffee
+      </Link>
 
       {where.length > 0 && (
         <section className="mt-10">
@@ -87,20 +94,24 @@ async function RoasterDetail({ params }: { params: Promise<{ slug: string }> }) 
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold">On the menu <span className="text-muted">({active.length})</span></h2>
-        <CoffeeList rows={active} />
+        <CoffeeList rows={active} slug={slug} />
         {past.length > 0 && (
           <details className="mt-6">
             <summary className="cursor-pointer text-sm text-muted">Past coffees ({past.length})</summary>
-            <CoffeeList rows={past} />
+            <CoffeeList rows={past} slug={slug} />
           </details>
         )}
+      </section>
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold">Recent check-ins</h2>
+        {checkIns instanceof Error ? <DataError error={checkIns} what="check-ins" /> : <CheckInList rows={checkIns} context="roaster" emptyText="No one has logged this roaster yet. Be the first." />}
       </section>
       {r.attributes_updated_at && <p className="mt-10 text-xs text-muted">Menu and attributes refreshed {new Date(r.attributes_updated_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}.</p>}
     </>
   );
 }
 
-function CoffeeList({ rows }: { rows: CoffeeRow[] }) {
+function CoffeeList({ rows, slug }: { rows: CoffeeRow[]; slug: string }) {
   if (rows.length === 0) return <p className="mt-2 text-muted">Nothing found.</p>;
   return (
     <ul className="mt-3 divide-y divide-border rounded-[var(--radius-card)] border border-border bg-surface">
@@ -110,7 +121,10 @@ function CoffeeList({ rows }: { rows: CoffeeRow[] }) {
             <span className="font-medium">
               {c.url ? <a href={c.url} target="_blank" rel="noreferrer" className="underline-offset-4 hover:underline">{c.name}</a> : c.name}
             </span>
-            <span className="shrink-0 text-sm text-muted">{money(c.price_cents)}{c.size_grams ? ` · ${c.size_grams}g` : ""}</span>
+            <span className="flex shrink-0 items-center gap-3 text-sm text-muted">
+              {money(c.price_cents)}{c.size_grams ? ` · ${c.size_grams}g` : ""}
+              <Link href={`/log?roaster=${slug}&coffee=${c.id}`} className="text-accent underline-offset-4 hover:underline">Log</Link>
+            </span>
           </div>
           <p className="mt-0.5 text-sm text-muted">
             {[c.is_blend ? "Blend" : c.origin_country_code, c.process ?? (c.process_family ? PROCESS_LABEL[c.process_family] : null), c.roast_level ? ROAST_LABEL[c.roast_level] : null, c.varieties.length ? c.varieties.join(", ") : null].filter(Boolean).join(" · ")}

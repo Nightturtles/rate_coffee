@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { AtSign, ExternalLink, Navigation } from "lucide-react";
+import { AtSign, ExternalLink, Navigation, PenLine } from "lucide-react";
 import { createSupabasePublicClient } from "@/lib/supabase/public";
 import { PROCESS_FOCUS_LABEL, ROAST_LABEL } from "@/lib/labels";
 import { Chip } from "@/components/ui/Chip";
 import { ScoreBadge } from "@/components/ui/ScoreBadge";
+import { CheckInList } from "@/components/CheckInList";
+import { DataError } from "@/components/ui/DataError";
+import { fetchCheckIns } from "@/lib/checkins";
 
 type LinkRow = { relationship: string; source: string; source_url: string | null; confidence: number; roasters: { name: string; slug: string; roast_level: string | null; process_focus: string | null } | null };
 const SOURCE_LABEL: Record<string, string> = { roaster_site: "listed on the roaster's site", cafe_site: "mentioned on the cafe's site", user_checkin: "from a check-in", manual: "added by a curator" };
@@ -27,9 +30,10 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
     .eq("slug", slug)
     .maybeSingle();
   if (!c) notFound();
-  const [{ data: score }, { data: links }] = await Promise.all([
+  const [{ data: score }, { data: links }, checkIns] = await Promise.all([
     db.from("cafe_scores").select("specialty_score, roaster_count, check_in_count, rating").eq("cafe_id", c.id).maybeSingle(),
     db.from("cafe_roasters").select("relationship, source, source_url, confidence, roasters(name, slug, roast_level, process_focus)").eq("cafe_id", c.id).order("confidence", { ascending: false }),
+    fetchCheckIns(db, { cafeId: c.id }, 10).catch((e: unknown) => (e instanceof Error ? e : new Error(String(e)))),
   ]);
   const rows = (links ?? []) as unknown as LinkRow[];
   const own = (Array.isArray(c.own) ? c.own[0] : c.own) as { name: string; slug: string; roast_level: string | null; process_focus: string | null } | null;
@@ -59,6 +63,9 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
         {c.instagram && <a className="inline-flex items-center gap-1 text-accent underline-offset-4 hover:underline" href={`https://instagram.com/${c.instagram}`} target="_blank" rel="noreferrer"><AtSign size={14} /> @{c.instagram}</a>}
       </p>
       {hours && <p className="mt-2 text-sm text-muted">Hours: {hours}</p>}
+      <Link href={`/log?cafe=${slug}`} className="mt-5 inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2 text-sm font-medium text-accent-fg">
+        <PenLine size={16} /> Log a coffee here
+      </Link>
 
       <section className="mt-10">
         <h2 className="text-xl font-semibold">Coffee served</h2>
@@ -87,6 +94,10 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
             )}
           </ul>
         )}
+      </section>
+      <section className="mt-10">
+        <h2 className="text-xl font-semibold">Recent check-ins</h2>
+        {checkIns instanceof Error ? <DataError error={checkIns} what="check-ins" /> : <CheckInList rows={checkIns} context="cafe" emptyText="No one has logged a coffee here yet. Be the first." />}
       </section>
       <p className="mt-10 text-xs text-muted">
         Base listing from {c.source_url ? <a className="underline" href={c.source_url} target="_blank" rel="noreferrer">{c.source === "osm" ? "OpenStreetMap" : c.source === "roaster_site" ? "the roaster's site" : c.source}</a> : c.source}.
