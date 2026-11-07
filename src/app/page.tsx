@@ -53,7 +53,7 @@ async function Cafes({ place }: { place: ReturnType<typeof placeFromParams> }) {
       {cafes.length === 0 ? (
         <Empty>No cafes with a roaster signal within 15 miles yet. Try the map or a nearby city.</Empty>
       ) : (
-        <div className="grid sm:grid-cols-2 sm:gap-x-12">{cafes.map((c, i) => <CafeCard key={c.id} c={c} index={i + 1} />)}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">{cafes.map((c, i) => <CafeCard key={c.id} c={c} index={i + 1} />)}</div>
       )}
     </Section>
   );
@@ -71,7 +71,7 @@ async function Roasters({ place }: { place: ReturnType<typeof placeFromParams> }
       {roasters.length === 0 ? (
         <Empty>No roasters within 35 miles yet.</Empty>
       ) : (
-        <div className="grid sm:grid-cols-2 sm:gap-x-12">{roasters.map((r, i) => <RoasterCard key={r.id} r={r} index={i + 1} />)}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">{roasters.map((r, i) => <RoasterCard key={r.id} r={r} index={i + 1} />)}</div>
       )}
     </Section>
   );
@@ -80,7 +80,7 @@ async function Roasters({ place }: { place: ReturnType<typeof placeFromParams> }
 function Skeleton({ title }: { title: string }) {
   return (
     <Section eyebrow={title} title=" ">
-      <div className="grid sm:grid-cols-2 sm:gap-x-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">
         {[0, 1, 2, 3].map((i) => <div key={i} className="h-28 animate-pulse border-t border-border" />)}
       </div>
     </Section>

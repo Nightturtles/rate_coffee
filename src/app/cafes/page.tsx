@@ -19,7 +19,7 @@ async function List({ place }: { place: ReturnType<typeof placeFromParams> }) {
   return (
     <>
       <p className="label mt-8">{signal.length} cafes known to serve a cataloged roaster · 20 mi</p>
-      {signal.length === 0 ? <p className="mt-3 text-muted">None within 20 miles yet.</p> : <div className="mt-3 grid sm:grid-cols-2 sm:gap-x-12">{signal.map((c, i) => <CafeCard key={c.id} c={c} index={i + 1} />)}</div>}
+      {signal.length === 0 ? <p className="mt-3 text-muted">None within 20 miles yet.</p> : <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">{signal.map((c, i) => <CafeCard key={c.id} c={c} index={i + 1} />)}</div>}
       <details className="mt-16 border-t border-border pt-5">
         <summary className="label cursor-pointer text-text">Other cafes within 10 mi, no roaster signal yet · {rest.length}</summary>
         <ul className="mt-5 columns-2 gap-10 text-sm sm:columns-3">

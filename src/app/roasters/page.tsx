@@ -17,7 +17,7 @@ async function List({ place }: { place: ReturnType<typeof placeFromParams> }) {
   return (
     <>
       <p className="label mt-8">{roasters.length} roasters within 60 mi</p>
-      <div className="mt-3 grid sm:grid-cols-2 sm:gap-x-12">{roasters.map((r, i) => <RoasterCard key={r.id} r={r} index={i + 1} />)}</div>
+      <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">{roasters.map((r, i) => <RoasterCard key={r.id} r={r} index={i + 1} />)}</div>
     </>
   );
 }
