@@ -58,7 +58,7 @@ async function RoasterDetail({ params }: { params: Promise<{ slug: string }> }) 
         <ScoreBadge score={score?.specialty_score} size="lg" />
         <div className="min-w-0">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{r.name}</h1>
-          <p className="text-muted">{[r.city, r.region].filter(Boolean).join(", ")}{score?.check_in_count ? ` · ${score.check_in_count} check-ins, ${Number(score.rating).toFixed(1)} avg` : ""}</p>
+          <p className="text-muted">{[r.city, r.region].filter(Boolean).join(", ")}{score?.check_in_count ? ` · ${score.check_in_count} check-in${score.check_in_count === 1 ? "" : "s"}${score.check_in_count >= 3 ? `, ${Number(score.rating).toFixed(1)} avg` : ""}` : ""}</p>
         </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-1.5">

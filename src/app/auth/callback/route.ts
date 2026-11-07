@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
   let error: string | null = null;
   if (code) error = (await db.auth.exchangeCodeForSession(code)).error?.message ?? null;
   else if (tokenHash && type) error = (await db.auth.verifyOtp({ token_hash: tokenHash, type })).error?.message ?? null;
-  else error = "Missing sign-in token.";
+  else error = searchParams.get("error_description") ?? "Missing sign-in token.";
 
   if (error) return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error)}&next=${encodeURIComponent(next)}`);
   return NextResponse.redirect(`${origin}${next}`);

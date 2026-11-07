@@ -79,7 +79,7 @@ export function CheckInForm({ roaster, cafe, coffees, roasterOptions, brewMethod
             const on = picked.has(t.id);
             return (
               <label key={t.id} className={`cursor-pointer select-none rounded-full border px-2.5 py-0.5 text-xs ${on ? "border-accent bg-accent text-accent-fg" : "border-border bg-surface text-muted hover:bg-surface-2"}`}>
-                <input type="checkbox" name="tags" value={t.id} checked={on} className="sr-only"
+                <input type="checkbox" name="tags" value={t.id} checked={on} aria-label={t.label} className="sr-only"
                   onChange={() => setPicked((s) => { const n = new Set(s); if (n.has(t.id)) n.delete(t.id); else n.add(t.id); return n; })} />
                 {t.label}
               </label>

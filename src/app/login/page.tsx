@@ -10,7 +10,13 @@ async function LoginInner({ searchParams }: { searchParams: Promise<Record<strin
   const sp = await searchParams;
   const next = safeNext(sp.next);
   if (await getSessionUser()) redirect(next);
-  return <LoginForm next={next} />;
+  const error = typeof sp.error === "string" ? sp.error : null;
+  return (
+    <>
+      {error && <p role="alert" className="mb-4 rounded-[var(--radius-card)] border border-accent/40 bg-accent/10 p-3 text-sm">{error}. Request a new link below.</p>}
+      <LoginForm next={next} />
+    </>
+  );
 }
 
 export default function LoginPage({ searchParams }: PageProps<"/login">) {

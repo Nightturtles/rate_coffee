@@ -1,9 +1,11 @@
+import { connection } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type SessionUser = { id: string; email: string | null; displayName: string; handle: string | null; role: string };
 
 /** The signed-in user with their profile, or null. Server only; reads cookies. */
 export async function getSessionUser(): Promise<SessionUser | null> {
+  await connection(); // session reads are per-request; never prerender them
   const db = await createSupabaseServerClient();
   const { data: { user } } = await db.auth.getUser();
   if (!user) return null;
