@@ -30,7 +30,7 @@ function TitleLine({ name, score, distance }: { name: string; score: number | nu
 export function RoasterCard({ r, index }: { r: DiscoverRoaster; index?: number }) {
   return (
     <Cell href={`/roasters/${r.slug}`} index={index}>
-      <Thumb src={r.image_url} name={r.name} size={72} />
+      <Thumb icon={r.logo_url} name={r.name} size={72} />
       <div className="min-w-0 flex-1">
         <TitleLine name={r.name} score={r.specialty_score} distance={r.distance_m} />
         <p className="mt-0.5 text-sm text-muted">
@@ -53,7 +53,7 @@ export function CafeCard({ c, index }: { c: DiscoverCafe; index?: number }) {
   const serves = c.own_roaster_name ? `${c.own_roaster_name}'s own cafe` : c.roaster_names.length ? `Serves ${c.roaster_names.slice(0, 3).join(", ")}${c.roaster_names.length > 3 ? ` +${c.roaster_names.length - 3}` : ""}` : "No roaster signal yet";
   return (
     <Cell href={`/cafes/${c.slug}`} index={index}>
-      <Thumb src={c.image_url} name={c.name} size={72} />
+      <Thumb icon={c.logo_url} name={c.name} size={72} />
       <div className="min-w-0 flex-1">
         <TitleLine name={c.name} score={c.specialty_score} distance={c.distance_m} />
         <p className="mt-0.5 text-sm text-muted">{[c.address_line1, c.city].filter(Boolean).join(", ")}</p>

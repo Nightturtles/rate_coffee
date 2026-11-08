@@ -46,6 +46,8 @@ export type DiscoverRoaster = {
   /** 'cafe' = pinned at the roaster's own cafe/roastery; 'city' = city-level geocode only. */
   pin_kind: "cafe" | "city";
   image_url: string | null;
+  /** The roaster's mark (touch icon or logo), for thumbnails. */
+  logo_url: string | null;
 };
 
 export type DiscoverCafe = {
@@ -54,6 +56,8 @@ export type DiscoverCafe = {
   has_pourover: boolean | null; has_batch_brew: boolean | null; own_roaster_name: string | null; own_roaster_slug: string | null; roaster_names: string[];
   /** The cafe's own photo, or its roaster's when roaster-owned. */
   image_url: string | null;
+  /** The cafe's own mark, or its roaster's when roaster-owned. */
+  logo_url: string | null;
 };
 
 export async function discoverRoasters(p: Place, radiusM = 35 * MI, lim = 50): Promise<DiscoverRoaster[]> {

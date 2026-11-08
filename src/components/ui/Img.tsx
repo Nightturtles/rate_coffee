@@ -17,11 +17,16 @@ export function Photo({ src, alt, width, sizes, priority, className = "" }: { sr
   );
 }
 
-/** Square thumbnail. Without an image it falls back to a quiet tile with the name's initial. */
-export function Thumb({ src, name, size = 64, className = "" }: { src: string | null | undefined; name: string; size?: number; className?: string }) {
+/**
+ * Square thumbnail. `icon` is a brand mark, shown whole on white like an app icon; `src` is a photo,
+ * cropped to fill. Without either it falls back to a quiet tile with the name's initial.
+ */
+export function Thumb({ src, icon, name, size = 64, className = "" }: { src?: string | null; icon?: string | null; name: string; size?: number; className?: string }) {
   return (
-    <span className={`block shrink-0 overflow-hidden rounded-[2px] bg-surface-2 ${className}`} style={{ width: size, height: size }} aria-hidden={!src}>
-      {src ? (
+    <span className={`block shrink-0 overflow-hidden rounded-[2px] ${icon ? "bg-white" : "bg-surface-2"} ${className}`} style={{ width: size, height: size }} aria-hidden={!src && !icon}>
+      {icon ? (
+        <Photo src={icon} alt={name} width={size} className="!object-contain p-[10%]" />
+      ) : src ? (
         <Photo src={src} alt={name} width={size} />
       ) : (
         <span className="font-display flex h-full w-full items-center justify-center text-muted" style={{ fontSize: size * 0.4, fontWeight: 300 }}>
