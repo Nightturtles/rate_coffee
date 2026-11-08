@@ -23,3 +23,13 @@ export async function getSessionUser(): Promise<SessionUser | null> {
 export function safeNext(next: unknown, fallback = "/"): string {
   return typeof next === "string" && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
 }
+
+/** Supabase auth errors in plain words. Falls back to the raw message. */
+export function friendlyAuthError(message: string | null | undefined): string {
+  const m = (message ?? "").toLowerCase();
+  if (!m) return "Something went wrong signing you in.";
+  if (/expired|invalid|already been used|not found/.test(m)) return "That code or link didn't work. It may have expired or been used already; check it, or send a new one.";
+  if (/rate limit|too many|over_email_send_rate_limit|security purposes/.test(m)) return "Too many sign-in emails just now. Wait a few minutes and try again.";
+  if (/provider is not enabled|unsupported provider/.test(m)) return "Google sign-in isn't switched on for this site yet.";
+  return message as string;
+}

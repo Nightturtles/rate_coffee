@@ -195,6 +195,17 @@ password_requirements = ""
 # rp_id = "localhost"
 # rp_origins = ["http://127.0.0.1:3000"]
 
+# Sign-in emails carry a six-digit code as well as the link, so link-scanning mail clients
+# can't burn the sign-in before the user sees it. The dashboard is authoritative for the hosted
+# project; mirror these there (Authentication -> Emails -> Templates) or run `supabase config push`.
+[auth.email.template.magic_link]
+subject = "Your Rate Coffee sign-in code"
+content_path = "./supabase/templates/magic_link.html"
+
+[auth.email.template.confirmation]
+subject = "Your Rate Coffee sign-in code"
+content_path = "./supabase/templates/confirmation.html"
+
 [auth.rate_limit]
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
 email_sent = 2

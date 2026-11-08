@@ -1,4 +1,10 @@
 {
   "wrecking-ball-coffee-roasters": "coffee",
-  "tico-coffee-roasters": "coffee"
+  "tico-coffee-roasters": "coffee",
+  "verve-coffee-roasters": {
+    "icon": "https://www.vervecoffee.com/cdn/shop/files/logo_0a340eea-4588-4b36-9346-b6a7e2aed95b.png"
+  },
+  "proyecto-diaz-coffee": {
+    "icon": "https://images.squarespace-cdn.com/content/v1/52a7611be4b0627b7407db72/1430468135205-3RYFNWI6R6AQAV4A2IY6/favicon.ico"
+  }
 }

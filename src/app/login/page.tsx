@@ -13,8 +13,8 @@ async function LoginInner({ searchParams }: { searchParams: Promise<Record<strin
   const error = typeof sp.error === "string" ? sp.error : null;
   return (
     <>
-      {error && <p role="alert" className="mb-5 border border-bronze/50 px-4 py-3 text-sm text-bronze">{error}. Request a new link below.</p>}
-      <LoginForm next={next} />
+      {error && <p role="alert" className="mb-5 border border-bronze/50 px-4 py-3 text-sm text-bronze">{error}</p>}
+      <LoginForm next={next} google={process.env.NEXT_PUBLIC_AUTH_GOOGLE === "1"} />
     </>
   );
 }
