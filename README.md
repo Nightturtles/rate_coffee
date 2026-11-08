@@ -12,7 +12,7 @@ Stack: Next.js (App Router, server rendering) on Vercel, Supabase (Postgres + Po
 
 ## Deploy
 
-Live at https://rate-coffee.vercel.app (Vercel project `rate-coffee`, team Cafelytic). Vercel builds `main` as production on every push. Set the same env vars in Vercel project settings. Keep the app portable: no Vercel-only storage or APIs, so it can move to Cloudflare via OpenNext if needed.
+Live at https://rate-coffee.vercel.app (Vercel project `rate-coffee`, team Cafelytic). Vercel builds `main` as production on every push. Set the same env vars in Vercel project settings, or with the CLI: `vercel link --project rate-coffee` once, then `vercel env add NAME production`, `vercel env ls`, and `vercel redeploy rate-coffee.vercel.app --environment production` to rebuild after a variable change (`NEXT_PUBLIC_*` values are baked in at build time). Keep the app portable: no Vercel-only storage or APIs, so it can move to Cloudflare via OpenNext if needed.
 
 ## Sign-in
 
