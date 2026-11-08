@@ -11,7 +11,8 @@
     "lint": "eslint",
     "ingest:roasters": "tsx scripts/ingest/run.ts",
     "ingest:cafes": "tsx scripts/ingest/cafes.ts",
-    "map:worker": "mkdir -p public && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs public/maplibre-worker.mjs"
+    "map:worker": "mkdir -p public && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs public/maplibre-worker.mjs",
+    "ingest:images": "tsx scripts/ingest/images.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

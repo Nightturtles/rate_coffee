@@ -45,12 +45,15 @@ export type DiscoverRoaster = {
   lat: number; lng: number; distance_m: number; specialty_score: number; active_coffee_count: number; cafe_count: number;
   /** 'cafe' = pinned at the roaster's own cafe/roastery; 'city' = city-level geocode only. */
   pin_kind: "cafe" | "city";
+  image_url: string | null;
 };
 
 export type DiscoverCafe = {
   id: string; slug: string; name: string; city: string | null; address_line1: string | null;
   lat: number; lng: number; distance_m: number; specialty_score: number | null; roaster_count: number;
   has_pourover: boolean | null; has_batch_brew: boolean | null; own_roaster_name: string | null; own_roaster_slug: string | null; roaster_names: string[];
+  /** The cafe's own photo, or its roaster's when roaster-owned. */
+  image_url: string | null;
 };
 
 export async function discoverRoasters(p: Place, radiusM = 35 * MI, lim = 50): Promise<DiscoverRoaster[]> {

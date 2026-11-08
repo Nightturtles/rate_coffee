@@ -10,6 +10,7 @@ import { fetchCheckIns } from "@/lib/checkins";
 import { Chip } from "@/components/ui/Chip";
 import { ScoreBadge } from "@/components/ui/ScoreBadge";
 import { DataError } from "@/components/ui/DataError";
+import { Hero } from "@/components/ui/Img";
 import { CheckInList } from "@/components/CheckInList";
 
 type LinkRow = { relationship: string; source: string; source_url: string | null; confidence: number; roasters: { name: string; slug: string; roast_level: string | null; process_focus: string | null } | null };
@@ -28,7 +29,7 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
   const db = createSupabasePublicClient();
   const { data: c } = await db
     .from("cafes")
-    .select("id, name, address_line1, city, region, website, instagram, hours, has_espresso, has_pourover, has_batch_brew, is_multi_roaster, source, source_url, own:roasters!cafes_roaster_id_fkey(name, slug, roast_level, process_focus)")
+    .select("id, name, address_line1, city, region, website, instagram, image_url, hours, has_espresso, has_pourover, has_batch_brew, is_multi_roaster, source, source_url, own:roasters!cafes_roaster_id_fkey(name, slug, roast_level, process_focus, image_url)")
     .eq("slug", slug)
     .maybeSingle();
   if (!c) notFound();
@@ -38,13 +39,15 @@ async function CafeDetail({ params }: { params: Promise<{ slug: string }> }) {
     fetchCheckIns(db, { cafeId: c.id }, 10).catch((e: unknown) => (e instanceof Error ? e : new Error(String(e)))),
   ]);
   const rows = (links ?? []) as unknown as LinkRow[];
-  const own = (Array.isArray(c.own) ? c.own[0] : c.own) as { name: string; slug: string; roast_level: string | null; process_focus: string | null } | null;
+  const own = (Array.isArray(c.own) ? c.own[0] : c.own) as { name: string; slug: string; roast_level: string | null; process_focus: string | null; image_url: string | null } | null;
+  const image = c.image_url ?? own?.image_url ?? null;
   const hours = (c.hours as { osm?: string } | null)?.osm;
   const mapsQuery = encodeURIComponent([c.name, c.address_line1, c.city].filter(Boolean).join(", "));
 
   return (
     <>
       <Link href="/cafes" className="label transition hover:text-text">← Cafes</Link>
+      {image && <div className="mt-6"><Hero src={image} alt={c.name} /></div>}
       <div className="mt-8 flex items-start gap-6">
         <ScoreBadge score={score?.specialty_score} size="lg" />
         <div className="min-w-0 pt-1">

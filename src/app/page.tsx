@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import { CafeCard, RoasterCard } from "@/components/Cards";
+import { CafeCard, FeaturedRoaster, RoasterCard } from "@/components/Cards";
 import { LocationPicker } from "@/components/LocationPicker";
 import { Section } from "@/components/ui/Section";
 import { DataError } from "@/components/ui/DataError";
@@ -66,12 +66,18 @@ async function Roasters({ place }: { place: ReturnType<typeof placeFromParams> }
   } catch (e) {
     return <Section eyebrow="Roasters" title={`Near ${place.label}`}><DataError error={e} what="roasters" /></Section>;
   }
+  // Lead with the best roaster when we have its photo; the rest run as the numbered list.
+  const lead = roasters[0]?.image_url ? (roasters[0] as (typeof roasters)[number] & { image_url: string }) : null;
+  const rest = lead ? roasters.slice(1) : roasters;
   return (
     <Section eyebrow="Roasters" title={`Near ${place.label}`} subtitle="Within 35 miles, best first" href={`/roasters?${placeQuery(place)}`}>
       {roasters.length === 0 ? (
         <Empty>No roasters within 35 miles yet.</Empty>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">{roasters.map((r, i) => <RoasterCard key={r.id} r={r} index={i + 1} />)}</div>
+        <>
+          {lead && <FeaturedRoaster r={lead} />}
+          <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-12">{rest.map((r, i) => <RoasterCard key={r.id} r={r} index={i + (lead ? 2 : 1)} />)}</div>
+        </>
       )}
     </Section>
   );

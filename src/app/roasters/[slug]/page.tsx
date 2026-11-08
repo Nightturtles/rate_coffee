@@ -10,10 +10,11 @@ import { fetchCheckIns } from "@/lib/checkins";
 import { Chip } from "@/components/ui/Chip";
 import { ScoreBadge } from "@/components/ui/ScoreBadge";
 import { DataError } from "@/components/ui/DataError";
+import { Hero, Thumb } from "@/components/ui/Img";
 import { CheckInList } from "@/components/CheckInList";
 
 type CoffeeRow = {
-  id: string; name: string; url: string | null; is_blend: boolean; roast_level: string | null; origin_country_code: string | null;
+  id: string; name: string; url: string | null; image_url: string | null; is_blend: boolean; roast_level: string | null; origin_country_code: string | null;
   process: string | null; process_family: string | null; varieties: string[]; tasting_notes: string[]; price_cents: number | null; size_grams: number | null; status: string;
 };
 type CafeRef = { name: string; slug: string; city: string | null };
@@ -33,13 +34,13 @@ async function RoasterDetail({ params }: { params: Promise<{ slug: string }> }) 
   const db = createSupabasePublicClient();
   const { data: r } = await db
     .from("roasters")
-    .select("id, name, website, shop_url, instagram, description, city, region, roast_level, process_focus, single_origin_share, attributes_updated_at")
+    .select("id, name, website, shop_url, instagram, description, image_url, city, region, roast_level, process_focus, single_origin_share, attributes_updated_at")
     .eq("slug", slug)
     .maybeSingle();
   if (!r) notFound();
   const [{ data: score }, { data: coffees }, { data: served }, { data: ownCafes }, checkIns] = await Promise.all([
     db.from("roaster_scores").select("specialty_score, active_coffee_count, check_in_count, rating").eq("roaster_id", r.id).maybeSingle(),
-    db.from("coffees").select("id, name, url, is_blend, roast_level, origin_country_code, process, process_family, varieties, tasting_notes, price_cents, size_grams, status").eq("roaster_id", r.id).order("status").order("name"),
+    db.from("coffees").select("id, name, url, image_url, is_blend, roast_level, origin_country_code, process, process_family, varieties, tasting_notes, price_cents, size_grams, status").eq("roaster_id", r.id).order("status").order("name"),
     db.from("cafe_roasters").select("relationship, cafes(name, slug, city)").eq("roaster_id", r.id),
     db.from("cafes").select("name, slug, city").eq("roaster_id", r.id).order("name"),
     fetchCheckIns(db, { roasterId: r.id }, 10).catch((e: unknown) => (e instanceof Error ? e : new Error(String(e)))),
@@ -61,6 +62,7 @@ async function RoasterDetail({ params }: { params: Promise<{ slug: string }> }) 
   return (
     <>
       <Link href="/roasters" className="label transition hover:text-text">← Roasters</Link>
+      {r.image_url && <div className="mt-6"><Hero src={r.image_url} alt={r.name} /></div>}
       <div className="mt-8 flex items-start gap-6">
         <ScoreBadge score={score?.specialty_score} size="lg" />
         <div className="min-w-0 pt-1">
@@ -123,8 +125,9 @@ function CoffeeList({ rows, slug }: { rows: CoffeeRow[]; slug: string }) {
   return (
     <ul>
       {rows.map((c, i) => (
-        <li key={c.id} className="flex gap-5 border-b border-border py-4">
+        <li key={c.id} className="flex gap-4 border-b border-border py-4">
           <span className="num w-6 shrink-0 pt-0.5 text-[11px] text-muted">{String(i + 1).padStart(2, "0")}</span>
+          <Thumb src={c.image_url} name={c.name} size={48} />
           <div className="min-w-0 flex-1">
             <div className="flex items-baseline justify-between gap-4">
               <span className="font-medium">
