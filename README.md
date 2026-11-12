@@ -36,6 +36,10 @@ Setup that lives in the Supabase dashboard, not in code:
    page needs app name Filtered, homepage `https://filtered.cafe`, privacy policy
    `https://filtered.cafe/privacy` and authorised domain `filtered.cafe`, which must first be verified
    in Google Search Console with a DNS TXT record.
-4. **Custom SMTP** (before inviting people): the built-in mailer allows 2 emails per hour. Any SMTP
-   provider works (Resend, Postmark, SES) and sends from `filtered.cafe` once its DNS records are added.
+4. **Email sending**: Supabase sends auth email through Resend (`smtp.resend.com`), from
+   `hello@filtered.cafe`, set up with Resend's Supabase integration. The API key lives only in the
+   Supabase SMTP settings, never in this repo. DNS at Cloudflare: DKIM at `resend._domainkey` and the
+   bounce records at `send`; the root MX and SPF belong to Cloudflare Email Routing, which forwards
+   `hello@filtered.cafe`, so leave them alone. Limits: 100 emails/hour in Supabase (Authentication ->
+   Rate Limits) and 100/day on Resend's free plan.
 
