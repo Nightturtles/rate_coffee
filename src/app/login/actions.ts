@@ -32,14 +32,14 @@ export async function sendMagicLink(_prev: LoginState, formData: FormData): Prom
 }
 
 /**
- * Step 2: the six-digit code from the email. Immune to link scanners that open (and burn) magic
+ * Step 2: the numeric code from the email (6 to 10 digits; the length is a Supabase project setting). Immune to link scanners that open (and burn) magic
  * links before the user does, and it works even when the email is read on another device.
  */
 export async function verifyCode(_prev: LoginState, formData: FormData): Promise<LoginState> {
   const parsed = Email.safeParse(formData.get("email"));
   if (!parsed.success) return { error: "Start over with your email address." };
   const token = String(formData.get("token") ?? "").replace(/\D/g, "");
-  if (token.length !== 6) return { sent: parsed.data, error: "Enter the 6-digit code from the email." };
+  if (token.length < 6 || token.length > 10) return { sent: parsed.data, error: "Enter the code from the email. It is all digits." };
   const next = safeNext(formData.get("next"));
   const db = await createSupabaseServerClient();
   const { error } = await db.auth.verifyOtp({ email: parsed.data, token, type: "email" });

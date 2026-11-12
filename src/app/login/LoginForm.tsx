@@ -19,17 +19,16 @@ export function LoginForm({ next, google }: { next: string; google: boolean }) {
         <p className="mt-3 leading-relaxed text-muted">
           We sent a code to <span className="text-text">{email}</span>. Enter it here, or open the link in the email on this device.
         </p>
-        <label htmlFor="token" className={`${fieldLabel} mt-6`}>6-digit code</label>
+        <label htmlFor="token" className={`${fieldLabel} mt-6`}>Code from the email</label>
         <input
           id="token"
           name="token"
           inputMode="numeric"
           autoComplete="one-time-code"
-          pattern="[0-9]{6}"
-          maxLength={6}
+          pattern="[0-9]{6,10}"
+          maxLength={10}
           required
           autoFocus
-          placeholder="000000"
           className={`${field} num text-center text-2xl tracking-[0.4em]`}
         />
         {codeState.error && <p role="alert" className="mt-3 text-sm text-bronze">{codeState.error}</p>}

@@ -16,7 +16,7 @@ Live at https://filtered.cafe (Vercel project `rate-coffee`, team Cafelytic; `ra
 
 ## Sign-in
 
-Passwordless, via Supabase Auth. The sign-in email carries a six-digit code and a link; the code is
+Passwordless, via Supabase Auth. The sign-in email carries a numeric code and a link (the code length, 6 to 10 digits, is set in the dashboard under Sign In / Providers -> Email -> Email OTP Length; the hosted project issues 8); the code is
 the primary path because corporate and Gmail link scanners can open (and spend) a magic link before
 the user does, and because it works when the email is read on another device.
 
