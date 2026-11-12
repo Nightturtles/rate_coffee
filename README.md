@@ -1,4 +1,4 @@
-# rate coffee
+# Filtered
 
 Untappd for specialty coffee: find good roasters, and the cafes that serve them. Fresh build (v2); the original MVP is tagged `legacy-mvp`.
 
@@ -12,7 +12,7 @@ Stack: Next.js (App Router, server rendering) on Vercel, Supabase (Postgres + Po
 
 ## Deploy
 
-Live at https://rate-coffee.vercel.app (Vercel project `rate-coffee`, team Cafelytic). Vercel builds `main` as production on every push. Set the same env vars in Vercel project settings, or with the CLI: `vercel link --project rate-coffee` once, then `vercel env add NAME production`, `vercel env ls`, and `vercel redeploy rate-coffee.vercel.app --environment production` to rebuild after a variable change (`NEXT_PUBLIC_*` values are baked in at build time). Keep the app portable: no Vercel-only storage or APIs, so it can move to Cloudflare via OpenNext if needed.
+Live at https://filtered.cafe (Vercel project `rate-coffee`, team Cafelytic; `rate-coffee.vercel.app` still resolves). The domain is registered and its DNS hosted at Cloudflare: an `A` record for the apex and a `CNAME` for `www`, both DNS-only (not proxied), with values from `vercel domains verify filtered.cafe`. Vercel builds `main` as production on every push. Set the same env vars in Vercel project settings, or with the CLI: `vercel link --project rate-coffee` once, then `vercel env add NAME production`, `vercel env ls`, and `vercel redeploy rate-coffee.vercel.app --environment production` to rebuild after a variable change (`NEXT_PUBLIC_*` values are baked in at build time). Keep the app portable: no Vercel-only storage or APIs, so it can move to Cloudflare via OpenNext if needed.
 
 ## Sign-in
 
@@ -24,13 +24,18 @@ Setup that lives in the Supabase dashboard, not in code:
 
 1. **Email templates** (Authentication -> Emails): paste `supabase/templates/magic_link.html` into
    *Magic Link* and `supabase/templates/confirmation.html` into *Confirm signup*, with the subject
-   "Your Rate Coffee sign-in code". `supabase config push` applies the same from `supabase/config.toml`.
-2. **URL configuration**: Site URL `https://rate-coffee.vercel.app`, redirect allow-list
-   `https://rate-coffee.vercel.app/**` and `http://localhost:3000/**`.
+   "Your Filtered sign-in code". `supabase config push` applies the same from `supabase/config.toml`.
+2. **URL configuration**: Site URL `https://filtered.cafe`, redirect allow-list
+   `https://filtered.cafe/**`, `https://www.filtered.cafe/**`, `https://rate-coffee.vercel.app/**` and
+   `http://localhost:3000/**`. Sign-in redirects to whichever host the visitor is on, so a host missing
+   from the list falls back to the Site URL.
 3. **Google sign-in** (optional): create an OAuth client in Google Cloud (Web application; authorised
    redirect URI is the callback URL shown on the Google provider card in Supabase), enable the Google
    provider in Supabase with its client ID and secret, then set `NEXT_PUBLIC_AUTH_GOOGLE=1` on Vercel
-   to show the button.
+   to show the button. To publish the consent screen (Google Auth Platform -> Audience), the Branding
+   page needs app name Filtered, homepage `https://filtered.cafe`, privacy policy
+   `https://filtered.cafe/privacy` and authorised domain `filtered.cafe`, which must first be verified
+   in Google Search Console with a DNS TXT record.
 4. **Custom SMTP** (before inviting people): the built-in mailer allows 2 emails per hour. Any SMTP
-   provider works (Resend, Postmark, SES) but all need a sending domain you own; `vercel.app` won't do.
+   provider works (Resend, Postmark, SES) and sends from `filtered.cafe` once its DNS records are added.
 

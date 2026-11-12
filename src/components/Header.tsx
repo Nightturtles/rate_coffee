@@ -15,7 +15,7 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border bg-bg/90 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-8 px-5">
         <Link href="/" className="whitespace-nowrap font-display text-[13px] font-semibold uppercase tracking-[0.28em]">
-          Rate Coffee
+          Filtered
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           {links.map((l) => (

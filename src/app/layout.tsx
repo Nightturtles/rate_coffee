@@ -11,7 +11,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const manrope = Manrope({ variable: "--font-manrope", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: { default: "rate coffee", template: "%s · rate coffee" },
+  title: { default: "Filtered · Specialty coffee near you", template: "%s · Filtered" },
   description: "Find specialty coffee roasters, and the cafes that actually serve them.",
 };
 

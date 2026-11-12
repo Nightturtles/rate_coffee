@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { getSessionUser, safeNext } from "@/lib/auth";
@@ -30,6 +31,9 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
           <LoginInner searchParams={searchParams} />
         </Suspense>
       </div>
+      <p className="mt-10 text-sm text-muted">
+        What we store and who can see it: <Link href="/privacy" className="underline decoration-border underline-offset-4 transition hover:decoration-text">Privacy</Link>
+      </p>
     </main>
   );
 }
